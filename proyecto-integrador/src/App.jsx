@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Header from './components/Header'
 import Home from './Routes/Home'
-import Nopage from './Routes/Nopage'
-import LoginSignUp from './Routes/LoginSignUp'
+import Nopage from './Routes/Nopage';
+import LoginSignUp from './Routes/LoginSignUp';
 import Body from './Components/Body';
-import Products from './Routes/Products'
+import Products from './Routes/Products';
 import Footer from './components/Footer';
 
 function App() {

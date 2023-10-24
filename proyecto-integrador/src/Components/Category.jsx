@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Guitarraelec from '../assets/Products/GuitarraElectrica.png'
-
+import Piano from '../assets/Products/Piano.png'
 
 const Category = () => {
     return (
