@@ -10,22 +10,22 @@ const ListAllProductsPage = () => {
     }, [dataApi]);
 
     return (
-        <div className="p-4">
-            <h1 className="text-xl font-bold mb-4">Lista de Productos</h1>
-            <table className="w-full bg-white rounded shadow-md">
-                <thead>
+        <div className="p-14 mt-14 mb-10 bg-gray-100 rounded-xl shadow-md">
+            <h1 className="text-2xl font-bold mb-6">Lista de Productos</h1>
+            <table className="w-full bg-white rounded-lg overflow-hidden shadow-lg">
+                <thead className="bg-gray-700 text-white">
                     <tr>
-                        <th className="border p-2">ID</th>
-                        <th className="border p-2">Nombre</th>
-                        <th className="border p-2">Acciones</th>
+                        <th className="border p-3">ID</th>
+                        <th className="border p-3">Nombre</th>
+                        <th className="border p-3">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {state.data.map(product => (
-                        <tr key={product.id}>
-                            <td className="border p-2">{product.id}</td>
-                            <td className="border p-2">{product.name}</td>
-                            <td className="border p-2"> 
+                    {state.data.map((product, index) => (
+                        <tr key={product.id} className={index % 2 ? 'bg-gray-100' : ''}>
+                            <td className="border p-3">{product.id}</td>
+                            <td className="border p-3">{product.name}</td>
+                            <td className="border p-3"> 
                                 {/* Agregar acciones */}
                                 ...
                             </td>
