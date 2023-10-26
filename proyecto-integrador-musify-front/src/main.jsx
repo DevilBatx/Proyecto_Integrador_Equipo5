@@ -8,6 +8,8 @@ import Products from './Routes/Products.jsx'
 import Nopage from './Routes/Nopage.jsx'
 import Detail from './Routes/Detail.jsx'
 import AdminPage from './pages/AdminPage.jsx'
+import AgregarProducto from './pages/AgregarProducto.jsx'
+import ListAllProductsPage from './pages/ListAllProductsPage.jsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -20,6 +22,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/details/:id" element={<Detail />} />
         <Route path="/products" element={<Products />} />
         <Route path="/administracion"element = {<AdminPage />} />
+        <Route path="/allproducts"element = {<ListAllProductsPage />} />
+        <Route path="/agregarproducto"element = {<AgregarProducto />} />
         <Route path="*" element={<Nopage />} />
       </Route>
     </Routes>
