@@ -6,6 +6,7 @@ import Home from './Routes/Home.jsx'
 import LoginSignUp from './Routes/LoginSignUp.jsx'
 import Products from './Routes/Products.jsx'
 import Nopage from './Routes/Nopage.jsx'
+import Detail from './Routes/Detail.jsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/" element={<App/>}>
         <Route index element={<Home/>}/>
         <Route path="/login" element={<LoginSignUp />} />
+        <Route path="/details" element={<Detail />} />
         <Route path="/products" element={<Products />} />
         <Route path="*" element={<Nopage />} />
       </Route>

@@ -6,11 +6,11 @@ import DJ from '../assets/Products/DJ.webp';
 const Card = () => {
   return (
     <div className="w-full max-w-sm bg-white border border-orange-300 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
-      <Link to="/products">
+      <Link to="/details">
         <img className="rounded-t-lg" src={Bateria} alt="product image" />
       </Link>
       <div className="px-5 pb-5">
-        <Link to="/products"> 
+        <Link to="/details"> 
           <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Bateria</h5>
         </Link>
         <div className="flex items-center mt-2.5 mb-5">
@@ -23,8 +23,8 @@ const Card = () => {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-2xl font-bold text-gray-900 dark:text-white">USD 599</span>
-          <Link to="/products" className="text-white bg-orange-700 hover:bg-blue-800 focus:ring-3 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Reservar
+          <Link to="/details" className="text-white bg-orange-700 hover:bg-blue-800 focus:ring-3 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Ver más
           </Link>
         </div>
       </div>

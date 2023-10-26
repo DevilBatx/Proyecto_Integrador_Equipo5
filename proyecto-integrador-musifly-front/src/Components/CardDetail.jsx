@@ -1,5 +1,6 @@
 import React from 'react';
 import Bateria1 from '../assets/Products/bateria2.jpg'
+import arrow from '../assets/Products/arrow.png'
 
              //#4
 //Visualizar un bloque de header el cual deberá cubrir el 100 % del ancho de la pantalla.	✔							
@@ -24,7 +25,7 @@ const CardDetail = () => {
            <h1 className='text-left text-xl text-orange-500 font-bold py-5'>MAPEX VE5294FTVH BATERÍA ACÚSTICA SERIE VENUS 5 CUERPOS CON FIERROS</h1>
              <button onClick={() => router.back()}
                className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500'
-                >  volver </button>
+                >  <img src={arrow}></img> </button> 
          </div>
 
         <div className=' grid h-full w-full grid-cols-2 gap-3 pt-4 md:grid-cols-4'>
