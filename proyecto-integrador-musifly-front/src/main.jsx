@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/" element={<App/>}>
         <Route index element={<Home/>}/>
         <Route path="/login" element={<LoginSignUp />} />
-        <Route path="/details" element={<Detail />} />
+        <Route path="/details/:id" element={<Detail />} />
         <Route path="/products" element={<Products />} />
         <Route path="*" element={<Nopage />} />
       </Route>
