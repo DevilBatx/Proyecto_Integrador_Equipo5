@@ -1,4 +1,4 @@
-# Proyecto_Integrador_Equipo5
+# INFORMACION DEL PROYECTO
 
 
 Java jdk 21
