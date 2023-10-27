@@ -1,6 +1,6 @@
-package com.grupo5.proyecto.dto;
+package com.grupo5.MusifyBack.dto;
 
-import com.grupo5.proyecto.models.Images;
+import com.grupo5.MusifyBack.models.Images;
 import lombok.*;
 
 import java.util.Set;

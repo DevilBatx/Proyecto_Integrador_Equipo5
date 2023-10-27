@@ -1,8 +1,8 @@
-package com.grupo5.proyecto.controllers;
+package com.grupo5.MusifyBack.controllers;
 
-import com.grupo5.proyecto.dto.ProductDTO;
-import com.grupo5.proyecto.models.Product;
-import com.grupo5.proyecto.services.ProductService;
+import com.grupo5.MusifyBack.dto.ProductDTO;
+import com.grupo5.MusifyBack.models.Product;
+import com.grupo5.MusifyBack.services.ProductService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

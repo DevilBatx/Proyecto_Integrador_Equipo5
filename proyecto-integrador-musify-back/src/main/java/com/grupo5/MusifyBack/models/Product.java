@@ -1,4 +1,4 @@
-package com.grupo5.proyecto.models;
+package com.grupo5.MusifyBack.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

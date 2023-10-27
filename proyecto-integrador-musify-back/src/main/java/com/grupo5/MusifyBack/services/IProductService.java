@@ -1,7 +1,7 @@
-package com.grupo5.proyecto.services;
+package com.grupo5.MusifyBack.services;
 
-import com.grupo5.proyecto.dto.ProductDTO;
-import com.grupo5.proyecto.models.Product;
+import com.grupo5.MusifyBack.dto.ProductDTO;
+import com.grupo5.MusifyBack.models.Product;
 
 import java.util.List;
 

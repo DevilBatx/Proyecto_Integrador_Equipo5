@@ -1,10 +1,10 @@
-package com.grupo5.proyecto;
+package com.grupo5.MusifyBack;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProyectoApplicationTests {
+class MusifyBackApplicationTests {
 
 	@Test
 	void contextLoads() {

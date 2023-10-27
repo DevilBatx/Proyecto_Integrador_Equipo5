@@ -1,6 +1,6 @@
-package com.grupo5.proyecto.persistence.repositories;
+package com.grupo5.MusifyBack.persistence.repositories;
 
-import com.grupo5.proyecto.models.Product;
+import com.grupo5.MusifyBack.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

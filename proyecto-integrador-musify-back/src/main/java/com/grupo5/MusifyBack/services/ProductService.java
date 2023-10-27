@@ -1,11 +1,11 @@
-package com.grupo5.proyecto.services;
+package com.grupo5.MusifyBack.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupo5.proyecto.dto.ProductDTO;
-import com.grupo5.proyecto.models.Images;
-import com.grupo5.proyecto.models.Product;
-import com.grupo5.proyecto.persistence.repositories.IImageRepository;
-import com.grupo5.proyecto.persistence.repositories.IProductRepository;
+import com.grupo5.MusifyBack.dto.ProductDTO;
+import com.grupo5.MusifyBack.models.Images;
+import com.grupo5.MusifyBack.models.Product;
+import com.grupo5.MusifyBack.persistence.repositories.IImageRepository;
+import com.grupo5.MusifyBack.persistence.repositories.IProductRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

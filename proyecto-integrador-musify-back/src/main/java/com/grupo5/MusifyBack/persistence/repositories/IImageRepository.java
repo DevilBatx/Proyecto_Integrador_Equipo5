@@ -1,6 +1,6 @@
-package com.grupo5.proyecto.persistence.repositories;
+package com.grupo5.MusifyBack.persistence.repositories;
 
-import com.grupo5.proyecto.models.Images;
+import com.grupo5.MusifyBack.models.Images;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

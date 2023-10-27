@@ -1,6 +1,6 @@
-package com.grupo5.proyecto.services;
+package com.grupo5.MusifyBack.services;
 
-import com.grupo5.proyecto.models.Images;
+import com.grupo5.MusifyBack.models.Images;
 
 import java.util.List;
 
