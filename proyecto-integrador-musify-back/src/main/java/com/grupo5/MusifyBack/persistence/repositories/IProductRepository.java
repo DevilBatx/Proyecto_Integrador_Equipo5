@@ -13,5 +13,6 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     // Obtener X cantidad de  productos aleatorios de la base de datos
     @Query(value = "SELECT * FROM producto ORDER BY RAND() LIMIT ?1", nativeQuery = true)
     List<Product> findRandomProducts(int numberOfProducts);
+    boolean existsByName(String name);
 
 }

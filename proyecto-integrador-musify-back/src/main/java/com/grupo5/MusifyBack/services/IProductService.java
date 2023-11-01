@@ -11,11 +11,15 @@ public interface IProductService {
 
     ProductDTO getProductById(long id);
 
-    Product saveProduct(ProductDTO product);
+    Product saveProduct(ProductDTO product,List<String> imageUrls);
+
+    Product updateProduct(ProductDTO product,List<String> newImageUrls);
 
     Boolean deleteProduct(long id);
 
     List<ProductDTO> getRandomProducts(int numberOfProducts); //    X productos aleatorios
+
+    Boolean doesProductExist(String name);
 
 
 }

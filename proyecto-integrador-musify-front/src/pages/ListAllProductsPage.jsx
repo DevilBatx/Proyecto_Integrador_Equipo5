@@ -5,7 +5,7 @@ const ListAllProductsPage = () => {
     const { dataApi, state } = useContext(GlobalContext);
 
     useEffect(() => {
-                const productsApiUrl = 'http://localhost:8080/api/v1/products';
+                const productsApiUrl = 'http://107.21.195.144:8080/api/v1/products';
         dataApi(productsApiUrl);
     }, [dataApi]);
 

@@ -1,4 +1,4 @@
-package com.grupo5.MusifyBack.services;
+package com.grupo5.MusifyBack.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.dto.ProductDTO;
@@ -6,6 +6,7 @@ import com.grupo5.MusifyBack.models.Images;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.IImageRepository;
 import com.grupo5.MusifyBack.persistence.repositories.IProductRepository;
+import com.grupo5.MusifyBack.services.IProductService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,16 +77,23 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public Product saveProduct(ProductDTO productDTO) {
+    public Product saveProduct(ProductDTO productDTO, List<String> imageUrls) {
         // Convierto el DTO a entidad
         Product product = mapper.convertValue(productDTO, Product.class);
         // Guardo el producto en la base de datos
         productRepository.save(product);
-        // Si el producto tiene imágenes, las guardo en la base de datos
-        if (productDTO.getImages() != null && !productDTO.getImages().isEmpty()) {
-            Set<Images> images = new HashSet<>();
+        Set<Images> images = new HashSet<>();
+        if(product.getImages() == null){
+            product.setImages(new HashSet<>());
+        }else {
+            images = product.getImages();
+        }
+        // Si el producto viene con imágenes, las guardo en la base de datos
+        if (imageUrls != null && !imageUrls.isEmpty()) {
             // A cada imagen le establezco el producto al que pertenece
-            for (Images image : productDTO.getImages()) {
+            for (String imageUrl : imageUrls) {
+                Images image = new Images();
+                image.setImageUrl(imageUrl);
                 image.setProduct(product);
                 // Guarda la imagen en la base de datos
                 imageRepository.save(image);
@@ -100,6 +108,34 @@ public class ProductService implements IProductService {
         return productRepository.save(product);
 
     }
+
+    @Override
+    public Product updateProduct(ProductDTO updatedproductDTO, List<String> newImageUrls) {
+        // Convierto el DTO a entidad
+        Product updatedproduct = mapper.convertValue(updatedproductDTO, Product.class);
+        // Guardo el producto en la base de datos
+        productRepository.save(updatedproduct);
+        // Si el producto tiene imágenes, las guardo en la base de datos
+        if (newImageUrls != null && !newImageUrls.isEmpty()) {
+            Set<Images> images = updatedproduct.getImages();
+            // A cada imagen le establezco el producto al que pertenece
+            for (String imageUrl : newImageUrls) {
+                Images image = new Images();
+                image.setImageUrl(imageUrl);
+                image.setProduct(updatedproduct);
+                // Guarda la imagen en la base de datos
+                imageRepository.save(image);
+                //Agrego la imagen a la lista de imágenes
+                images.add(image);
+            }
+            // Agrego las imágenes al producto
+            updatedproduct.setImages(images);
+        }
+
+        // Actualiza el producto en la base de datos con las imágenes relacionadas
+        return productRepository.save(updatedproduct);
+    }
+
 
     @Override
     public Boolean deleteProduct(long id) {
@@ -137,5 +173,10 @@ public class ProductService implements IProductService {
         }
 
         return productsDTO;
+    }
+
+    public Boolean doesProductExist(String name) {
+        return productRepository.existsByName(name);
+
     }
 }
