@@ -9,11 +9,8 @@ import org.hibernate.annotations.Columns;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table (name = "producto_imagen")
+@Table (name = "producto_imagen",uniqueConstraints = @UniqueConstraint(columnNames = "urlimgproducto"))
 public class Images {
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long id;
     @Id
     @Column(name = "urlimgproducto")
     private String imageUrl;

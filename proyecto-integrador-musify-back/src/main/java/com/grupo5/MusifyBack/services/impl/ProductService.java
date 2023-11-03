@@ -1,6 +1,7 @@
 package com.grupo5.MusifyBack.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.grupo5.MusifyBack.controllers.exceptions.ProductNotExists;
 import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.models.Images;
 import com.grupo5.MusifyBack.models.Product;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -24,6 +26,8 @@ public class ProductService implements IProductService {
     private IProductRepository productRepository;
     @Autowired
     private IImageRepository imageRepository;
+    @Autowired
+    private S3Service s3Service;
     @Autowired
     ObjectMapper mapper;
 
@@ -83,9 +87,9 @@ public class ProductService implements IProductService {
         // Guardo el producto en la base de datos
         productRepository.save(product);
         Set<Images> images = new HashSet<>();
-        if(product.getImages() == null){
+        if (product.getImages() == null) {
             product.setImages(new HashSet<>());
-        }else {
+        } else {
             images = product.getImages();
         }
         // Si el producto viene con imágenes, las guardo en la base de datos
@@ -112,9 +116,9 @@ public class ProductService implements IProductService {
     @Override
     public Product updateProduct(ProductDTO updatedproductDTO, List<String> newImageUrls) {
         // Convierto el DTO a entidad
-        Product updatedproduct = mapper.convertValue(updatedproductDTO, Product.class);
+        Product updatedproduct = mapProductDTOToProduct(updatedproductDTO);
         // Guardo el producto en la base de datos
-        productRepository.save(updatedproduct);
+        //productRepository.save(updatedproduct);
         // Si el producto tiene imágenes, las guardo en la base de datos
         if (newImageUrls != null && !newImageUrls.isEmpty()) {
             Set<Images> images = updatedproduct.getImages();
@@ -138,15 +142,29 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public Boolean deleteProduct(long id) {
+    public Boolean deleteProduct(long id) throws IOException {
         //Obtengo el producto por id
         Optional<Product> productOptional = productRepository.findById(id);
         //Si existe el producto, lo elimino
         if (productOptional.isPresent()) {
+            try{
+            List<String> imageUrls = new ArrayList<>();
             Product product = productOptional.get();
+            //Obtengo las imagenes del producto
+            Set<Images> images = product.getImages();
+            //Obtengo las urls de las imagenes
+            for (Images image : images) {
+                imageUrls.add(image.getImageUrl());
+            }
+            //Elimino las imagenes de S3
+            s3Service.deleteFiles(imageUrls, id );
             productRepository.deleteById(id);
             return true;
+            }catch(Exception e){
+                throw new IOException(e.getMessage());
+            }
         } else {
+            //Si no existe el producto, retorno false
             return false;
         }
     }
@@ -179,4 +197,27 @@ public class ProductService implements IProductService {
         return productRepository.existsByName(name);
 
     }
+
+    public Product mapProductDTOToProduct(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setId(productDTO.getId());
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+
+        // Procesamiento manual de las imágenes
+        Set<Images> images = new HashSet<>();
+
+        for (Images image : productDTO.getImages()) {
+            Images img = new Images();
+            img.setImageUrl(image.getImageUrl());
+            img.setImageOrder(image.getImageOrder());
+            img.setProduct(image.getProduct());
+            images.add(image);
+        }
+
+        product.setImages(images);
+
+        return product;
+    }
+
 }
