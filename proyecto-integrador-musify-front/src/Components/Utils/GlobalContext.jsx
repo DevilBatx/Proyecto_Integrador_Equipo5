@@ -12,44 +12,50 @@ const reducer = (state, action) => {
         //     return { ...state, theme: "dark" }
 
         case "FETCH":
+
             return { ...state, data: action.payload }
 
         default:
             return state;
     }
 }
+const apiURL = "http://localhost:8080/api/v1"
 
 
 const userReducer = (state, action) => {
     switch (action.type) {
         case 'SignInSuccess':
-            return { ...state, loading: false, user: action.payload, error: null}
+            return { ...state, loading: false, user: action.payload, error: null }
         case 'SignInStart':
-            return { ...state, loading: true, user: null, error: null}
+            return { ...state, loading: true, user: null, error: null }
         case 'SignInError':
-            return { ...state, loading: false, user: null, error: action.payload}   
+            return { ...state, loading: false, user: null, error: action.payload }
+        case 'SignOut':
+            return { ...state, loading: false, user: null, error: null }
+        default:
+            return state;
     }
 }
 
-function combineReducers(reducers) {  
+function combineReducers(reducers) {
     return (state = {}, action) => {
-      const newState = {};
-      for (let key in reducers) {
-        newState[key] = reducers[key](state[key], action);
-      }
-      return newState;
+        const newState = {};
+        for (let key in reducers) {
+            newState[key] = reducers[key](state[key], action);
+        }
+        return newState;
     }
-  }
+}
 
 
 export const ContextProvider = ({ children }) => {
 
-    const initialState = { data: [], userReducer:{user: null, loading: false, error: null }}
+    const initialState = { data: [], userReducer: { user: null, loading: false, error: null } }
 
     const [state, dispatch] = useReducer(combineReducers({
         data: reducer,
-        userReducer : userReducer 
-      }), initialState);
+        userReducer: userReducer
+    }), initialState);
 
     const dataApi = (url) => {
         return fetch(url)
@@ -62,7 +68,7 @@ export const ContextProvider = ({ children }) => {
 
 
     return (
-        <GlobalContext.Provider value={{ state, dispatch, dataApi}}>
+        <GlobalContext.Provider value={{ state, dispatch, dataApi, apiURL }}>
             {children}
         </GlobalContext.Provider>
     );

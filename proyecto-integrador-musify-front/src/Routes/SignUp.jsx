@@ -6,6 +6,8 @@ const SignUp = () => {
   const [formData, setFormData]= useState();
   const [error, setError]= useState(null);
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('')
   const navigate = useNavigate();
 
   const handleChange = (e)=>{
@@ -21,7 +23,7 @@ const SignUp = () => {
     try {
         
         setLoading(true)
-        const response = await fetch('http://54.210.150.116:8080/api/v1/auth/register',{ //Ahi iria la api para la request del fetch
+        const response = await fetch('http://localhost:8080/api/v1/auth/register',{ //Ahi iria la api para la request del fetch
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

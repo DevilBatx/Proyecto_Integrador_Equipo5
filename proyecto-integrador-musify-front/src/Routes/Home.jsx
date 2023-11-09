@@ -12,19 +12,17 @@ const Home = () => {
         console.log(`Se buscará el producto con el término: ${term}`);
     }
 
-        const { state, dispatch, dataApi } = useContext(GlobalContext)
+        const { state, dataApi, apiURL } = useContext(GlobalContext)
 
         const getProductRandom = async () => {
-            await dataApi("http://107.21.195.144:8080/api/v1/products/random?numberOfProducts=10");
+            await dataApi('http://localhost:8080/api/v1/public/products/random?numberOfProducts=10');
         }
 
         useEffect(() => {
             getProductRandom();
         }, []);
-
-
-
     
+        
     return (
         <div className="bg-white min-h-screen p-16">
             <section className="mb-8 h-auto w-auto">

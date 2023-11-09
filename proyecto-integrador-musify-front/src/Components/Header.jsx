@@ -2,14 +2,13 @@ import React, { useMemo, useContext } from 'react';
 import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
-import { createAvatarFromName } from './Utils/helpers';
 import Avatar from './Avatar';
 
 
 const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se encuentran" }) => {
     const { state, dispatch } = useContext(GlobalContext);
-    const isUserLoggedIn = useMemo(() => !!state.userReducer.user, [state.userReducer])
-
+    const isUserLoggedIn = useMemo(() => !!state.userReducer?.user, [state.userReducer])
+    
 
     return (
         <header className='bg-orange-500 fixed top-0 left-0 right-0 top-0'>
