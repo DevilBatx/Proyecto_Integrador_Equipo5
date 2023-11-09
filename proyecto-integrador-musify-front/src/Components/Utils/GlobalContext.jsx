@@ -18,7 +18,7 @@ const reducer = (state, action) => {
             return state;
     }
     }
-    const apiURL = "http://54.210.150.116:8080/api/v1"
+    const apiURL = "http://localhost:8080/api/v1"
 
 export const ContextProvider = ({ children }) => {
 

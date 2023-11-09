@@ -15,7 +15,7 @@ const ListAllProductsPage = () => {
         
         if (window.confirm('¿Eliminar producto?')) {
             try {
-                const response = await fetch(`${apiURL}/auth/products`, {
+                const response = await fetch(`${apiURL}/public/products`, {
                     method: 'DELETE',
                     headers: {'Authorization': `Bearer ${authToken}`}          
                     

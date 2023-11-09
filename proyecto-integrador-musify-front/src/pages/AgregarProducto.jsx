@@ -28,7 +28,7 @@ function AgregarProducto({ onAdd }) {
             formData.append('files', image);
         });       
 
-        const authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuMkBnbWFpbC5jb20iLCJpYXQiOjE2OTk1MDk1NDAsImV4cCI6MTY5OTUxMTM0MH0.zXMZOmqHURhjqtqt77V_rqr0Y-82YLuU_4cnUJoWZmY";
+        const authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuMkBnbWFpbC5jb20iLCJpYXQiOjE2OTk1MTI4OTIsImV4cCI6MTY5OTUxNDY5Mn0.8zFgiqJ2zTvCT_k_CskFjHSLBG5h-DJECOkbm3qZqJw";
         
         try {
             const response = await fetch((`${apiURL}/auth/products`),{
