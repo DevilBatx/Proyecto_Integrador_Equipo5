@@ -15,7 +15,7 @@ const Home = () => {
         const { state, dispatch, dataApi } = useContext(GlobalContext)
 
         const getProductRandom = async () => {
-            await dataApi("http://107.21.195.144:8080/api/v1/products/random?numberOfProducts=10");
+            await dataApi("http://54.210.150.116:8080/api/v1/products/random?numberOfProducts=10");
         }
 
         useEffect(() => {

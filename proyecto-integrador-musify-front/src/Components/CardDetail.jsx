@@ -29,7 +29,7 @@ const CardDetail = () => {
   const { state, dataApi } = useContext(GlobalContext)
 
   const getProduct = async () => {
-      await dataApi(`http://107.21.195.144:8080/api/v1/products/${params.id}`);
+      await dataApi(`http://54.210.150.116:8080/api/v1/products/${params.id}`);
   }
 
   useEffect(() => {
