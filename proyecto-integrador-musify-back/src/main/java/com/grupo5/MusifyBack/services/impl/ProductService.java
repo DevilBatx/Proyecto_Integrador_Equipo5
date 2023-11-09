@@ -1,9 +1,9 @@
 package com.grupo5.MusifyBack.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupo5.MusifyBack.controllers.exceptions.ProductNotExists;
+import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
-import com.grupo5.MusifyBack.models.Images;
+import com.grupo5.MusifyBack.models.Image;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.IImageRepository;
 import com.grupo5.MusifyBack.persistence.repositories.IProductRepository;
@@ -41,10 +41,10 @@ public class ProductService implements IProductService {
         for (Product product : products) {
 
             ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
-            Set<Images> imagesDTO = new HashSet<>();
+            Set<Image> imagesDTO = new HashSet<>();
             //Convertir las imagenes a DTO
-            for (Images image : product.getImages()) {
-                Images imageDTO = mapper.convertValue(image, Images.class);
+            for (Image image : product.getImages()) {
+                Image imageDTO = mapper.convertValue(image, Image.class);
                 imagesDTO.add(imageDTO);
             }
             //Establecer las imagenes en el producto
@@ -65,17 +65,18 @@ public class ProductService implements IProductService {
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             productDTO = mapper.convertValue(product, ProductDTO.class);
-            Set<Images> imagesDTO = new HashSet<>();
+            Set<Image> imagesDTO = new HashSet<>();
             //Convertir las imagenes a DTO
-            for (Images image : product.getImages()) {
-                Images imageDTO = mapper.convertValue(image, Images.class);
+            for (Image image : product.getImages()) {
+                Image imageDTO = mapper.convertValue(image, Image.class);
                 imagesDTO.add(imageDTO);
             }
             //Establecer las imagenes en el producto
             productDTO.setImages(imagesDTO);
+            return productDTO;
         }
 
-        return productDTO;
+        throw new ProductNotFoundException("El producto con id " + id + " no existe en la base de datos");
 
     }
 
@@ -86,7 +87,7 @@ public class ProductService implements IProductService {
         Product product = mapper.convertValue(productDTO, Product.class);
         // Guardo el producto en la base de datos
         productRepository.save(product);
-        Set<Images> images = new HashSet<>();
+        Set<Image> images = new HashSet<>();
         if (product.getImages() == null) {
             product.setImages(new HashSet<>());
         } else {
@@ -96,7 +97,7 @@ public class ProductService implements IProductService {
         if (imageUrls != null && !imageUrls.isEmpty()) {
             // A cada imagen le establezco el producto al que pertenece
             for (String imageUrl : imageUrls) {
-                Images image = new Images();
+                Image image = new Image();
                 image.setImageUrl(imageUrl);
                 image.setProduct(product);
                 // Guarda la imagen en la base de datos
@@ -121,10 +122,10 @@ public class ProductService implements IProductService {
         //productRepository.save(updatedproduct);
         // Si el producto tiene imágenes, las guardo en la base de datos
         if (newImageUrls != null && !newImageUrls.isEmpty()) {
-            Set<Images> images = updatedproduct.getImages();
+            Set<Image> images = updatedproduct.getImages();
             // A cada imagen le establezco el producto al que pertenece
             for (String imageUrl : newImageUrls) {
-                Images image = new Images();
+                Image image = new Image();
                 image.setImageUrl(imageUrl);
                 image.setProduct(updatedproduct);
                 // Guarda la imagen en la base de datos
@@ -151,9 +152,9 @@ public class ProductService implements IProductService {
             List<String> imageUrls = new ArrayList<>();
             Product product = productOptional.get();
             //Obtengo las imagenes del producto
-            Set<Images> images = product.getImages();
+            Set<Image> images = product.getImages();
             //Obtengo las urls de las imagenes
-            for (Images image : images) {
+            for (Image image : images) {
                 imageUrls.add(image.getImageUrl());
             }
             //Elimino las imagenes de S3
@@ -178,10 +179,10 @@ public class ProductService implements IProductService {
         for (Product product : products) {
 
             ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
-            Set<Images> imagesDTO = new HashSet<>();
+            Set<Image> imagesDTO = new HashSet<>();
             //Convertir las imagenes a DTO
-            for (Images image : product.getImages()) {
-                Images imageDTO = mapper.convertValue(image, Images.class);
+            for (Image image : product.getImages()) {
+                Image imageDTO = mapper.convertValue(image, Image.class);
                 imagesDTO.add(imageDTO);
             }
             //Establecer las imagenes en el producto
@@ -205,10 +206,10 @@ public class ProductService implements IProductService {
         product.setDescription(productDTO.getDescription());
 
         // Procesamiento manual de las imágenes
-        Set<Images> images = new HashSet<>();
+        Set<Image> images = new HashSet<>();
 
-        for (Images image : productDTO.getImages()) {
-            Images img = new Images();
+        for (Image image : productDTO.getImages()) {
+            Image img = new Image();
             img.setImageUrl(image.getImageUrl());
             img.setImageOrder(image.getImageOrder());
             img.setProduct(image.getProduct());

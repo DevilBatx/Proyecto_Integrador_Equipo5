@@ -1,12 +1,12 @@
 package com.grupo5.MusifyBack.dto;
 
-import com.grupo5.MusifyBack.models.Images;
+import com.grupo5.MusifyBack.models.Category;
+import com.grupo5.MusifyBack.models.Image;
 import lombok.*;
 
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
@@ -15,7 +15,7 @@ public class ProductDTO {
     private String description;
     //private String brand;
     //private String category;
-    private Set<Images> images;
+    private Set<Image> images;
 
 
 }

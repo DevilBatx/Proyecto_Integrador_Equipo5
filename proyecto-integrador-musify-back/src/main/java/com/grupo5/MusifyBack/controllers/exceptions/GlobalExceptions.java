@@ -18,11 +18,28 @@ public class GlobalExceptions {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-    @ExceptionHandler({ProductNotExists.class})
+    @ExceptionHandler({ProductNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> productNotExists(ProductNotExists ex) {
+    public ResponseEntity<String> productNotExists(ProductNotFoundException ex) {
         logger.error("Ha ocurrido un error: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+    @ExceptionHandler({UserAlreadyExistException.class})
+    public ResponseEntity<String> userAlreadyExists(UserAlreadyExistException ex) {
+        logger.error("Ha ocurrido un error: " + ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+    @ExceptionHandler({CategoryNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> categoryNotExists(CategoryNotFoundException ex) {
+        logger.error("Ha ocurrido un error: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    @ExceptionHandler({CategoryAlreadyExistsException.class})
+    public ResponseEntity<String> categoryAlreadyExists(CategoryAlreadyExistsException ex) {
+        logger.error("Ha ocurrido un error: " + ex.getMessage());
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
 }
 

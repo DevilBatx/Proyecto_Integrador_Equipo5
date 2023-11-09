@@ -1,6 +1,6 @@
 package com.grupo5.MusifyBack.services.impl;
 
-import com.grupo5.MusifyBack.controllers.exceptions.ProductNotExists;
+import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.services.IS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class S3Service implements IS3Service {
                 String fileName = id + "/" + fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
                 //Buscar si existe el archivo en S3
                 if (!doesFileExist(fileName)) {
-                    throw new ProductNotExists("El archivo " + fileName + " no existe en S3");
+                    throw new ProductNotFoundException("El archivo " + fileName + " no existe en S3");
                 } else {
                     s3Client.deleteObject(builder -> builder.bucket(s3BucketName).key(fileName));
                 }

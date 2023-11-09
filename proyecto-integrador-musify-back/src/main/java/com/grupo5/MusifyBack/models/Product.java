@@ -3,15 +3,11 @@ package com.grupo5.MusifyBack.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -26,10 +22,12 @@ public class Product {
     @Column(name = "descproducto")
     private String description;
     //private String brand;
-    //private String category;
+    @ManyToOne
+    @JoinColumn(name = "idcategoria", nullable = false)
+    private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Images> images;
+    private Set<Image> images;
 
 
 }

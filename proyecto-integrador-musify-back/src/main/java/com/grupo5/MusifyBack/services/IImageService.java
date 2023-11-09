@@ -1,12 +1,12 @@
 package com.grupo5.MusifyBack.services;
 
-import com.grupo5.MusifyBack.models.Images;
+import com.grupo5.MusifyBack.models.Image;
 
 import java.util.List;
 
 
 public interface IImageService {
-    List<Images> getAllImages();
+    List<Image> getAllImages();
 
 
 }

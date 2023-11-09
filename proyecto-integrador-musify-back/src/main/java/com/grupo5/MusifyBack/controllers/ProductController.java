@@ -2,7 +2,7 @@ package com.grupo5.MusifyBack.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductAlreadyExistsException;
-import com.grupo5.MusifyBack.controllers.exceptions.ProductNotExists;
+import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.services.impl.ProductService;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,19 +35,21 @@ public class ProductController {
     @Autowired
     ObjectMapper mapper;
 
-    @GetMapping("/products")
+    @GetMapping("/public/products")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         logger.info("Inicio busqueda productos");
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping("/products/random")
+    @GetMapping("/public/products/random")
     public ResponseEntity<List<ProductDTO>> getRandomProducts(@RequestParam("numberOfProducts") int numberOfProducts) {
         logger.info("Inicio busqueda productos");
         return ResponseEntity.ok(productService.getRandomProducts(numberOfProducts));
     }
 
-    @PostMapping(value = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //TODO: Agregar logica para agregar categoria
+    @PostMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Product> saveProduct(@RequestPart("productInfo") ProductDTO product, @RequestPart("files") MultipartFile[] files) throws ProductAlreadyExistsException {
 
 
@@ -68,13 +71,15 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/public/products/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") long id) {
         logger.info("Incio buesqueda producto por id: " + id);
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @PutMapping(value = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //TODO: Agregar logica para agregar categoria
+    @PutMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Product> updateProduct(@RequestPart("productInfo") ProductDTO product, @RequestPart("NewFiles") MultipartFile[] newFiles) throws IOException {
         //Obtengo el producto a modificar
         ProductDTO existingProduct = productService.getProductById(product.getId());
@@ -94,11 +99,12 @@ public class ProductController {
             return ResponseEntity.ok(productService.updateProduct(existingProduct, newImageUrls));
         } else {
             //Si no existe el producto, retorno un error
-            throw new ProductNotExists("El producto con Id " + product.getId() + " no existe");
+            throw new ProductNotFoundException("El producto con Id " + product.getId() + " no existe");
         }
     }
 
-    @DeleteMapping("/products")
+    @DeleteMapping("/auth/products")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<String> deleteProduct(@RequestParam("id") long id) throws IOException {
         logger.info("Eliminando producto");
         //Si se elimina el producto, se retorna un mensaje de exito
@@ -108,9 +114,9 @@ public class ProductController {
 
         } else {
             //Si no se elimina el producto, se retorna un mensaje de error
-            throw new ProductNotExists("El producto " + id + " no existe en la base de datos");
+            throw new ProductNotFoundException("El producto " + id + " no existe en la base de datos");
         }
-        }catch(ProductNotExists ex){
+        }catch(ProductNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
