@@ -11,7 +11,7 @@ const ListAllProductsPage = () => {
 
     const handleDelete = async (productId) => {
 
-        const authToken = localStorage.getItem('authToken');;
+        const authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuMkBnbWFpbC5jb20iLCJpYXQiOjE2OTk1MTM0MDYsImV4cCI6MTY5OTUxNTIwNn0.v1Mg9yYGsF0ROWGgFFZ2ZVTPlHqhiMerX7-C790vdxo";
         
         if (window.confirm('¿Eliminar producto?')) {
             try {
