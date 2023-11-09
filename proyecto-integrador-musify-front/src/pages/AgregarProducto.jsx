@@ -20,16 +20,15 @@ function AgregarProducto({ onAdd }) {
 
         const formData = new FormData();
         formData.append('productInfo', JSON.stringify({ name, description, }));
-        images.forEach(image => {
-            formData.append('files', image);
-        });
-        const options = {
+        images.forEach((image,index) => {
+            formData.append(`files[${index}]`, image);
+        });        
+        try {
+            const response = await fetch('http://54.210.150.116:8080/api/v1/products',{
             method: 'POST',
             body: formData,
-             }
-             delete options.headers['Content-Type'];
-        try {
-            const response = await fetch('http://54.210.150.116:8080/api/v1/products',options                                
+            
+            }                               
             );
 
             if (!response.ok) {
