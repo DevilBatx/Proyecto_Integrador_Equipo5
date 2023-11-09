@@ -15,7 +15,7 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                 </div>
                 {showAuthButtons && (
                     <div className='flex gap-2'>
-                        <Link to="/login"><button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">Crear cuenta</button></Link>
+                        <Link to="/register"><button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">Crear cuenta</button></Link>
                         <Link to="/login"><button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">Iniciar sesión</button></Link>
                     </div>
                 )}

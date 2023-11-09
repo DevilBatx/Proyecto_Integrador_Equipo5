@@ -4,12 +4,14 @@ import { GlobalContext } from "../Components/Utils/GlobalContext";
 function AgregarProducto({ onAdd }) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    //const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("");
     const [images, setImages] = useState([]);
     const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");  
 
-    const { apiURL } = useContext(GlobalContext)
+
+    const { apiURL } = useContext(GlobalContext)      
+
 
 
     const handleImageChange = (event) => {
@@ -51,7 +53,7 @@ function AgregarProducto({ onAdd }) {
 
         setName('');
         setDescription('');
-        //setCategory('');
+        setCategory('');
         setImages([]);
 
             
@@ -97,7 +99,7 @@ function AgregarProducto({ onAdd }) {
                             className="mt-1 p-2 w-full border rounded h-24"
                         />
                     </div>
-                    {/*<div className="mb-4">
+                    <div className="mb-4">
                         <label
                             htmlFor="productCategory"
                             className="block text-sm font-medium text-gray-600"
@@ -111,7 +113,7 @@ function AgregarProducto({ onAdd }) {
                             placeholder="Categoría"
                             className="mt-1 p- w-full border rounded"
                         ></input>
-                    </div>*/}
+                    </div>
                     
                     <div className="mb-4">
                         <label
@@ -123,7 +125,7 @@ function AgregarProducto({ onAdd }) {
                         <input
                             id="productImages"
                             type="file"
-                            //multiple
+                            multiple
                             onChange={handleImageChange}
                             className="hidden"
                         />
