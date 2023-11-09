@@ -2,21 +2,43 @@ import React, { useContext, useEffect } from 'react';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
 
 const ListAllProductsPage = () => {
-    const { dataApi, state } = useContext(GlobalContext);
+    const { dataApi, state, apiURL } = useContext(GlobalContext);
 
     useEffect(() => {
-        const productsApiUrl = 'http://54.210.150.116:8080/api/v1/products';
+        const productsApiUrl = (`${apiURL}/public/products`);
         dataApi(productsApiUrl);
-    }, [dataApi]);
+    }, []);
 
-    const handleDelete = (productId) => {
-        // Add logic to delete product by productId
-        console.log('Delete product with id:', productId);
+    const handleDelete = async (productId) => {
+
+        const authToken = localStorage.getItem('authToken');;
+        
+        if (window.confirm('¿Eliminar producto?')) {
+            try {
+                const response = await fetch(`${apiURL}/auth/products`, {
+                    method: 'DELETE',
+                    headers: {'Authorization': `Bearer ${authToken}`}          
+                    
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                // Si funciona, se filtra el producto ddel estado 
+                const updatedProducts = state.data.filter(product => product.id !== productId);
+                setState({ ...state, data: updatedProducts });
+                
+            } catch (error) {
+                console.error('Hubo un error al intentar eliminar el producto:', error);
+                
+            }
+        }
     };
 
     const handleEdit = (productId) => {
-        // Add logic to edit product by productId
-        console.log('Edit product with id:', productId);
+        // Insertar pagina donde se edita el producto        
+        
+        // history.push(`/edit-product/${productId}`);
     };
 
     return (
@@ -39,7 +61,7 @@ const ListAllProductsPage = () => {
                                 {/* Edit button */}
                                 <button
                                     onClick={() => handleEdit(product.id)}
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                                    className="bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
                                 >
                                     Editar
                                 </button>

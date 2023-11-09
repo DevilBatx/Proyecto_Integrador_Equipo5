@@ -17,7 +17,8 @@ const reducer = (state, action) => {
         default:
             return state;
     }
-}
+    }
+    const apiURL = "http://54.210.150.116:8080/api/v1"
 
 export const ContextProvider = ({ children }) => {
 
@@ -35,7 +36,7 @@ export const ContextProvider = ({ children }) => {
     }
 
     return (
-        <GlobalContext.Provider value={{ state, dispatch, dataApi }}>
+        <GlobalContext.Provider value={{ state, dispatch, dataApi, apiURL }}>
             {children}
         </GlobalContext.Provider>
     );

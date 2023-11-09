@@ -26,10 +26,10 @@ const CardDetail = () => {
     window.history.back(); // This will take the user to the previous page in the history stack
   };
   
-  const { state, dataApi } = useContext(GlobalContext)
+  const { state, dataApi, apiURL } = useContext(GlobalContext)
 
   const getProduct = async () => {
-      await dataApi(`http://54.210.150.116:8080/api/v1/products/${params.id}`);
+      await dataApi(`${apiURL}/public/products/${params.id}`);
   }
 
   useEffect(() => {

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import { GlobalContext } from "../Components/Utils/GlobalContext";
 
 function AgregarProducto({ onAdd }) {
     const [name, setName] = useState("");
@@ -7,6 +8,9 @@ function AgregarProducto({ onAdd }) {
     const [images, setImages] = useState([]);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+
+    const { apiURL } = useContext(GlobalContext)
+
 
     const handleImageChange = (event) => {
         setImages([...images, ...event.target.files]);
@@ -19,15 +23,18 @@ function AgregarProducto({ onAdd }) {
         setErrorMessage('');
 
         const formData = new FormData();
-        formData.append('productInfo', JSON.stringify({ name, description, }));
-        images.forEach((image,index) => {
-            formData.append(`files[${index}]`, image);
-        });        
+        formData.append('productInfo', new Blob([JSON.stringify({ name, description })], { type: 'application/json' }));
+        images.forEach((image) => {
+            formData.append('files', image);
+        });       
+
+        const authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuMkBnbWFpbC5jb20iLCJpYXQiOjE2OTk1MDk1NDAsImV4cCI6MTY5OTUxMTM0MH0.zXMZOmqHURhjqtqt77V_rqr0Y-82YLuU_4cnUJoWZmY";
+        
         try {
-            const response = await fetch('http://54.210.150.116:8080/api/v1/products',{
+            const response = await fetch((`${apiURL}/auth/products`),{
             method: 'POST',
             body: formData,
-            
+            headers: {'Authorization': `Bearer ${authToken}`}            
             }                               
             );
 
@@ -116,7 +123,7 @@ function AgregarProducto({ onAdd }) {
                         <input
                             id="productImages"
                             type="file"
-                            multiple
+                            //multiple
                             onChange={handleImageChange}
                             className="hidden"
                         />
