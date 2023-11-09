@@ -19,11 +19,37 @@ const reducer = (state, action) => {
     }
 }
 
+
+const userReducer = (state, action) => {
+    switch (action.type) {
+        case 'SignInSuccess':
+            return { ...state, loading: false, user: action.payload, error: null}
+        case 'SignInStart':
+            return { ...state, loading: true, user: null, error: null}
+        case 'SignInError':
+            return { ...state, loading: false, user: null, error: action.payload}   
+    }
+}
+
+function combineReducers(reducers) {  
+    return (state = {}, action) => {
+      const newState = {};
+      for (let key in reducers) {
+        newState[key] = reducers[key](state[key], action);
+      }
+      return newState;
+    }
+  }
+
+
 export const ContextProvider = ({ children }) => {
 
-    const initialState = { data: [] }
+    const initialState = { data: [], userReducer:{user: null, loading: false, error: null }}
 
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(combineReducers({
+        data: reducer,
+        userReducer : userReducer 
+      }), initialState);
 
     const dataApi = (url) => {
         return fetch(url)
@@ -34,8 +60,9 @@ export const ContextProvider = ({ children }) => {
 
     }
 
+
     return (
-        <GlobalContext.Provider value={{ state, dispatch, dataApi }}>
+        <GlobalContext.Provider value={{ state, dispatch, dataApi}}>
             {children}
         </GlobalContext.Provider>
     );
