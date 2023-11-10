@@ -1,7 +1,6 @@
 import React from 'react';
 import Search from '../Components/Search';
 import Card from '../Components/Card';
-import Fondo from '../assets/Products/Fondo.mp4'
 import Category from '../Components/Category';
 import { useEffect,useContext } from 'react';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
@@ -12,17 +11,15 @@ const Home = () => {
         console.log(`Se buscará el producto con el término: ${term}`);
     }
 
-        const { state, dispatch, dataApi } = useContext(GlobalContext)
+        const { state, dataApi, apiURL } = useContext(GlobalContext)
 
         const getProductRandom = async () => {
-            await dataApi("http://localhost:8080/api/v1/products/random?numberOfProducts=10");
+            await dataApi(`${apiURL}/public/products/random?numberOfProducts=10`);
         }
 
         useEffect(() => {
             getProductRandom();
         }, []);
-
-
 
     
     return (
