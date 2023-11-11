@@ -29,7 +29,7 @@ public class UserService implements IUserService, UserDetailsService {
 
     public ResponseEntity<?> saveUser(User userInfo) {
         if(userRepository.findByEmail(userInfo.getEmail()).isPresent()){
-            throw new UserAlreadyExistException("User already exists");
+            throw new UserAlreadyExistException("User already exists", userInfo.getEmail());
         }
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
         userInfo.setIsAdmin(0);

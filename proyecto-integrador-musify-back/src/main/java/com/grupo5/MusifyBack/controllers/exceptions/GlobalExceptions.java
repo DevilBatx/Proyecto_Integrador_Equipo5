@@ -1,5 +1,6 @@
 package com.grupo5.MusifyBack.controllers.exceptions;
 
+import com.grupo5.MusifyBack.dto.response.UserExistsResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,11 @@ public class GlobalExceptions {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
     @ExceptionHandler({UserAlreadyExistException.class})
-    public ResponseEntity<String> userAlreadyExists(UserAlreadyExistException ex) {
-        logger.error("Ha ocurrido un error: " + ex.getMessage());
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ResponseEntity<UserExistsResponse> userAlreadyExists(UserAlreadyExistException ex) {
+        logger.error("Ha ocurrido un error: " + ex.getResponse().getMessage());
+        UserExistsResponse userExistsResponse = ex.getResponse();
+        //Retorno http 409
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(userExistsResponse);
     }
     @ExceptionHandler({CategoryNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)

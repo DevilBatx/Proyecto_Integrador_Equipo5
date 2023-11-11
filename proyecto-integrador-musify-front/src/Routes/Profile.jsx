@@ -11,9 +11,9 @@ const Profile = () => {
       <h1 className='text-3x1 font-semibold text-center my-7'>Perfil</h1>
       <form className=' flex flex-col gap-4'>
         <Avatar/>
-        <input className='border p-3 rounded-lg' type="text" placeholder='Nombre' id='firstName' value={state.userReducer.user.name} />
-        <input className='border p-3 rounded-lg' type="text" placeholder='Apellido' id='lastName' value={state.userReducer.user.lastName} />
-        <input className='border p-3 rounded-lg' type="email" placeholder='Email' id='email' value={state.userReducer.user.email} />
+        <input className='border p-3 rounded-lg' type="text" placeholder='Nombre' id='firstName' defaultValue={state.user.name} />
+        <input className='border p-3 rounded-lg' type="text" placeholder='Apellido' id='lastName' defaultValue={state.user.lastName} />
+        <input className='border p-3 rounded-lg' type="email" placeholder='Email' id='email' defaultValue={state.user.email} />
       </form>
     </div>
   )

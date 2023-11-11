@@ -14,11 +14,15 @@ const reducer = (state, action) => {
         case "FETCH":
             return { ...state, data: action.payload }
 
+        case "SignInSuccess":
+            
+            return { ...state, user: action.payload }
+
         default:
             return state;
     }
-    }
-    const apiURL = "http://localhost:8080/api/v1"
+}
+const apiURL = "http://localhost:8080/api/v1"
 
 export const ContextProvider = ({ children }) => {
 

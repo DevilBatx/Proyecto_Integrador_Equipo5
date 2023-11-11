@@ -1,4 +1,4 @@
-package com.grupo5.MusifyBack.models;
+package com.grupo5.MusifyBack.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthResponse {
+    private String rolUser;
     private String token;
 
 

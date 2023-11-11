@@ -34,18 +34,24 @@ const SignIn = () => {
       if (data.token) {
         localStorage.setItem('token', data.token);
         // console.log(data.token)
-        const userResponse = await fetch('http://localhost:8080/api/v1/auth/user/userProfile', {
+        let url;
+        data.rolUser === 1 ? url = "http://localhost:8080/api/v1/auth/admin/adminProfile" : url = "http://localhost:8080/api/v1/auth/user/userProfile";
+        const userResponse = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${data.token}`,
           },
         });
-        dispatch({ type: 'SignInSuccess', payload: await userResponse.json() })  // Usa userData en lugar de userResponse.json()
-        navigate('/')
+        //console.log(await userResponse.json());
+       // debugger;
+        dispatch({ type: "SignInSuccess", payload: await userResponse.json() })  // Usa userData en lugar de userResponse.json()
+        navigate('/profile')
+        //console.log(state);
       }
     } catch (error) {
       dispatch({ type: 'SignInError', payload: error.message })
+     // console.log(error);
     }
   }
 

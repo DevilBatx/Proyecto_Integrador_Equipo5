@@ -1,8 +1,8 @@
 package com.grupo5.MusifyBack.controllers;
 
 import com.grupo5.MusifyBack.dto.UserDTO;
-import com.grupo5.MusifyBack.models.AuthRequest;
-import com.grupo5.MusifyBack.models.AuthResponse;
+import com.grupo5.MusifyBack.dto.request.AuthRequest;
+import com.grupo5.MusifyBack.dto.response.AuthResponse;
 import com.grupo5.MusifyBack.models.User;
 import com.grupo5.MusifyBack.services.impl.JwtService;
 import com.grupo5.MusifyBack.services.impl.UserService;
@@ -62,7 +62,7 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String token = jwtService.generateToken(authRequest.getUsername());
-            return new AuthResponse(token);
+            return new AuthResponse(userService.getUserByEmail(authRequest.getUsername()).getIsAdmin(),token);
         } else {
             throw new UsernameNotFoundException("invalid user request !");
         }

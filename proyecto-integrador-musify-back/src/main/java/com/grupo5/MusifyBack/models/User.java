@@ -1,10 +1,11 @@
 package com.grupo5.MusifyBack.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.Email;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class User {
     @Email(message = "Email is not valid")
     private String email;
     @Column(name = "nombreusuario")
-        @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "Name is mandatory")
     private String name;
     @Column(name = "apellidousuario")
     @NotBlank(message = "Last Name is mandatory")
