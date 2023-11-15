@@ -65,10 +65,10 @@ function AgregarProducto({ onAdd }) {
     };
 
     return (
-        <div className="p-16 mt-14 mb-10 bg-gray-100 rounded-xl shadow-md">
-            <h2 className="text-2xl mb-6 font-bold text-center">Agregar Producto</h2>
-            <div className="bg-white p-6 rounded-lg shadow-lg md:w-2/3 mx-auto">
-                <form onSubmit={handleSubmit}>
+        <div className="p-14 mt-20 bg-gray-100 rounded-xl shadow-md">
+            <h2 className="text-3xl mb-10 font-bold text-center">Agregar Producto</h2>
+            <div className="flex flex-col p-5 rounded-lg shadow-lg md:w-2/3 mx-auto bg-orange-50">
+                <form onSubmit={handleSubmit}className="grid grid-cols-2 grid-rows-5 gap-3" >
                 <div className="mb-4">
                         <label
                             htmlFor="productName"
@@ -86,6 +86,51 @@ function AgregarProducto({ onAdd }) {
                     </div>
                     <div className="mb-4">
                         <label
+                            htmlFor="productCategory"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            Categoría
+                        </label>
+                        <input
+                            id="categoryName"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            placeholder="Categoría"
+                            className="mt-1 p-2 w-full border rounded"
+                        ></input>
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="productCategory"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            Marca
+                        </label>{/*hay que cambiar la toma de datos*/}
+                        <input
+                            id="categoryName"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            placeholder="Categoría"
+                            className="mt-1 p-2 w-full border rounded"
+                        ></input>
+                    </div>
+                    <div className="">
+                        <label
+                            htmlFor="productCategory"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            Modelo
+                        </label>{/*hay que cambiar la toma de datos*/}
+                        <input
+                            id="categoryName"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            placeholder="Categoría"
+                            className="mt-1 p-2 w-full border rounded"
+                        ></input>
+                    </div>
+                    <div className="col-span-2">
+                        <label
                             htmlFor="productDescription"
                             className="block text-sm font-medium text-gray-600"
                         >
@@ -99,28 +144,28 @@ function AgregarProducto({ onAdd }) {
                             className="mt-1 p-2 w-full border rounded h-24"
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className=" col-span-2">{/*hay que cambiar la toma de datos*/}
                         <label
-                            htmlFor="productCategory"
+                            htmlFor="productDescription"
                             className="block text-sm font-medium text-gray-600"
                         >
-                            Categoría
+                            Agregar Atributos
                         </label>
-                        <input
-                            id="categoryName"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            placeholder="Categoría"
-                            className="mt-1 p- w-full border rounded"
-                        ></input>
+                        <textarea
+                            id="productDescription"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Descripcion"
+                            className="mt-1 p-2 w-full border rounded h-24"
+                        />
                     </div>
                     
-                    <div className="mb-4">
+                    <div className="mt-8 ml-12">
                         <label
                             htmlFor="productImages"
                             className="block text-sm font-medium text-gray-600"
                         >
-                            Imágenes
+                         
                         </label>
                         <input
                             id="productImages"
@@ -131,16 +176,16 @@ function AgregarProducto({ onAdd }) {
                         />
                         <label
                             htmlFor="productImages"
-                            className="bg-orange-500 hover:bg-gray-700 text-white font-bold text-sm py-1 px-2 rounded hover:cursor-pointer "
+                            className="bg-orange-400 hover:bg-gray-400 text-white font-bold text-sm p-4 rounded hover:cursor-pointer "
                         >
                             Agregar Imagen
                         </label>
                     </div>
 
-                    <div className="flex justify-end">
+                    <div className="mt-5 ml-32">
                         <button
                             type="submit"
-                            className="bg-orange-500 hover:bg-gray-700 text-white font-bold text-sm py-2 px-4 rounded"
+                            className="bg-orange-400 hover:bg-gray-400 text-white font-bold text-sm p-4 rounded"
                         >
                             Agregar Producto
                         </button>

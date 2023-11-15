@@ -4,6 +4,8 @@ import Card from '../Components/Card';
 import Category from '../Components/Category';
 import { useEffect,useContext } from 'react';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
+import Video from '../assets/Products/Fondo.mp4'
+import PaginationButtons from '../Components/PaginationButtons';
 
 const Home = () => {
     const handleSearch = (term) => {
@@ -23,22 +25,29 @@ const Home = () => {
 
     
     return (
-        <div className="bg-white min-h-screen p-16">
-            <section className="mb-8 h-auto w-auto">
-                <Search onSearch={handleSearch} />
-            </section>
-            <section className="mb-8 flex gap-5 items-center justify-center">
+        <div className="bg-white min-h-screen">
+            {/*buscador*/}
+            <div className='w-full'>
+                <section className='flex flex-col'>
+                
+                    <div className='overflow-hidden'>
+                        <video src={Video} autoPlay muted loop className='w-full'/>
+                    </div>
+                    <Search onSearch={handleSearch} />
+                </section>
+            </div>
+
+            {/*categorias*/}
+            <div className="mb-8 flex gap-5 items-center justify-center pb-2">
                 <div className="text-center">
-                    <h2 className="text-3xl text-orange-500 font-bold mb-4 p-10 md:h-full">Categorias</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <h2 className="text-3xl text-orange-500 font-bold md:h-full">Categorias</h2>
+                    <div className="">
                         <Category />
-                        <Category />
-                        <Category />
-                        <Category />
-                        <Category />
+                        
                     </div>
                 </div>
-            </section>
+            </div>
+
             <section className="mb-8 flex gap-5 items-center justify-center">
                 <div className="text-center">
                     <h2 className="text-3xl text-orange-500 font-bold mb-4 p-10">Recomendados</h2>
@@ -48,7 +57,9 @@ const Home = () => {
                             <Card key={product.id} data={product} />
                             
                         ))}
+                   
                     </div>
+                    <PaginationButtons/>
                 </div>
             </section>
         </div>

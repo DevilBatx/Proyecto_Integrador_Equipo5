@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-
+import imgLog from '../assets/Products/imgLogin.png'
 
 const SignUp = () => {
 
@@ -65,34 +65,33 @@ const SignUp = () => {
 
 
   return (
-    <div className='p-3 max-w-lg mx-auto my-10'>
-      <h1 className='text-3 text-center font-semibold my-20'>Crear cuenta</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+    <div className='w-full h-screen flex items-start'>
+        <div className=' w-1/2 h-full flex flex-col'>
+            <img src={imgLog} alt="ImagenBg" className='w-full h-full object-cover' />
+          </div>
+          
+           <div className=' w-1/2 h-full flex flex-col p-16 my-10'>
+                <h1 className='text-3xl text-center font-semibold pb-5'>Crear cuenta</h1>
+                  
+                <div className=' h-screen bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
+                  <form onSubmit={handleSubmit} className='w-full flex flex-col gap-4'>
+                  <input type="text" placeholder='Name' className='border p-3 rounded-lg' id='name' onChange={handleChange} />
+                  <input type="text" placeholder='Last Name' className='border p-3 rounded-lg' id='lastName' onChange={handleChange} />
+                  <input type="email" placeholder='Email' className='border p-3 rounded-lg' id='email' onChange={handleChange} />
+                  <input type="password" placeholder='Password' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
+                  <button disabled={loading} className='w-full bg-orange-600 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{loading ? 'Cargando...' : 'Registrarse'}</button>
+                  </form>
+                </div>
 
 
-        <input type="text" placeholder='Name' className='border p-3 rounded-lg' id='name' onChange={handleChange} />
-
-
-        <input type="text" placeholder='Last Name' className='border p-3 rounded-lg' id='lastName' onChange={handleChange} />
-
-
-        <input type="email" placeholder='Email' className='border p-3 rounded-lg' id='email' onChange={handleChange} />
-
-
-        <input type="password" placeholder='Password' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
-
-
-        <button disabled={loading} className='bg-orange-600 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{loading ? 'Cargando...' : 'Registrarse'}</button>
-      </form>
-
-
-      <div className='flex gap-2 mt-5'>
-        <p>Ya estas registrado?</p>
-        <Link to={'/login'}>
-          <span className='text-blue-700'>Ingresar</span>
-        </Link>
-      </div>
-      {error && <p className='text-red-500 mt-5'>{error}</p>}
+                <div className='flex gap-2 mt-5'>
+                    <p>Ya estas registrado?</p>
+                       <Link to={'/login'}>
+                          <span className='text-blue-700'>Ingresar</span>
+                        </Link>
+                </div>
+                  {error && <p className='text-red-500 mt-5'>{error}</p>}
+            </div>
     </div>
   )
 }

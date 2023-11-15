@@ -22,14 +22,14 @@ const AdminPage = () => {
     }, []);
 
     if (isMobileOrTablet) {
-        return <div className="p-28 mt-28 text-center p-4">Pagina no disponible para este dispositivo</div>;
+        return <div className="p-10 mt-28 text-center ">Pagina no disponible para este dispositivo</div>;
         {/*arreglar el footer para cuando se usa otra resolucion*/}
     }
 
     return (
-        <div className="p-28 mt-28 mb-10 bg-gray-100 rounded-xl shadow-md">    
+        <div className="p-16 mt-14 bg-gray-100 rounded-xl shadow-md">    
             <h2 className="text-2xl mb-6 font-bold text-center">Panel de Administracion</h2>            
-            <div className="flex flex-col space-y-4 p-4">
+            <div className="flex flex-col space-y-4  bg-orange-50 p-6 rounded-lg shadow-lg md:w-2/3 mx-auto">
                 <AddProduct />
                 <ListProducts />
                 <PlaceholderButton1 />

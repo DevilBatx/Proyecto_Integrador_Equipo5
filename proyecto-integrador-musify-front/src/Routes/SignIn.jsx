@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
+import imgLog from '../assets/Products/imgLogin.png'
 
 const SignIn = () => {
   const [formData, setFormData] = useState();
@@ -58,21 +59,32 @@ const SignIn = () => {
 
 
   return (
-    <div className='p-3 max-w-lg mx-auto my-10'>
-      <h1 className='text-3 text-center font-semibold my-20'>Ingresar</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input type="email" placeholder='Email' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
-        <input type="password" placeholder='Contraseña' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
-        <button disabled={state.userReducer?.loading} className='bg-orange-600 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.userReducer?.loading ? 'Cargando...' : 'Ingresar'}</button>
-      </form>
-      <div className='flex gap-2 mt-5'>
-        <p>No tienes una cuenta?</p>
-        <Link to={'/register'}>
-          <span className='text-blue-700'>Crear cuenta</span>
-        </Link>
-      </div>
-      {state.userReducer?.error && <p className='text-red-500 mt-5'>{state.userReducer?.error}</p>}
-    </div>
+        <div className='w-full h-screen min-h-screen flex items-start'>
+              <div className=' w-1/2 h-full flex flex-col'>
+                  <img src={imgLog} alt="ImagenBg" className='w-full h-full object-cover' />
+              </div>
+
+              <div className=' w-1/2 h-full min-h-screen flex flex-col  p-16 my-10'>
+                  <p className=' text-xl pt-10'>Bienvenido de nuevo! </p>
+                    <h1 className='text-3xl text-center font-semibold p-5'>Ingresar</h1>
+                       
+                  <div className=' bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
+                     <form onSubmit={handleSubmit} className='w-full flex flex-col gap-4'>
+                        <input type="email" placeholder='Email' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
+                        <input type="password" placeholder='Contraseña' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
+                        <button disabled={state.userReducer?.loading} className=' w-full bg-orange-600 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.userReducer?.loading ? 'Cargando...' : 'Ingresar'}</button>
+                      </form>
+                    </div>
+
+                  <div className='w-full flex gap-2 mt-5'>
+                      <p>No tienes una cuenta?</p>
+                         <Link to={'/register'}>
+                            <span className='text-blue-700'>Crear cuenta</span>
+                        </Link>
+                    </div>
+              {state.userReducer?.error && <p className='text-red-500 mt-5'>{state.userReducer?.error}</p>}
+        </div>
+        </div>
   )
 }
 export default SignIn;
