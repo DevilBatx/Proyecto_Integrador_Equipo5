@@ -3,6 +3,7 @@ package com.grupo5.MusifyBack.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.UserAlreadyExistException;
 import com.grupo5.MusifyBack.dto.UserDTO;
+import com.grupo5.MusifyBack.dto.response.RegistrationSuccesResponse;
 import com.grupo5.MusifyBack.models.User;
 import com.grupo5.MusifyBack.persistence.repositories.IUserRepository;
 import com.grupo5.MusifyBack.services.IUserService;
@@ -34,7 +35,8 @@ public class UserService implements IUserService, UserDetailsService {
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
         userInfo.setIsAdmin(0);
         userRepository.save(userInfo);
-        return ResponseEntity.ok("User Added Successfully");
+        RegistrationSuccesResponse response = new RegistrationSuccesResponse( userInfo.getEmail(),"User registered successfully");
+        return ResponseEntity.ok(response);
     }
 
     @Override

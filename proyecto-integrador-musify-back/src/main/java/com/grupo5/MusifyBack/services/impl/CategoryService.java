@@ -3,18 +3,25 @@ package com.grupo5.MusifyBack.services.impl;
 import com.grupo5.MusifyBack.controllers.exceptions.CategoryAlreadyExistsException;
 import com.grupo5.MusifyBack.controllers.exceptions.CategoryNotFoundException;
 import com.grupo5.MusifyBack.models.Category;
+import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.ICategoryRepository;
+import com.grupo5.MusifyBack.persistence.repositories.IProductRepository;
 import com.grupo5.MusifyBack.services.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CategoryService implements ICategoryService {
     @Autowired
     private ICategoryRepository categoryRepository;
+    @Autowired
+    private IProductRepository productRepository;
+    @Autowired
+    private S3Service s3Service;
 
     @Override
     public List<Category> getAllCategories() {
@@ -36,6 +43,7 @@ public class CategoryService implements ICategoryService {
         if (categoryOpional.isPresent()) {
             throw new CategoryAlreadyExistsException("Category already exist " + category.getName());
         }
+
         return categoryRepository.save(category);
     }
 
@@ -58,5 +66,24 @@ public class CategoryService implements ICategoryService {
             throw new CategoryNotFoundException("Category not found " + id );
         }
 
+    }
+
+    @Override
+    public void addProductToCategory(Long idCategory, Long idProduct) {
+        Optional<Category> categoryOpional = categoryRepository.findById(idCategory);
+        if (categoryOpional.isPresent()) {
+            Category category = categoryOpional.get();
+            Product product = productRepository.findById(idProduct).get();
+            Set<Product> products = category.getProducts();
+            products.add(product);
+            categoryRepository.save(category);
+        } else {
+            throw new CategoryNotFoundException("Category not found " + idCategory );
+        }
+    }
+
+    public boolean doesCategoryExist(String name) {
+        Optional<Category> category = categoryRepository.findByName(name);
+        return category.isPresent();
     }
 }

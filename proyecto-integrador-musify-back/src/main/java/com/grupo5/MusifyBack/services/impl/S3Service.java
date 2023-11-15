@@ -13,11 +13,13 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class S3Service implements IS3Service {
+
 
     private final S3Client s3Client; // Cliente de S3
     private String s3BucketName = "c12grupo5img";
@@ -29,14 +31,17 @@ public class S3Service implements IS3Service {
 
 
     //metodo para subir uno o varios archivos a S3
-    public List<String> uploadFiles(MultipartFile[] files, Long productId) throws IOException {
+    public List<String> uploadFiles(MultipartFile[] files, String s3Folder) throws IOException {
+        if(Arrays.stream(files).anyMatch(file -> file.isEmpty())) {
+            return null;
+        }
         try {
             //String s3BucketName = "c12grupo5img";
             List<String> uploadedUrls = new ArrayList<>();
             for (MultipartFile file : files) {
                 String originalFileName = file.getOriginalFilename();
                 String fileExtension = StringUtils.getFilenameExtension(originalFileName);
-                String fileName = productId + "/" + UUID.randomUUID().toString() + "." + fileExtension;
+                String fileName = s3Folder + "/" + UUID.randomUUID().toString() + "." + fileExtension;
 
                 PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                         .bucket(s3BucketName) // Nombre del bucket
@@ -54,11 +59,11 @@ public class S3Service implements IS3Service {
         }
     }
 
-    public Boolean deleteFiles(List<String> fileUrls, Long id) throws IOException {
+    public Boolean deleteFiles(List<String> fileUrls, String s3Folder) throws IOException {
         try {
             for (String fileUrl : fileUrls) {
                 // Obtener el nombre del archivo (key)
-                String fileName = id + "/" + fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+                String fileName = s3Folder + "/" + fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
                 //Buscar si existe el archivo en S3
                 if (!doesFileExist(fileName)) {
                     throw new ProductNotFoundException("El archivo " + fileName + " no existe en S3");

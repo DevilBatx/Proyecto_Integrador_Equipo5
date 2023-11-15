@@ -7,6 +7,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IS3Service {
-    public List<String> uploadFiles(MultipartFile[] files, Long productId) throws IOException;
-    public Boolean deleteFiles(List<String> fileUrls, Long id) throws IOException;
+    public List<String> uploadFiles(MultipartFile[] files, String s3Folder) throws IOException;
+    public Boolean deleteFiles(List<String> fileUrls, String s3Folder) throws IOException;
 }

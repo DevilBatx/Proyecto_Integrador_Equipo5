@@ -10,4 +10,5 @@ public interface ICategoryService {
     Category saveCategory(Category category);
     Category updateCategory(Category category);
     void deleteCategory(Long id);
+    void addProductToCategory(Long idCategory, Long idProduct);
 }

@@ -21,6 +21,7 @@ public interface IProductService {
     List<ProductDTO> getRandomProducts(int numberOfProducts); //    X productos aleatorios
 
     Boolean doesProductExist(String name);
+    List<ProductDTO> getProductsByCategory(Long idCategory);
 
 
 }

@@ -61,7 +61,7 @@ const SignIn = () => {
     <div className='p-3 max-w-lg mx-auto my-10'>
       <h1 className='text-3 text-center font-semibold my-20'>Ingresar</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input type="email" placeholder='Email' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
+        <input type="text" placeholder='Email' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
         <input type="password" placeholder='Contraseña' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
         <button disabled={state.userReducer?.loading} className='bg-orange-600 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.userReducer?.loading ? 'Cargando...' : 'Ingresar'}</button>
       </form>

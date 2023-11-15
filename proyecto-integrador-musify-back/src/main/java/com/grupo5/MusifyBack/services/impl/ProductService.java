@@ -5,6 +5,7 @@ import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.models.Image;
 import com.grupo5.MusifyBack.models.Product;
+import com.grupo5.MusifyBack.persistence.repositories.ICategoryRepository;
 import com.grupo5.MusifyBack.persistence.repositories.IImageRepository;
 import com.grupo5.MusifyBack.persistence.repositories.IProductRepository;
 import com.grupo5.MusifyBack.services.IProductService;
@@ -26,6 +27,10 @@ public class ProductService implements IProductService {
     private IProductRepository productRepository;
     @Autowired
     private IImageRepository imageRepository;
+    @Autowired
+    private ICategoryRepository categoryRepository;
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private S3Service s3Service;
     @Autowired
@@ -107,6 +112,17 @@ public class ProductService implements IProductService {
             }
             // Agrego las imágenes al producto
             product.setImages(images);
+            //Agrego el producto a la entidad categoría
+            if(productDTO.getCategory().getProducts()==null){
+                productDTO.getCategory().setProducts(new HashSet<>());
+            }
+            Set<Product> products = productDTO.getCategory().getProducts();
+            products.add(product);
+            productDTO.getCategory().setProducts(products);
+            categoryRepository.save(product.getCategory());
+           // categoryService.addProductToCategory(product.getCategory().getId(), product.getId());
+
+
         }
 
         // Actualiza el producto en la base de datos con las imágenes relacionadas
@@ -135,6 +151,8 @@ public class ProductService implements IProductService {
             }
             // Agrego las imágenes al producto
             updatedproduct.setImages(images);
+            //Agrego el producto a la entidad categoría
+            categoryService.addProductToCategory(updatedproduct.getCategory().getId(), updatedproduct.getId());
         }
 
         // Actualiza el producto en la base de datos con las imágenes relacionadas
@@ -148,20 +166,20 @@ public class ProductService implements IProductService {
         Optional<Product> productOptional = productRepository.findById(id);
         //Si existe el producto, lo elimino
         if (productOptional.isPresent()) {
-            try{
-            List<String> imageUrls = new ArrayList<>();
-            Product product = productOptional.get();
-            //Obtengo las imagenes del producto
-            Set<Image> images = product.getImages();
-            //Obtengo las urls de las imagenes
-            for (Image image : images) {
-                imageUrls.add(image.getImageUrl());
-            }
-            //Elimino las imagenes de S3
-            s3Service.deleteFiles(imageUrls, id );
-            productRepository.deleteById(id);
-            return true;
-            }catch(Exception e){
+            try {
+                List<String> imageUrls = new ArrayList<>();
+                Product product = productOptional.get();
+                //Obtengo las imagenes del producto
+                Set<Image> images = product.getImages();
+                //Obtengo las urls de las imagenes
+                for (Image image : images) {
+                    imageUrls.add(image.getImageUrl());
+                }
+                //Elimino las imagenes de S3
+                s3Service.deleteFiles(imageUrls, String.valueOf(id));
+                productRepository.deleteById(id);
+                return true;
+            } catch (Exception e) {
                 throw new IOException(e.getMessage());
             }
         } else {
@@ -199,11 +217,37 @@ public class ProductService implements IProductService {
 
     }
 
+    @Override
+    public List<ProductDTO> getProductsByCategory(Long idCategory) {
+        //Obtener todos los productos de una categoria
+        List<Product> products = productRepository.findProductsByCategories_Id(idCategory);
+        List<ProductDTO> productsDTO = new ArrayList<>();
+        //Convertir los productos a DTO
+        for (Product product : products) {
+
+            ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
+            Set<Image> imagesDTO = new HashSet<>();
+            //Convertir las imagenes a DTO
+            for (Image image : product.getImages()) {
+                Image imageDTO = mapper.convertValue(image, Image.class);
+                imagesDTO.add(imageDTO);
+            }
+            //Establecer las imagenes en el producto
+            productDTO.setImages(imagesDTO);
+            //Agregar el producto a la lista de productos
+            productsDTO.add(productDTO);
+        }
+
+        return productsDTO;
+
+    }
+
     public Product mapProductDTOToProduct(ProductDTO productDTO) {
         Product product = new Product();
         product.setId(productDTO.getId());
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
+        product.setCategory(productDTO.getCategory());
 
         // Procesamiento manual de las imágenes
         Set<Image> images = new HashSet<>();

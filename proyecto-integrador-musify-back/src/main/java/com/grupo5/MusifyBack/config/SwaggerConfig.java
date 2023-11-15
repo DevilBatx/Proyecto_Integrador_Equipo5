@@ -26,7 +26,7 @@ public class SwaggerConfig {
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 
 
-        //.extension("x-logo", Map.of("url", "URL_DEL_LOGO"))); // Reemplaza "URL_DEL_LOGO" con la URL de tu imagen/logo
+        //.extension("x-logo", Map.of("url", "https://c12grupo5img.s3.amazonaws.com/logo/logo.png"))); // Reemplaza "URL_DEL_LOGO" con la URL de tu imagen/logo
     }
     private SecurityScheme createAPIKeyScheme() {
         return new SecurityScheme().type(SecurityScheme.Type.HTTP)

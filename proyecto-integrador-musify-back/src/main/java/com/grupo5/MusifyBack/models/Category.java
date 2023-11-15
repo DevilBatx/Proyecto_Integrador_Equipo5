@@ -20,8 +20,8 @@ public class Category {
     private Long id;
     @Column(name = "nombrecategoria")
     private String name;
-//    @Column(name = "urlcategoria")
-//    private String url;
+    @Column(name = "urlimgcategoria")
+    private String url;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Product> products;
