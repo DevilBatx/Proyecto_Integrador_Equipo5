@@ -13,6 +13,7 @@ import SignIn from './Routes/SignIn.jsx';
 import SignUp from './Routes/SignUp.jsx';
 import Profile from './Routes/Profile.jsx';
 import './index.css'
+import Politicas from './Routes/Politicas.jsx';
 
 
 
@@ -31,7 +32,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/agregarproducto" element={<AgregarProducto />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
-          <Route path='/profile' element={<Profile/>} />         
+          <Route path='/profile' element={<Profile/>} />  
+          <Route path='/politicas' element={<Politicas/>}/>       
           <Route path="*" element={<Nopage />} />
         </Route>
       </Routes>
