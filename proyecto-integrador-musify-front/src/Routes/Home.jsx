@@ -7,6 +7,10 @@ import { GlobalContext } from '../Components/Utils/GlobalContext';
 import Video from '../assets/Products/Fondo.mp4'
 import PaginationButtons from '../Components/PaginationButtons';
 
+
+
+
+
 const Home = () => {
     const handleSearch = (term) => {
         // Implementa la lógica de búsqueda de productos aquí
@@ -22,8 +26,7 @@ const Home = () => {
         useEffect(() => {
             getProductRandom();
         }, []);
-
-    
+        
     return (
         <div className="bg-white min-h-screen">
             {/*buscador*/}
@@ -42,26 +45,24 @@ const Home = () => {
                 <div className="text-center">
                     <h2 className="text-3xl text-orange-500 font-bold md:h-full">Categorias</h2>
                     <div className="">
-                        <Category />
-                        
+                        <Category />  
                     </div>
                 </div>
             </div>
 
-            <section className="mb-8 flex gap-5 items-center justify-center">
+       
+            <section className="mb-8 flex gap-5 items-center justify-center ml-1 mr-1">
                 <div className="text-center">
-                    <h2 className="text-3xl text-orange-500 font-bold mb-4 p-10">Recomendados</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                        {Array.isArray(state.data) && state.data.map((product) => (
-                            
+                    <h2 className="text-3xl text-orange-500 font-bold mb-4 p-10">Recomendados</h2>             
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            {Array.isArray(state.data) && state.data.map((product) => (                      
                             <Card key={product.id} data={product} />
-                            
-                        ))}
-                   
-                    </div>
-                    <PaginationButtons/>
-                </div>
+                            ))}
+                        </div> 
+                        <PaginationButtons/> 
+                </div> 
             </section>
+              
         </div>
     );
 }
