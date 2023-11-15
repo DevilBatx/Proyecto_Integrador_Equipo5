@@ -14,13 +14,14 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -55,20 +56,20 @@ public class UserController {
         }
         return userService.saveUser(userInfo);
     }
-    @PostMapping("/login")
-    public AuthResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        if (authentication.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(authentication);
 
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtService.generateToken(authRequest.getUsername());
-            return new AuthResponse(userService.getUserByEmail(authRequest.getUsername()).getIsAdmin(),token);
-        } else {
-            throw new UsernameNotFoundException("invalid user request !");
+            return ResponseEntity.ok(new AuthResponse(userService.getUserByEmail(authRequest.getUsername()).getIsAdmin(), token, true, "Authentication successful"));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, false, "Authentication failed. Please check your credentials."));
         }
     }
 
-    @Operation(summary = "Get User Data", security = @SecurityRequirement(name = "Token"),  responses = {
+    @Operation(summary = "Get User Data", security = @SecurityRequirement(name = "Token"), responses = {
             @ApiResponse(description = "Successful Operation", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content),
             @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true))
@@ -98,7 +99,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-@DeleteMapping("/user/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().body("User deleted successfully");

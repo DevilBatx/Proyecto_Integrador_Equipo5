@@ -15,8 +15,11 @@ const reducer = (state, action) => {
             return { ...state, data: action.payload }
 
         case "SignInSuccess":
-            
+
             return { ...state, user: action.payload }
+
+        case "SignInError":
+            return { ...state, error: action.payload }
 
         default:
             return state;

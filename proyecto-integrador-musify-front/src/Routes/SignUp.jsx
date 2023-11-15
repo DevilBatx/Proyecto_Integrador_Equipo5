@@ -53,7 +53,7 @@ const SignUp = () => {
     if (isValid) {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8080/api/v1/auth/register', {
+        const response = await fetch(`${apiURL}/auth/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

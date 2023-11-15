@@ -4,21 +4,22 @@ import { GlobalContext } from '../Components/Utils/GlobalContext';
 
 const SignIn = () => {
   const [formData, setFormData] = useState();
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state, dispatch, apiURL } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    dispatch({ type: 'SignInError', payload: '' })
     setFormData({
       ...formData,  //Mantiene la informacion previa que va ingresando el usuario
       [e.target.id]: e.target.value, //Con el id muestra que campo es el que cambia
+
     });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault(); //Preeve que la pagina se actualize al darle click en registrarse
     try {
-      dispatch({ type: 'SignInStart' })
-      const response = await fetch('http://localhost:8080/api/v1/auth/login', { //Ahi iria la api para la request del fetch
+      const response = await fetch(`${apiURL}/auth/login`, { //Ahi iria la api para la request del fetch
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +28,7 @@ const SignIn = () => {
       });
       const data = await response.json();
       if (data.success === false) {
-        dispatch({ type: 'SignInError', payload: error.message })
+        dispatch({ type: 'SignInError', payload: 'Credenciales inválidas. Por favor, verifica tu email y contraseña.' })
         return;
       }
 
@@ -35,7 +36,7 @@ const SignIn = () => {
         localStorage.setItem('token', data.token);
         // console.log(data.token)
         let url;
-        data.rolUser === 1 ? url = "http://localhost:8080/api/v1/auth/admin/adminProfile" : url = "http://localhost:8080/api/v1/auth/user/userProfile";
+        data.rolUser === 1 ? url = `${apiURL}/auth/admin/adminProfile` : url = `${apiURL}/auth/user/userProfile`;
         const userResponse = await fetch(url, {
           method: 'GET',
           headers: {
@@ -50,8 +51,11 @@ const SignIn = () => {
         //console.log(state);
       }
     } catch (error) {
-      dispatch({ type: 'SignInError', payload: error.message })
-     // console.log(error);
+      if (error.response && error.response.status === 401) {
+        dispatch({ type: 'SignInError', payload: 'Credenciales inválidas. Por favor, verifica tu email y contraseña.' });
+      } else {
+        dispatch({ type: 'SignInError', payload: 'Hubo un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.' });
+      }
     }
   }
 
@@ -71,7 +75,7 @@ const SignIn = () => {
           <span className='text-blue-700'>Crear cuenta</span>
         </Link>
       </div>
-      {state.userReducer?.error && <p className='text-red-500 mt-5'>{state.userReducer?.error}</p>}
+      {state.error && <p className='text-red-500 mt-5'>{state.error}</p>}
     </div>
   )
 }
