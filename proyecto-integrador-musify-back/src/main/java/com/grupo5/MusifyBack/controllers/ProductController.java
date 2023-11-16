@@ -2,8 +2,8 @@ package com.grupo5.MusifyBack.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductAlreadyExistsException;
+import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
-import com.grupo5.MusifyBack.models.Images;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.services.impl.ProductService;
 import com.grupo5.MusifyBack.services.impl.S3Service;
@@ -13,13 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -35,19 +37,22 @@ public class ProductController {
     @Autowired
     ObjectMapper mapper;
 
-    @GetMapping("/products")
+    @GetMapping("/public/products")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         logger.info("Inicio busqueda productos");
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping("/products/random")
+    @GetMapping("/public/products/random")
     public ResponseEntity<List<ProductDTO>> getRandomProducts(@RequestParam("numberOfProducts") int numberOfProducts) {
         logger.info("Inicio busqueda productos");
         return ResponseEntity.ok(productService.getRandomProducts(numberOfProducts));
     }
 
-    @PostMapping(value = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    @PostMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
     public ResponseEntity<Product> saveProduct(@RequestPart("productInfo") ProductDTO product, @RequestPart("files") MultipartFile[] files) throws ProductAlreadyExistsException {
 
 
@@ -57,7 +62,7 @@ public class ProductController {
             try {
                 List<String> imageUrls = null;
                 Product savedProduct = productService.saveProduct(product, imageUrls);
-                imageUrls = s3Service.uploadFiles(files, savedProduct.getId());
+                imageUrls = s3Service.uploadFiles(files, String.valueOf(savedProduct.getId()));
                 logger.info("Registrando Producto");
                 ProductDTO savedProductDTO = mapper.convertValue(savedProduct, ProductDTO.class);
                 return ResponseEntity.ok(productService.saveProduct(savedProductDTO, imageUrls));
@@ -69,13 +74,16 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/public/products/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") long id) {
         logger.info("Incio buesqueda producto por id: " + id);
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @PutMapping(value = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //TODO: Agregar logica para agregar categoria
+    @PutMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
     public ResponseEntity<Product> updateProduct(@RequestPart("productInfo") ProductDTO product, @RequestPart("NewFiles") MultipartFile[] newFiles) throws IOException {
         //Obtengo el producto a modificar
         ProductDTO existingProduct = productService.getProductById(product.getId());
@@ -84,41 +92,40 @@ public class ProductController {
             existingProduct.setName(product.getName());
             existingProduct.setDescription(product.getDescription());
             //existingProduct.setBrand(product.getBrand());
-            //existingProduct.setCategory(product.getCategory());
+            existingProduct.setCategory(product.getCategory());
             //Obtengo las imagenes existentes en el producto
-            Set<Images> existingImages = existingProduct.getImages();
             List<String> newImageUrls = new ArrayList<>();
             //verifica y agrega las imagenes al producto
-            if (newFiles != null && newFiles.length > 0) {
-                newImageUrls = s3Service.uploadFiles(newFiles, existingProduct.getId());
-//              Product savedProduct = mapper.convertValue(existingProduct, Product.class);
-//                for (String imageUrl : newImageUrls) {
-//                    Images image = new Images();
-//                    image.setImageUrl(imageUrl);
-//                    image.setProduct(savedProduct);
-//
-//                    existingImages.add(image);
-//                }
-//                existingProduct.setImages(existingImages);
+            //compruebo si newfiles viene vacio
+            if(Arrays.stream(newFiles).anyMatch(file -> file.getSize() > 0)){
+                newImageUrls = s3Service.uploadFiles(newFiles, String.valueOf(existingProduct.getId()));
             }
-            //existingProduct.setImages(product.getImages());
             //Guardo el producto modificado
-            return ResponseEntity.ok(productService.saveProduct(existingProduct, newImageUrls));
+            return ResponseEntity.ok(productService.updateProduct(existingProduct, newImageUrls));
         } else {
-            return ResponseEntity.notFound().build();
+            //Si no existe el producto, retorno un error
+            throw new ProductNotFoundException("El producto con Id " + product.getId() + " no existe");
         }
     }
 
-    @DeleteMapping("/products")
-    public ResponseEntity<String> deleteProduct(@RequestParam("id") long id) {
+    @DeleteMapping("/auth/products")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional
+    public ResponseEntity<String> deleteProduct(@RequestParam("id") long id) throws IOException {
         logger.info("Eliminando producto");
         //Si se elimina el producto, se retorna un mensaje de exito
+        try{
         if (productService.deleteProduct(id)) {
             return ResponseEntity.ok("El producto " + id + " fue eliminado");
 
         } else {
             //Si no se elimina el producto, se retorna un mensaje de error
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+            throw new ProductNotFoundException("El producto " + id + " no existe en la base de datos");
+        }
+        }catch(ProductNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
     }

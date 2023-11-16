@@ -9,4 +9,3 @@ export const createAvatarFromName = (firstName, lastName) => {
 }
 
 
-
