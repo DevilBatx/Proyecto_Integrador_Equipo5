@@ -22,7 +22,7 @@ const Card = ({ data: { id,  name, description, images } }) => {
            {/*<span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3">5.0</span>*/}
         </div>
         <div className="flex items-center flex-col">
-          <span className="text-2xl font-bold text-gray-900 dark:text-white">USD 599</span> 
+          {/* <span className="text-2xl font-bold text-gray-900 dark:text-white">USD 599</span> */}
           <Link to={`/details/${id}`} className="text-white bg-orange-700 hover:bg-blue-800 focus:ring-3 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center dark:bg-orange-500 dark:hover:bg-orange-100 dark:hover:text-orange-500 dark:focus:ring-blue-800">
             Ver más
           </Link>

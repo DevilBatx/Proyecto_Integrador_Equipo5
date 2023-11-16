@@ -48,7 +48,7 @@ const CardDetail = () => {
       </svg>             
         </button>
         </div>
-        <div className=' grid h-full w-full grid-cols-2 gap-3 pt-4 md:grid-cols-4'>
+        <div className=' grid h-full w-full grid-cols-2 gap-3 pt-4 md:grid-cols-5'>
           <div className='col-span-2 row-span-2 aspect-[4/2.8] border border-gray-400 rounded-md'>
           {state.data && state.data.images && state.data.images.length > 0 &&  <img
               alt="gallery"

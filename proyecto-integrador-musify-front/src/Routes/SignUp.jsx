@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import imgLog from '../assets/Products/imgLogin.png'
+import { GlobalContext } from '../Components/Utils/GlobalContext';
 
 
 const SignUp = () => {
@@ -11,16 +13,24 @@ const SignUp = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null)
   const navigate = useNavigate();
+  const { state, dispatch, apiURL } = useContext(GlobalContext);
 
   const validateForm = () => {
     const newErrors = {};
 
     // Validación para el nombre (más de 3 caracteres)
-    if (formData.name.length < 3) {
-      newErrors.name = 'El nombre debe tener al menos 3 caracteres';
+    if (formData.name.length < 4) {
+      newErrors.name = 'El nombre debe tener al menos 4 caracteres';
+    }
+
+    if (formData.name.trim() === '') {
+      newErrors.name = 'El nombre no puede estar vacío';
+    }
+
+    if (formData.lastName.length < 4) {
+      newErrors.lastName = 'El apellido debe tener al menos 4 caracteres';
     }
 
     // Validación para el apellido (no vacío)
@@ -52,7 +62,7 @@ const SignUp = () => {
 
     if (isValid) {
       try {
-        setLoading(true);
+        dispatch({ type: 'SET_LOADING', payload: true });
         const response = await fetch(`${apiURL}/auth/register`, {
           method: 'POST',
           headers: {
@@ -70,9 +80,9 @@ const SignUp = () => {
         //debugger;
         if (response.status === 200) {
           setMessage({ message: 'Usuario registrado correctamente, Redirigiendo...', isSuccess: true });
-          setLoading(false);
           // Agrega un temporizador de 3 segundos antes de redirigir
           setTimeout(() => {
+            dispatch({ type: 'SET_LOADING', payload: false });
             navigate('/login');
           }, 3000);
         } else if (response.status === 409) {
@@ -80,12 +90,12 @@ const SignUp = () => {
         } else {
           setMessage({ message: data.message || 'Error desconocido en la respuesta', isSuccess: false });
         }
+        dispatch({ type: 'SET_LOADING', payload: false });
 
-        setLoading(false);
       } catch (error) {
-        setLoading(false);
         // Manejar el error de la solicitud
         setMessage(error.message || 'Error en la solicitud');
+        dispatch({ type: 'SET_LOADING', payload: false });
       }
     }
   };
@@ -98,64 +108,76 @@ const SignUp = () => {
   };
 
   return (
-    <div className='p-3 max-w-lg mx-auto my-10'>
-      <h1 className='text-3 text-center font-semibold my-20'>Crear cuenta</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input
-          type="text"
-          placeholder='Name'
-          className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
-          id='name'
-          onChange={handleChange}
-        />
-        {errors.name && <p className="text-red-500 text-xs font-semibold">{errors.name}</p>}
-
-        <input
-          type="text"
-          placeholder='Last Name'
-          className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
-          id='lastName'
-          onChange={handleChange}
-        />
-        {errors.lastName && <p className="text-red-500 text-xs font-semibold">{errors.lastName}</p>}
-
-        <input
-          type="text"
-          placeholder='Email'
-          className={`border p-3 rounded-lg ${errors.email && 'border-red-500'}`}
-          id='email'
-          onChange={handleChange}
-        />
-        {errors.email && <p className="text-red-500 text-xs font-semibold">{errors.email}</p>}
-
-        <input
-          type="password"
-          placeholder='Password'
-          className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
-          id='password'
-          onChange={handleChange}
-        />
-        {errors.password && <p className="text-red-500 text-xs font-semibold">{errors.password}</p>}
-
-        <button disabled={loading} className='bg-orange-600 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
-          {loading ? 'Cargando...' : 'Registrarse'}
-        </button>
-      </form>
-
-      <div className='flex gap-2 mt-5'>
-        <p>Ya estás registrado?</p>
-        <Link to={'/login'}>
-          <span className='text-blue-700'>Ingresar</span>
-        </Link>
+    <div className='w-full h-screen flex items-start'>
+      <div className='w-1/2 h-full flex flex-col'>
+        <img src={imgLog} alt="ImagenBg" className='w-full h-full object-cover' />
       </div>
-      {message && (
-        <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
-          {message.message}
-        </p>
-      )}
+      <div className='w-1/2 flex flex-col justify-center p-16 my-10'>
+        <h1 className='text-2xl text-center font-semibold pb-5'>Crear cuenta</h1>
+        <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
+          <form onSubmit={handleSubmit} className='w-full flex flex-col gap-5'>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder='Name'
+                className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
+                id='name'
+                onChange={handleChange}
+              />
+              {errors.name && <p className="text-red-500 text-xs font-semibold mt-1">{errors.name}</p>}
+            </div>
+
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder='Last Name'
+                className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
+                id='lastName'
+                onChange={handleChange}
+              />
+              {errors.lastName && <p className="text-red-500 text-xs font-semibold mt-1">{errors.lastName}</p>}
+            </div>
+
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder='Email'
+                className={`border p-3 rounded-lg ${errors.email && 'border-red-500'}`}
+                id='email'
+                onChange={handleChange}
+              />
+              {errors.email && <p className="text-red-500 text-xs font-semibold mt-1">{errors.email}</p>}
+            </div>
+
+            <div className="flex flex-col">
+              <input
+                type="password"
+                placeholder='Password'
+                className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
+                id='password'
+                onChange={handleChange}
+              />
+              {errors.password && <p className="text-red-500 text-xs font-semibold mt-1">{errors.password}</p>}
+            </div>
+
+            <button disabled={state.loading} className='bg-orange-600 text-white p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
+              {state.loading ? 'Cargando...' : 'Registrarse'}
+            </button>
+          </form>
+        </div>
+        <div className='flex items-center justify-center mt-5 gap-2'>
+          <p>Ya estás registrado?</p>
+          <Link to={'/login'}>
+            <span className='text-blue-700'> Ingresar </span>
+          </Link>
+        </div>
+        {message && (
+          <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
+            {message.message}
+          </p>
+        )}
+      </div>
     </div>
   );
-};
-
-
+}
 export default SignUp;

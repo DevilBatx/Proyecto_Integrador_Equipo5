@@ -14,22 +14,26 @@ const reducer = (state, action) => {
         case "FETCH":
             return { ...state, data: action.payload }
 
-        case "SignInSuccess":
+        case "SIGN_IN_SUCCESS": 
+            return { ...state, user: action.payload, isAuthenticated: true }; // Agrega isAuthenticated al estado
+        case "SIGN_OUT":
+            return { ...state, user: null, isAuthenticated: false }; // Agrega isAuthenticated al estado
 
-            return { ...state, user: action.payload }
-
-        case "SignInError":
+        case "SIGN_IN_ERROR":
             return { ...state, error: action.payload }
 
+            case "SET_LOADING":
+                return { ...state, loading: action.payload };
+            
         default:
-            return state;
+            return state; //isAuthenticated, que indica si el usuario está autenticado o no.
     }
-}
+};
 const apiURL = "http://localhost:8080/api/v1"
 
 export const ContextProvider = ({ children }) => {
 
-    const initialState = { data: [] }
+    const initialState = { data: [], userReducer: { user: null, loading: false, error: null } }
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
