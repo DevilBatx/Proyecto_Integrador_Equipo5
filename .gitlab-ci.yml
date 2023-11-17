@@ -75,4 +75,4 @@ deploy_Frontend:
     - aws s3 sync proyecto-integrador-musify-front/dist/ s3://c12-grupo5-front
   rules:
     - changes:
-        - proyecto-integrador-musify-front/**/*
+        - proyecto-integrador-musify-front/**/*/
