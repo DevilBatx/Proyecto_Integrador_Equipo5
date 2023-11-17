@@ -189,9 +189,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> getRandomProducts(int numberOfProducts) {
+    public List<ProductDTO> getRandomProducts() {
         //Obtener X productos random
-        List<Product> products = productRepository.findRandomProducts(numberOfProducts);
+        List<Product> products = productRepository.findRandomProducts();
         List<ProductDTO> productsDTO = new ArrayList<>();
         //Convertir los productos a DTO
         for (Product product : products) {

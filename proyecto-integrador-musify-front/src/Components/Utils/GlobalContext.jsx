@@ -29,7 +29,7 @@ const reducer = (state, action) => {
             return state; //isAuthenticated, que indica si el usuario está autenticado o no.
     }
 };
-const apiURL = "http://localhost:8080/api/v1"
+const apiURL = "http://54.197.145.57:8080/api/v1"
 
 export const ContextProvider = ({ children }) => {
 

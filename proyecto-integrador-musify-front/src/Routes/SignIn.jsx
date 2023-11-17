@@ -36,7 +36,7 @@ const SignIn = () => {
       if (data.token) {
         localStorage.setItem('token', data.token);
         let url;
-        data.rolUser === 1 ? url =`${apiURL}/auth/admin/adminProfile` : url = `${apiURL}/auth/user/userProfile`
+        data.rolUser == 1 ? url =`${apiURL}/auth/admin/adminProfile` : url = `${apiURL}/auth/user/userProfile`
         const userResponse = await fetch(url, {
           method: 'GET',
           headers: {
@@ -44,7 +44,6 @@ const SignIn = () => {
             'Authorization': `Bearer ${data.token}`,
           },
         });
-
         dispatch({ type: "SIGN_IN_SUCCESS", payload: await userResponse.json() });
         navigate('/');
         dispatch({ type: 'SET_LOADING', payload: false });

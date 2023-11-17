@@ -44,9 +44,9 @@ public class ProductController {
     }
 
     @GetMapping("/public/products/random")
-    public ResponseEntity<List<ProductDTO>> getRandomProducts(@RequestParam("numberOfProducts") int numberOfProducts) {
+    public ResponseEntity<List<ProductDTO>> getRandomProducts() {
         logger.info("Inicio busqueda productos");
-        return ResponseEntity.ok(productService.getRandomProducts(numberOfProducts));
+        return ResponseEntity.ok(productService.getRandomProducts());
     }
 
 

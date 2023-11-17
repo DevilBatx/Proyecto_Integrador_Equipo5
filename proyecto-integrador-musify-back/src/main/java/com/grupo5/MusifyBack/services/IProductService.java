@@ -18,7 +18,7 @@ public interface IProductService {
 
     Boolean deleteProduct(long id) throws IOException;
 
-    List<ProductDTO> getRandomProducts(int numberOfProducts); //    X productos aleatorios
+    List<ProductDTO> getRandomProducts(); //    X productos aleatorios
 
     Boolean doesProductExist(String name);
     List<ProductDTO> getProductsByCategory(Long idCategory);
