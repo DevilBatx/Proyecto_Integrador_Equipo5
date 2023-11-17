@@ -1,7 +1,7 @@
 import {  Outlet } from 'react-router-dom';
-import Header from './Components/Header';
-import Footer from './components/Footer';
-import { ContextProvider } from './Components/Utils/GlobalContext';
+import Header from './Components/Header.jsx';
+import Footer from './Components/Footer.jsx';
+import { ContextProvider } from './Components/Utils/GlobalContext.jsx';
 
 function App() {
   return (
