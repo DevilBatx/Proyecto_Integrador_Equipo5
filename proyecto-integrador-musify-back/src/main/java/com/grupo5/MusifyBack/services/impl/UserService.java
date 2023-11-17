@@ -23,6 +23,8 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     private IUserRepository userRepository;
     @Autowired
+    private EmailService emailService;
+    @Autowired
     private PasswordEncoder encoder;
     @Autowired
     ObjectMapper mapper;
@@ -35,8 +37,18 @@ public class UserService implements IUserService, UserDetailsService {
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
         userInfo.setIsAdmin(0);
         userRepository.save(userInfo);
-        RegistrationSuccesResponse response = new RegistrationSuccesResponse( userInfo.getEmail(),"User registered successfully");
-        return ResponseEntity.ok(response);
+
+        emailService.sendEmail(userInfo.getEmail(), "Bienvenido a Musify",
+                "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; margin: 0; padding: 0;\">\n" +
+                        "    <div style=\"max-width: 600px; margin: 50px auto; background-color: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\">\n" +
+                        "        <h1 style=\"color: #333333;\">Gracias por registrarte en Musify!</h1>\n" +
+                        "        <p style=\"color: #666666;\">Nos entusiasma tenerte a bordo, "+ userInfo.getName()+" "+ userInfo.getLastName()+" ("+userInfo.getEmail()+").</p>\n" +
+                        "        <a href=\"http://c12-grupo5-front.s3-website-us-east-1.amazonaws.com/\" style=\"display: inline-block; padding: 10px 20px; background-color: #f58d42; color: #ffffff; text-decoration: none; border-radius: 5px; margin-top: 20px;\">Acceder a Musify</a>\n" +
+                        "    </div>\n" +
+                        "</body>");
+
+
+        return ResponseEntity.ok("User Added Successfully");
     }
 
     @Override
