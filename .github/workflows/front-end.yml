@@ -68,8 +68,7 @@ jobs:
       - name: Debugging info
         run: |
           echo "DEPLOY_SERVER_IP: $DEPLOY_SERVER_IP"
-          ping $DEPLOY_SERVER_IP
-          nslookup $DEPLOY_SERVER_IP
+          env
           echo "Comenzó el Deploy..."
 
       - name: Print DEPLOY_SERVER_IP
