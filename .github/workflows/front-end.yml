@@ -71,7 +71,7 @@ jobs:
       - name: Set up SSH agent
         run: |
           eval $(ssh-agent -s)
-          ssh-add - <<< "$SSH_PRIVATE_KEY"
+          echo "$SSH_PRIVATE_KEY" | ssh-add -
 
       - name: Deploy backend
         run: |
