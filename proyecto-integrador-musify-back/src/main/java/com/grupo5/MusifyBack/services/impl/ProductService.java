@@ -38,9 +38,14 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductDTO> getAllProducts(String search) {
         //Obtener todos los productos
-        List<Product> products = productRepository.findAll();
+        List<Product> products = null;
+        if (search != null){
+            products = productRepository.findProductsBySearchString(search);
+        }else{
+            products = productRepository.findAll();
+        }
         List<ProductDTO> productsDTO = new ArrayList<>();
         //Convertir los productos a DTO
         for (Product product : products) {

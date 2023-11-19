@@ -1,8 +1,6 @@
-import React, {  useContext, useEffect } from 'react';
-import Bateria1 from '../assets/Products/bateria2.jpg'
-import arrow from '../assets/Products/arrow.png'
+import React, { useContext, useEffect } from 'react';
 import { GlobalContext } from './Utils/GlobalContext';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 //#4
 //Visualizar un bloque de header el cual deberá cubrir el 100 % del ancho de la pantalla.	✔							
@@ -25,16 +23,17 @@ const CardDetail = () => {
   const goBack = () => {
     window.history.back(); // This will take the user to the previous page in the history stack
   };
-  
+
   const { state, dataApi } = useContext(GlobalContext)
 
   const getProduct = async () => {
-      await dataApi(`http://107.21.195.144:8080/api/v1/products/${params.id}`);
+    await dataApi(`http://localhost:8080/api/v1/public/products/${params.id}`);
   }
 
   useEffect(() => {
-      getProduct();
+    getProduct();
   }, [params]);
+  console.log(state.data)
 
   return (
     <>
@@ -43,30 +42,30 @@ const CardDetail = () => {
           <h1 className='text-left text-xl text-orange-500 font-bold py-5'>{state.data.name}</h1>
           <button onClick={goBack}
             className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500'
-          > <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10 text-gray-700 hover:text-orange-500">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-      </svg>             
-        </button>
+          > <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+            </svg>
+          </button>
         </div>
         <div className=' grid h-full w-full grid-cols-2 gap-3 pt-4 md:grid-cols-5'>
           <div className='col-span-2 row-span-2 aspect-[4/2.8] border border-gray-400 rounded-md'>
-          {state.data && state.data.images && state.data.images.length > 0 &&  <img
+            {state.data && state.data.images && state.data.images.length > 0 && <img
               alt="gallery"
               className="block h-full w-full rounded-lg object-cover object-center "
               src={state.data.images[0].imageUrl} />}
           </div>
 
           {Array.from({ length: 4 }).map((_, index) => (
-  <div className=' aspect-[4/2.8] border border-gray-400 rounded-md' key={index}>
-    {state.data && state.data.images && state.data.images.length > index + 1 && (
-      <img
-        alt="gallery"
-        className="block h-full w-full rounded-lg object-cover object-center"
-        src={state.data.images[index + 1].imageUrl}
-      />
-    )}
-  </div>
-))}
+            <div className=' aspect-[4/2.8] border border-gray-400 rounded-md' key={index}>
+              {state.data && state.data.images && state.data.images.length > index + 1 && (
+                <img
+                  alt="gallery"
+                  className="block h-full w-full rounded-lg object-cover object-center"
+                  src={state.data.images[index + 1].imageUrl}
+                />
+              )}
+            </div>
+          ))}
 
           {/* <div className=' aspect-[4/2.8] border border-gray-400 rounded-md'>
           {state.data && state.data.images && state.data.images.length > 2 &&  <img
@@ -96,6 +95,7 @@ const CardDetail = () => {
 
         <h2 className='text-left text-orange-500 font-bold p-5'>DESCRIPCION:</h2>
         <p>{state.data.description}</p>
+        
 
         <h4 className='text-left text-orange-500 font-bold p-5' >CARACTERÍSTICAS:</h4>
         <ul>
