@@ -72,6 +72,9 @@ jobs:
           ping $DEPLOY_SERVER_IP
           nslookup $DEPLOY_SERVER_IP
           echo "Comenzó el Deploy..."
+
+      - name: Print DEPLOY_SERVER_IP
+        run: echo "DEPLOY_SERVER_IP value:$DEPLOY_SERVER_IP"
           
       - name: Checkout repository
         uses: actions/checkout@v2
