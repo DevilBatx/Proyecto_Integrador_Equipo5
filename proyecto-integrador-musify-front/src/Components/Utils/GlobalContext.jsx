@@ -12,6 +12,7 @@ const reducer = (state, action) => {
         //     return { ...state, theme: "dark" }
 
         case "FETCH":
+            console.log(action.payload)
             return { ...state, data: action.payload }
 
         case "SIGN_IN_SUCCESS": 
@@ -22,14 +23,14 @@ const reducer = (state, action) => {
         case "SIGN_IN_ERROR":
             return { ...state, error: action.payload }
 
-            case "SET_LOADING":
-                return { ...state, loading: action.payload };
+        case "SET_LOADING":
+            return { ...state, loading: action.payload };
             
         default:
             return state; //isAuthenticated, que indica si el usuario está autenticado o no.
     }
 };
-const apiURL = "http://54.197.145.57:8080/api/v1"
+const apiURL = "http://localhost:8080/api/v1"
 
 export const ContextProvider = ({ children }) => {
 

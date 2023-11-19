@@ -1,29 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import Suggestions from './Suggestions';
 
-const Search = ({ onSearch }) => {
-  const [searchProduct, setSearchProduct] = useState('');
+const Search = () => {
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const latestRequest = useRef(0);
+  const inputRef = useRef(""); // Ref to keep track of the current input value
 
-  const handleSearch = () => {
-    onSearch(searchProduct);
-  }
+  const handleInputChange = async ({ target: { value } }) => {
+    inputRef.current = value; // Update the current input value
+    if (!value.trim()) {
+      setResults([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    const currentRequest = ++latestRequest.current;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/public/products?search=${value}`,
+      );
+
+      // Check if this is still the latest request and if the input hasn't been cleared
+      if (currentRequest !== latestRequest.current || !inputRef.current.trim()) {
+        return;
+      }
+
+      if (!response.ok) {
+        console.error('Error fetching suggestions:', response.status);
+        return;
+      }
+
+      const data = await response.json();
+      const dataResponse = data?.data || data;
+
+      setResults(dataResponse);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    } finally {
+      // Only stop loading if this is the latest request
+      if (currentRequest === latestRequest.current) {
+        setIsLoading(false);
+      }
+    }
+  };
 
   return (
-    <div className="flex items-center h-40 justify-end">
-      <input
-        type="text"
-        placeholder="Buscar productos..."
-        className="border border-gray-300 p-2 mr-2"
-        value={searchProduct}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button
-        className="bg-orange-500 focus:ring-blue-300  text-white font-bold py-2 px-4 rounded"
-        onClick={handleSearch}
-      >
-        Buscar
-      </button>
-    </div>
+    <form>
+      <input placeholder='Buscar intrumentos, accesorios...' onChange={handleInputChange} />
+      {isLoading && <div>Cargando productos...</div>}
+      {!isLoading && <Suggestions results={results} />}
+    </form>
   );
-}
+};
 
 export default Search;

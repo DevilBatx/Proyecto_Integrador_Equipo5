@@ -38,9 +38,10 @@ public class ProductController {
     ObjectMapper mapper;
 
     @GetMapping("/public/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    public ResponseEntity<List<ProductDTO>> getAllProducts(@RequestParam String search) {
         logger.info("Inicio busqueda productos");
-        return ResponseEntity.ok(productService.getAllProducts());
+
+        return ResponseEntity.ok(productService.getAllProducts(search));
     }
 
     @GetMapping("/public/products/random")
