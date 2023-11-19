@@ -74,13 +74,13 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Deploy backend
+      - name: Deploy Backend
         run: |
-          echo "Deploying started"
-          ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop pi.service" || exit 1
-          scp proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/ || exit 1
-          ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start pi.service" || exit 1
-          echo "Finalizo el deploying de la aplicacion de Back"
+          echo "Comenzó el Deploy"
+          ssh -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service" || exit 1
+          scp -o StrictHostKeyChecking=no proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/ || exit 1
+          ssh -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service" || exit 1
+          echo "Finalizo el deploy de la aplicacion de Back"
 
     # Add additional steps or jobs for testing if needed.
 
