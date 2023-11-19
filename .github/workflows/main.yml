@@ -1,0 +1,105 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Build backend
+        working-directory: proyecto-integrador-musify-back/
+        run: |
+          echo "Building aplicacion"
+          mvn clean
+          mvn package
+          echo "Finaliza el bulding de Back"
+
+      - name: Archive backend artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: backend_artifact
+          path: ./proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar
+
+    # Add additional steps or jobs for testing if needed.
+
+  build_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Build frontend
+        working-directory: proyecto-integrador-musify-front/
+        run: |
+          echo "Building the app"
+          npm --force install
+          npm run build
+          echo "Finaliza el bulding de Front"
+
+      - name: Archive frontend artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend_artifact
+          path: ./proyecto-integrador-musify-front/dist/
+
+    # Add additional steps or jobs for testing if needed.
+
+  deploy_backend:
+    runs-on: ubuntu-latest
+    needs: [build_backend]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$DEPLOY_SERVER_IP" >> ~/.ssh/known_hosts
+
+      - name: Deploy backend
+        run: |
+          echo "Deploying started..."
+          ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop pi.service"
+          scp -i ~/.ssh/id_rsa proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/
+          ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start pi.service"
+          echo "Finalizo el deploying de la aplicacion de Back"
+
+    # Add additional steps or jobs for testing if needed.
+
+  deploy_frontend:
+    runs-on: ubuntu-latest
+    needs: [build_frontend]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy frontend
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-east-1'
+
+      - name: Sync frontend to S3
+        run: aws s3 sync proyecto-integrador-musify-front/dist/ s3://c12-grupo5-front
+
+    # Add additional steps or jobs for testing if needed.
