@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
+      - 'front-end'
 
 jobs:
   build_backend:
