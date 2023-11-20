@@ -81,12 +81,6 @@ jobs:
       - name: Print DEPLOY_SERVER_IP
         run: echo "DEPLOY_SERVER_IP value:$DEPLOY_SERVER_IP"
 
-      - name: Check SSH Connectivity
-        run: ssh -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
-
-      - name: Debug SSH
-        run: ssh -v -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
-        
       - name: Checkout repository
         uses: actions/checkout@v2
   
@@ -97,6 +91,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
+          echo "SSH Configuration:"
+          cat ~/.ssh/config
+          ls -la ~/.ssh
+          ssh-add -L
+
+      - name: Check SSH Connectivity
+        run: ssh -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
+        
+      - name: Debug SSH
+        run: ssh -v -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
 
       - name: Debug SSH Configuration
         run: |
