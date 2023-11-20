@@ -82,7 +82,7 @@ jobs:
         run: echo "DEPLOY_SERVER_IP value:$DEPLOY_SERVER_IP"
 
       - name: Check SSH Connectivity
-        run: ssh -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER_IP "echo Connected successfully" || exit 1
+        run: ssh -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
 
       - name: Debug SSH
         run: ssh -v -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER_IP "echo Connected successfully" || exit 1
@@ -112,12 +112,11 @@ jobs:
       - name: Deploy Backend
         run: |
           echo "Comenzó el Deploy"
-          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service" || exit 1
-          scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/ || exit 1
-          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service" || exit 1
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@${{ env.DEPLOY_SERVER_IP }} "sudo systemctl stop back.service" || exit 1
+          scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@${{ env.DEPLOY_SERVER_IP }}:~/ || exit 1
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@${{ env.DEPLOY_SERVER_IP }} "sudo systemctl start back.service" || exit 1
           echo "Finalizó el deploy de la aplicación de Back"
-
-    # Add additional steps or jobs for testing if needed.
+          
 
   deploy_frontend:
     runs-on: ubuntu-latest
