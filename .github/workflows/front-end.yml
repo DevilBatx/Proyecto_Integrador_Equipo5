@@ -85,7 +85,7 @@ jobs:
         run: ssh -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
 
       - name: Debug SSH
-        run: ssh -v -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER_IP "echo Connected successfully" || exit 1
+        run: ssh -v -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
         
       - name: Checkout repository
         uses: actions/checkout@v2
