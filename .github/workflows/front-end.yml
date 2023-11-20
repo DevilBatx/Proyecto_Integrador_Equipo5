@@ -73,6 +73,7 @@ jobs:
           
       - name: Debugging info
         run: |
+          echo "All environment variables: ${{ env }}"
           echo "DEPLOY_SERVER_IP: $DEPLOY_SERVER_IP"
           env
           echo "Comenzó el Deploy..."
