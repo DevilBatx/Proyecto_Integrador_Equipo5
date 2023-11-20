@@ -81,7 +81,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    //TODO: Agregar logica para agregar categoria
+
     @PutMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional

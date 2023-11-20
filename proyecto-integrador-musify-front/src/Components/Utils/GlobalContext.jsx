@@ -12,7 +12,6 @@ const reducer = (state, action) => {
         //     return { ...state, theme: "dark" }
 
         case "FETCH":
-            console.log(action.payload)
             return { ...state, data: action.payload }
 
         case "SIGN_IN_SUCCESS": 

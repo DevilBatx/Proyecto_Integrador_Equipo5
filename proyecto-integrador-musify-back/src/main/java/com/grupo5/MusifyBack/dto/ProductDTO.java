@@ -1,6 +1,7 @@
 package com.grupo5.MusifyBack.dto;
 
 import com.grupo5.MusifyBack.models.Category;
+import com.grupo5.MusifyBack.models.Characteristic;
 import com.grupo5.MusifyBack.models.Image;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class ProductDTO {
     //private String brand;
     private Category category;
     private Set<Image> images;
+    private Set<Characteristic> characteristics;
 
 
 }

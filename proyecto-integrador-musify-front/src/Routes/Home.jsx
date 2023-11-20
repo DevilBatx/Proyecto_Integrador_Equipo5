@@ -19,7 +19,7 @@ const Home = () => {
     }
 
     const getProductRandom = async () => {
-        await dataApi(`${apiURL}/public/products/random?numberOfProducts=10`);
+        await dataApi(`${apiURL}/public/products/random`);
     }
 
     useEffect(() => {
