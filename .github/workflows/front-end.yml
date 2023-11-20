@@ -91,10 +91,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
+          ssh-add -L
           echo "SSH Configuration:"
           cat ~/.ssh/config
           ls -la ~/.ssh
-          ssh-add -L
 
       - name: Check SSH Connectivity
         run: ssh -o StrictHostKeyChecking=no ubuntu@${{ env.DEPLOY_SERVER_IP }} "echo Connected successfully" || exit 1
