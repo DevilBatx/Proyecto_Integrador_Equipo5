@@ -69,6 +69,7 @@ jobs:
         run: |
           echo "DEPLOY_SERVER_IP=${{ secrets.DEPLOY_SERVER_IP }}" >> $GITHUB_ENV
           echo "DEPLOY_SERVER_IP value: $DEPLOY_SERVER_IP"
+          echo "All environment variables: ${{ env }}"
           
       - name: Debugging info
         run: |
