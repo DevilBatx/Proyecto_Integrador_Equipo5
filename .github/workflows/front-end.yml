@@ -98,6 +98,11 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
+      - name: Debug SSH Configuration
+        run: |
+          echo "SSH Configuration:"
+          cat ~/.ssh/config
+
       - name: Debug SSH Key Permissions
         run: ls -la ~/.ssh
           
