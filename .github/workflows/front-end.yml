@@ -95,16 +95,21 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/id_rsa
+          ssh-add -L || eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa
+
+      - name: Debug SSH Key Permissions
+        run: ls -la ~/.ssh
+          
+      - name: Debug SSH Agent
+        run: ssh-add -L
 
       - name: Deploy Backend
         run: |
           echo "Comenzó el Deploy"
-          ssh -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service" || exit 1
-          scp -o StrictHostKeyChecking=no proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/ || exit 1
-          ssh -o StrictHostKeyChecking=no ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service" || exit 1
-          echo "Finalizo el deploy de la aplicacion de Back"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service" || exit 1
+          scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/ || exit 1
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service" || exit 1
+          echo "Finalizó el deploy de la aplicación de Back"
 
     # Add additional steps or jobs for testing if needed.
 
