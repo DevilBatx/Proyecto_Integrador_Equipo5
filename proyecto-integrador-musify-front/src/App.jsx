@@ -5,7 +5,6 @@ import { ContextProvider } from './Components/Utils/GlobalContext.jsx';
 
 // Push para GitLab
 
-
 function App() {
   return (
     <ContextProvider>
