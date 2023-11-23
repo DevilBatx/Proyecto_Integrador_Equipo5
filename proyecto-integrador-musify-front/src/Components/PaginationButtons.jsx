@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { GlobalContext } from "./Utils/GlobalContext";
 import Card from "./Card";
 
 const PaginationButtons = () => {
+  const { apiURL } = useContext(GlobalContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [data, setData] = useState([]); // Para almacenar los datos obtenidos de la solicitud

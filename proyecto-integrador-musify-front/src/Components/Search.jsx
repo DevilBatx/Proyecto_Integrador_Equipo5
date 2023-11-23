@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import { GlobalContext } from "./Utils/GlobalContext";
 import Suggestions from './Suggestions';
 
 const Search = () => {
+  const { apiURL } = useContext(GlobalContext);
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const latestRequest = useRef(0);
