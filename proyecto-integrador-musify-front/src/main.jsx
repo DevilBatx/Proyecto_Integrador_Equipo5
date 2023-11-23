@@ -14,6 +14,7 @@ import ListAllProductsPage from './pages/ListAllProductsPage.jsx'
 import './index.css'
 import Profile from './Routes/Profile.jsx';
 import PrivateRoute from './Components/PrivateRoute.jsx';
+import Politicas from './Routes/Politicas.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
@@ -30,11 +31,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/agregarproducto" element={<AgregarProducto />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
-          <Route path='/profile' element={<Profile/>} />         
+          <Route path='/profile' element={<Profile/>} /> 
+          <Route path='/politicas' element={<Politicas/>}/>        
           <Route path="*" element={<Nopage />} />
           <Route element={<PrivateRoute />}>
-            <Route path='/profile' element={<Profile />} />
-          </Route>
+          <Route path='/profile' element={<Profile />} />
+         </Route>
         </Route>
       </Routes>
     </Router>

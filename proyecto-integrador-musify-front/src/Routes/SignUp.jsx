@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import imgLog from '../assets/Products/imgLogin.png'
+import imgLog from '../assets/Products/image8.png'
 import { GlobalContext } from '../Components/Utils/GlobalContext';
 
 
@@ -108,76 +108,81 @@ const SignUp = () => {
   };
 
   return (
-    <div className='w-full h-screen flex items-start'>
-      <div className='w-1/2 h-full flex flex-col'>
-        <img src={imgLog} alt="ImagenBg" className='w-full h-full object-cover' />
+    <div className='w-full h-screen flex '>
+    <div className='w-full h-full flex flex-col'>
+    <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{backgroundImage:" url("+ imgLog +")"}}>
+  
+    <div className='w-screen h-[100vh] border-orange-200 opacity-25 absolute top-0 left-0'></div>
+      <div className=' relative flex flex-col  text-center gap-4 py-14 '>
+      
+      <div className=' w-[35%] mx-auto bg-orange-50 border-2 border-gray-500 rounded-xl overflow-hidden p-5'>
+      <h1 className='text-2xl text-center font-semibold'>Crear cuenta</h1>
+        <form onSubmit={handleSubmit} className=' p-5 flex flex-col gap-3 '>
+          <div className="flex flex-col">
+            <input
+              type="text"
+              placeholder='Name'
+              className={`border p-2 rounded-lg ${errors.name && 'border-red-500'}`}
+              id='name'
+              onChange={handleChange}
+            />
+            {errors.name && <p className="text-red-500 text-xs font-semibold mt-1">{errors.name}</p>}
+          </div>
+
+          <div className="flex flex-col">
+            <input
+              type="text"
+              placeholder='Last Name'
+              className={`border p-2 rounded-lg ${errors.lastName && 'border-red-500'}`}
+              id='lastName'
+              onChange={handleChange}
+            />
+            {errors.lastName && <p className="text-red-500 text-xs font-semibold mt-1">{errors.lastName}</p>}
+          </div>
+
+          <div className="flex flex-col">
+            <input
+              type="text"
+              placeholder='Email'
+              className={`border p-2 rounded-lg ${errors.email && 'border-red-500'}`}
+              id='email'
+              onChange={handleChange}
+            />
+            {errors.email && <p className="text-red-500 text-xs font-semibold mt-1">{errors.email}</p>}
+          </div>
+
+          <div className="flex flex-col">
+            <input
+              type="password"
+              placeholder='Password'
+              className={`border p-2 rounded-lg ${errors.password && 'border-red-500'}`}
+              id='password'
+              onChange={handleChange}
+            />
+            {errors.password && <p className="text-red-500 text-xs font-semibold mt-1">{errors.password}</p>}
+          </div>
+
+          <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
+            {state.loading ? 'Cargando...' : 'Registrarse'}
+          </button>
+        </form>
+        <div className='flex items-center justify-center font-bold mt-5 gap-2'>
+        <p>Ya estás registrado?</p>
+        <Link to={'/login'}>
+          <span className='text-blue-700'> Ingresar </span>
+        </Link>
       </div>
-      <div className='w-1/2 flex flex-col justify-center p-16 my-10'>
-        <h1 className='text-2xl text-center font-semibold pb-5'>Crear cuenta</h1>
-        <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
-          <form onSubmit={handleSubmit} className='w-full flex flex-col gap-5'>
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder='Name'
-                className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
-                id='name'
-                onChange={handleChange}
-              />
-              {errors.name && <p className="text-red-500 text-xs font-semibold mt-1">{errors.name}</p>}
-            </div>
-
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder='Last Name'
-                className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
-                id='lastName'
-                onChange={handleChange}
-              />
-              {errors.lastName && <p className="text-red-500 text-xs font-semibold mt-1">{errors.lastName}</p>}
-            </div>
-
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder='Email'
-                className={`border p-3 rounded-lg ${errors.email && 'border-red-500'}`}
-                id='email'
-                onChange={handleChange}
-              />
-              {errors.email && <p className="text-red-500 text-xs font-semibold mt-1">{errors.email}</p>}
-            </div>
-
-            <div className="flex flex-col">
-              <input
-                type="password"
-                placeholder='Password'
-                className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
-                id='password'
-                onChange={handleChange}
-              />
-              {errors.password && <p className="text-red-500 text-xs font-semibold mt-1">{errors.password}</p>}
-            </div>
-
-            <button disabled={state.loading} className='bg-orange-600 text-white p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
-              {state.loading ? 'Cargando...' : 'Registrarse'}
-            </button>
-          </form>
-        </div>
-        <div className='flex items-center justify-center mt-5 gap-2'>
-          <p>Ya estás registrado?</p>
-          <Link to={'/login'}>
-            <span className='text-blue-700'> Ingresar </span>
-          </Link>
-        </div>
-        {message && (
-          <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
-            {message.message}
-          </p>
-        )}
       </div>
+      
+      {message && (
+        <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
+          {message.message}
+        </p>
+      )}
     </div>
-  );
+  </div>
+  </div>
+  </div>
+);
 }
 export default SignUp;
