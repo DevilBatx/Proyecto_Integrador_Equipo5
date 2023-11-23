@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
 
 const ListAllProductsPage = () => {
-    const { dataApi, state, apiURL } = useContext(GlobalContext);
+    const { dataApi, state, apiURL, } = useContext(GlobalContext);
 
     useEffect(() => {
         const productsApiUrl = (`${apiURL}/public/products`);
@@ -11,13 +11,11 @@ const ListAllProductsPage = () => {
 
     const handleDelete = async (productId) => {
 
-        const authToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuMkBnbWFpbC5jb20iLCJpYXQiOjE2OTk1MTM0MDYsImV4cCI6MTY5OTUxNTIwNn0.v1Mg9yYGsF0ROWGgFFZ2ZVTPlHqhiMerX7-C790vdxo";
-        
         if (window.confirm('¿Eliminar producto?')) {
             try {
-                const response = await fetch(`${apiURL}/public/products`, {
+                const response = await fetch(`${apiURL}/auth/products/${productId}`, {
                     method: 'DELETE',
-                    headers: {'Authorization': `Bearer ${authToken}`}          
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}          
                     
                 });
 
