@@ -44,7 +44,7 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                                 <div id="dropdownAvatarName" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-2">
                                     <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                                         <div className="font-medium">Pro User</div>
-                                        <div className="truncate">{state.email?.name}</div>
+                                        <div className="truncate">{state.user.email}</div>
                                     </div>
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownAvatarNameButton">
                                         <li>
@@ -53,6 +53,9 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                                         <li>
                                             <Link to="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ajustes</Link>
                                         </li>
+                                        {state.user.isAdmin == 1 && (<li>
+                                            <Link to="/administracion" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Panel Administracion</Link>
+                                        </li>)}
                                         <li>
                                             <Link to="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Favoritos</Link>
                                         </li>

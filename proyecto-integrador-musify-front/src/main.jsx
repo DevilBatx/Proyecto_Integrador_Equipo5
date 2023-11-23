@@ -14,6 +14,7 @@ import ListAllProductsPage from './pages/ListAllProductsPage.jsx'
 import './index.css'
 import Profile from './Routes/Profile.jsx';
 import PrivateRoute from './Components/PrivateRoute.jsx';
+import ListAllUsersPage from './pages/ListAllUsersPage.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/products" element={<Products />} />
           <Route path="/administracion" element={<AdminPage />} />
           <Route path="/allproducts" element={<ListAllProductsPage />} />
+          <Route path="/allusers" element={<ListAllUsersPage />} />
           <Route path="/agregarproducto" element={<AgregarProducto />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />

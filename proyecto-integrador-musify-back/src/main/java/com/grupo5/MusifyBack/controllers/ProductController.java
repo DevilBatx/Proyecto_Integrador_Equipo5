@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductAlreadyExistsException;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
+import com.grupo5.MusifyBack.dto.SearchProductDTO;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.services.impl.ProductService;
 import com.grupo5.MusifyBack.services.impl.S3Service;
@@ -38,11 +39,18 @@ public class ProductController {
     ObjectMapper mapper;
 
     @GetMapping("/public/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts(@RequestParam String search) {
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         logger.info("Inicio busqueda productos");
 
-        return ResponseEntity.ok(productService.getAllProducts(search));
+        return ResponseEntity.ok(productService.getAllProducts());
     }
+    @GetMapping("/public/searchproducts")
+    public ResponseEntity<List<SearchProductDTO>> searchProducts(@RequestParam String search) {
+        logger.info("Inicio busqueda productos");
+
+        return ResponseEntity.ok(productService.searchProducts(search));
+    }
+
 
     @GetMapping("/public/products/random")
     public ResponseEntity<List<ProductDTO>> getRandomProducts() {

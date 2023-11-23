@@ -1,6 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from './Utils/GlobalContext';
 import { useParams } from 'react-router-dom';
+import Calendar from './Calendar';
 
 //#4
 //Visualizar un bloque de header el cual deberá cubrir el 100 % del ancho de la pantalla.	✔							
@@ -17,23 +18,25 @@ import { useParams } from 'react-router-dom';
 
 
 const CardDetail = () => {
-
-  const params = useParams()
+  const params = useParams();
+  const { state, dataApi } = useContext(GlobalContext);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const goBack = () => {
-    window.history.back(); // This will take the user to the previous page in the history stack
+    window.history.back();
   };
-  
-  const { state, dataApi, apiURL } = useContext(GlobalContext)
+
+  const handleReservaClick = () => {
+    setShowCalendar(!showCalendar);
+  };
 
   const getProduct = async () => {
-      await dataApi(`${apiURL}/public/products/${params.id}`);
-  }
+    await dataApi(`http://localhost:8080/api/v1/public/products/${params.id}`);
+  };
 
   useEffect(() => {
     getProduct();
   }, [params]);
-  console.log(state.data)
 
   return (
     <>
@@ -54,6 +57,7 @@ const CardDetail = () => {
               className="block h-full w-full rounded-lg object-cover object-center "
               src={state.data.images[0].imageUrl} />}
           </div>
+              
 
           {Array.from({ length: 4 }).map((_, index) => (
             <div className=' aspect-[4/2.8] border border-gray-400 rounded-md' key={index}>
@@ -88,9 +92,12 @@ const CardDetail = () => {
               src={state.data.images[4].imageUrl} />}
           </div> */}
         </div>
-
-        <div className='text-right p-5'>
-          <button className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">ver mas</button>
+        <div className='text-right p-5 gap-4'>
+          <button className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">Ver mas</button>
+          <button onClick={handleReservaClick} className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
+          Reserva disponibles
+        </button>
+        {showCalendar && <Calendar />}
         </div>
 
         <h2 className='text-left text-orange-500 font-bold p-5'>DESCRIPCION:</h2>

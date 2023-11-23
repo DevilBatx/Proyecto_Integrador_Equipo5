@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  AddProduct,
-  ListProducts,
-  PlaceholderButton1,
-  PlaceholderButton2
-} from '../AdminPanel';
+import {AddProduct, ListProducts, UserRoles, PlaceholderButton2} from '../AdminPanel';
 
 const AdminPage = () => {
     const [isMobileOrTablet, setIsMobileOrTablet] = useState(window.innerWidth <= 800);
@@ -32,7 +27,7 @@ const AdminPage = () => {
             <div className="flex flex-col space-y-4 p-4">
                 <AddProduct />
                 <ListProducts />
-                <PlaceholderButton1 />
+                <UserRoles />
                 <PlaceholderButton2 />
                 {/* Agregar aca el resto de las opciones de ser necesario */}
             </div>

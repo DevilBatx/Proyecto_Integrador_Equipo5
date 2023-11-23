@@ -15,7 +15,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     List<Product> findRandomProducts();
     @Query(value = "SELECT * FROM producto WHERE id_categoria = ?1", nativeQuery = true)
     List<Product> findProductsByCategories_Id(Long idCategory);
-    @Query(value = "SELECT * FROM producto WHERE nombreproducto LIKE %?1%", nativeQuery = true)
+    @Query(value = "SELECT * FROM producto WHERE nombreproducto LIKE %?1% LIMIT 6", nativeQuery = true)
     List<Product> findProductsBySearchString(String search);
     boolean existsByName(String name);
 

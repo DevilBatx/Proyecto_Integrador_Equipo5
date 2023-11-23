@@ -13,18 +13,16 @@ const reducer = (state, action) => {
 
         case "FETCH":
             return { ...state, data: action.payload }
-
-        case "SIGN_IN_SUCCESS": 
+        case "USER_FETCH":
+            return { ...state, userData: action.payload}
+        case "SIGN_IN_SUCCESS":
             return { ...state, user: action.payload, isAuthenticated: true }; // Agrega isAuthenticated al estado
         case "SIGN_OUT":
             return { ...state, user: null, isAuthenticated: false }; // Agrega isAuthenticated al estado
-
         case "SIGN_IN_ERROR":
             return { ...state, error: action.payload }
-
         case "SET_LOADING":
             return { ...state, loading: action.payload };
-            
         default:
             return state; //isAuthenticated, que indica si el usuario está autenticado o no.
     }
@@ -45,9 +43,17 @@ export const ContextProvider = ({ children }) => {
             })
 
     }
+    const authDataApi = (url) => {
+        return fetch(url, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+            .then((response) => response.json())
+            .then((result) => {
+                dispatch({ type: "USER_FETCH", payload: result })
+            })
+
+    }
 
     return (
-        <GlobalContext.Provider value={{ state, dispatch, dataApi, apiURL }}>
+        <GlobalContext.Provider value={{ state, dispatch, dataApi, authDataApi, apiURL }}>
             {children}
         </GlobalContext.Provider>
     );

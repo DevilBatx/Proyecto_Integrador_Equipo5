@@ -14,6 +14,7 @@ const SignUp = () => {
 
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null)
+  const [accountCreated, setAccountCreated] = useState(false)
   const navigate = useNavigate();
   const { state, dispatch, apiURL } = useContext(GlobalContext);
 
@@ -73,17 +74,15 @@ const SignUp = () => {
 
         const data = await response.json();
 
-        // if (!response.ok) {
-        //   throw new Error(data.message || 'Error en la solicitud');
-        // }
-        // setLoading(false);
-        //debugger;
+        console.log(response);
+
         if (response.status === 200) {
+          setAccountCreated(true);
           setMessage({ message: 'Usuario registrado correctamente, Redirigiendo...', isSuccess: true });
           // Agrega un temporizador de 3 segundos antes de redirigir
           setTimeout(() => {
             dispatch({ type: 'SET_LOADING', payload: false });
-            navigate('/login');
+            // navigate('/login');
           }, 3000);
         } else if (response.status === 409) {
           setMessage({ message: 'El correo electrónico ya está registrado. Intenta con otro.', isSuccess: false });
@@ -107,12 +106,19 @@ const SignUp = () => {
     });
   };
 
+  const handleRedirection = () => {
+    navigate('/login');
+  };  
+
   return (
     <div className='w-full h-screen flex items-start'>
       <div className='w-1/2 h-full flex flex-col'>
         <img src={imgLog} alt="ImagenBg" className='w-full h-full object-cover' />
       </div>
       <div className='w-1/2 flex flex-col justify-center p-16 my-10'>
+        
+        {!accountCreated ? (// Mostrar el formulario si la cuenta aún no se ha creado
+        <>
         <h1 className='text-2xl text-center font-semibold pb-5'>Crear cuenta</h1>
         <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
           <form onSubmit={handleSubmit} className='w-full flex flex-col gap-5'>
@@ -165,6 +171,7 @@ const SignUp = () => {
             </button>
           </form>
         </div>
+        
         <div className='flex items-center justify-center mt-5 gap-2'>
           <p>Ya estás registrado?</p>
           <Link to={'/login'}>
@@ -176,6 +183,35 @@ const SignUp = () => {
             {message.message}
           </p>
         )}
+        </>
+        ) : (  // Mostrar el mensaje de bienvenida si la cuenta se ha creado con éxito
+        <>
+          <h1 className='text-2xl text-center font-semibold pb-5'>¡Bienvenido!</h1>
+          <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
+          <p className="mt-5 font-semibold text-gray-700">
+            Usuario registrado correctamente. Te hemos enviado un correo de confirmación a {formData.email}. Por favor, verifica tu bandeja de entrada.
+            Si no encuentras el correo, también revisa la carpeta de correo no deseado o spam.
+          </p>
+          </div>
+          <p className="mt-2 text-sm">
+            ¿No has recibido el correo de confirmación?
+            <button
+              className="text-blue-700 ml-1 underline"
+              onClick={() => handleResendConfirmationEmail(formData.email)}
+              disabled={state.loading}
+            >
+              Reenviar correo
+            </button>
+            <button
+              className="text-blue-700 ml-1 underline"
+              onClick={() => handleRedirection()}
+              disabled={state.loading}
+            >
+              Iniciar sesión
+            </button>
+          </p>
+        </>
+      )}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ package com.grupo5.MusifyBack.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.UserAlreadyExistException;
 import com.grupo5.MusifyBack.dto.UserDTO;
+import com.grupo5.MusifyBack.dto.response.AuthResponse;
 import com.grupo5.MusifyBack.dto.response.RegistrationSuccesResponse;
 import com.grupo5.MusifyBack.models.User;
 import com.grupo5.MusifyBack.persistence.repositories.IUserRepository;
@@ -29,7 +30,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     ObjectMapper mapper;
 
-
+    //Crear Usuario
     public ResponseEntity<?> saveUser(User userInfo) {
         if(userRepository.findByEmail(userInfo.getEmail()).isPresent()){
             throw new UserAlreadyExistException("User already exists", userInfo.getEmail());
@@ -48,9 +49,9 @@ public class UserService implements IUserService, UserDetailsService {
                         "</body>");
 
 
-        return ResponseEntity.ok("User Added Successfully");
+        return ResponseEntity.ok(new RegistrationSuccesResponse(userInfo.getEmail(),"User registered successfully"));
     }
-
+    //Obtener usuarios
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -62,7 +63,7 @@ public class UserService implements IUserService, UserDetailsService {
         return mapper.convertValue(user, UserDTO.class);
 
     }
-
+    //Obtener usuario por nombre
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -73,8 +74,50 @@ public class UserService implements IUserService, UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
     }
 
-    //TODO Modificar Usuario (Administrador)
-    //TODO Eliminar Usuario (Administrador)
+    //Modificar Rol Administrador (Administrador)
+    @Override
+    public void updateAdminRole(String isAdmin, Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setIsAdmin(Integer.parseInt(isAdmin));
+            userRepository.save(user.get());
+        } else {
+            throw new UsernameNotFoundException("User not found " + id);
+        }
+    }
+    // Modificar Usuario
+    @Override
+    public ResponseEntity<?> updateUser(UserDTO userDTO, Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new UsernameNotFoundException("User not found " + id);
+        }
+
+            user.get().setName(userDTO.getName());
+            user.get().setLastName(userDTO.getLastName());
+            user.get().setEmail(userDTO.getEmail());
+            userRepository.save(user.get());
+        return ResponseEntity.ok("User updated successfully");
+
+    }
+
+    @Override
+    public String updateUserPassword(String email, String currentPassword, String newPassword) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if(user.isEmpty()){
+            throw new UsernameNotFoundException("User not found " + email);
+        }
+        if(encoder.matches(currentPassword, user.get().getPassword())){
+            user.get().setPassword(encoder.encode(newPassword));
+            userRepository.save(user.get());
+            return "Password updated successfully";
+        }else{
+            return "Current password is incorrect";
+        }
+    }
+
+
+    //Eliminar usuario
     @Override
     public void deleteUser(Long id) {
         Optional<User> user = userRepository.findById(id);
