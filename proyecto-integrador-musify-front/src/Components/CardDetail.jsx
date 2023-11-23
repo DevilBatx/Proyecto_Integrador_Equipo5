@@ -19,7 +19,7 @@ import Calendar from './Calendar';
 
 const CardDetail = () => {
   const params = useParams();
-  const { state, dataApi } = useContext(GlobalContext);
+  const { state, dataApi,apiURL } = useContext(GlobalContext);
   const [showCalendar, setShowCalendar] = useState(false);
 
   const goBack = () => {

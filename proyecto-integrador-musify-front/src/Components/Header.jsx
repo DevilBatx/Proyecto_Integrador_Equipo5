@@ -25,7 +25,7 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                     <p className="hidden md:block text-sm text-blue font-semibold">{subtitle}</p>
                 </div>
             </div>
-            {state.isAuthenticated ? (
+            {/* {state.isAuthenticated ? (
                 <div className='flex gap-4 mt-4'>
                     <div className="relative group">
                         <button
@@ -63,7 +63,7 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                             </div>
                         )}
                     </div>
-                </div>
+                </div> */}
                 {state.isAuthenticated ? (
                     <div className='flex gap-4 mt-4'>
                         <div className="relative group">

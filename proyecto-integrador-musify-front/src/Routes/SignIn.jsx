@@ -19,7 +19,7 @@ const SignIn = () => {
     e.preventDefault(); //Preeve que la pagina se actualize al darle click en registrarse
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const response = await fetch(`${apiURL}/auth/login`,{ //Ahi iria la api para la request del fetch
+      const response = await fetch(`${apiURL}/auth/login`, { //Ahi iria la api para la request del fetch
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const SignIn = () => {
       if (data.token) {
         localStorage.setItem('token', data.token);
         let url;
-        data.rolUser == 1 ? url =`${apiURL}/auth/admin/adminProfile` : url = `${apiURL}/auth/user/userProfile`
+        data.rolUser == 1 ? url = `${apiURL}/auth/admin/adminProfile` : url = `${apiURL}/auth/user/userProfile`
         const userResponse = await fetch(url, {
           method: 'GET',
           headers: {
@@ -61,33 +61,34 @@ const SignIn = () => {
   return (
     <div className='w-full h-screen min-h-screen flex '>
       <div className=' w-full h-full flex flex-col'>
-      <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{backgroundImage:" url("+ imgLog +")"}}>
-  
-    <div className='w-screen h-[100vh] border-orange-200  opacity-25 absolute top-0 left-0'></div>
-      <div className='relative flex flex-col text-center gap-4 py-20  '>
-        
-       
-        <div className='w-[35%] mx-auto bg-orange-50 border-2 border-gray-500  rounded-xl overflow-hidden p-5'>
-       
-        <h1 className='text-2xl text-center font-semibold '>Ingresar</h1>
-          <form onSubmit={handleSubmit} className='p-5 flex flex-col gap-3'>
-            <input type="text" placeholder='Email' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
-            <input type="password" placeholder='Contraseña' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
-            <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.loading ? 'Cargando...' : 'Ingresar'}</button>
-          </form>
-          <p className='font-bold'>No tienes una cuenta?</p>
-          <div className='flex items-center justify-center gap-2 mt-5'>
-          <Link to={'/register'}>
-            <span className='text-blue-700 font-bold'>Crear cuenta</span>
-          </Link>
+        <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{ backgroundImage: " url(" + imgLog + ")" }}>
+
+          <div className='w-screen h-[100vh] border-orange-200  opacity-25 absolute top-0 left-0'></div>
+          <div className='relative flex flex-col text-center gap-4 py-20  '>
+
+
+            <div className='w-[35%] mx-auto bg-orange-50 border-2 border-gray-500  rounded-xl overflow-hidden p-5'>
+
+              <h1 className='text-2xl text-center font-semibold '>Ingresar</h1>
+              <form onSubmit={handleSubmit} className='p-5 flex flex-col gap-3'>
+                <input type="text" placeholder='Email' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
+                <input type="password" placeholder='Contraseña' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
+                <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.loading ? 'Cargando...' : 'Ingresar'}</button>
+              </form>
+              {state.error && <p className='text-red-500 mt-5 mb-2'>{state.error}</p>}
+              <p className='font-bold'>No tienes una cuenta?</p>
+              <div className='flex items-center justify-center gap-2 mt-5'>
+                <Link to={'/register'}>
+                  <span className='text-blue-700 font-bold'>Crear cuenta</span>
+                </Link>
+              </div>
+
+
+            </div>
+            
+          </div>
         </div>
-        
-          
-        </div>
-        {state.error && <p className='text-red-500 mt-5'>{state.error}</p>}
       </div>
-    </div>
-    </div>
     </div>
   )
 }

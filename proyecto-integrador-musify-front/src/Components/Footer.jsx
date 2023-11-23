@@ -16,7 +16,7 @@ const Footer = () => {
               <Link to="/about" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">About</Link>
             </li>
             <li>
-              <Link to="/privacy" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Politica de Privacidad</Link>
+              <Link to="/politicas" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Politica de Privacidad</Link>
             </li>
             <li>
               <Link to="/licensing" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Licensing</Link>
