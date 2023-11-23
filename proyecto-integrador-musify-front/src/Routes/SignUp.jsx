@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import imgLog from '../assets/Products/imgLogin.png'
+import imgLog from '../assets/Products/image8.png'
 import { GlobalContext } from '../Components/Utils/GlobalContext';
 
 
@@ -108,112 +108,114 @@ const SignUp = () => {
 
   const handleRedirection = () => {
     navigate('/login');
-  };  
+  };
 
-  return (
-    <div className='w-full h-screen flex items-start'>
-      <div className='w-1/2 h-full flex flex-col'>
-        <img src={imgLog} alt="ImagenBg" className='w-full h-full object-cover' />
-      </div>
-      <div className='w-1/2 flex flex-col justify-center p-16 my-10'>
-        
+  return ( <div className='w-full h-screen flex '>
+  <div className='w-full h-full flex flex-col'>
+  <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{backgroundImage:" url("+ imgLog +")"}}>
+
+  <div className='w-screen h-[100vh] border-orange-200 opacity-25 absolute top-0 left-0'></div>
+      <div className=' relative flex flex-col  text-center gap-4 py-14 '>
+
         {!accountCreated ? (// Mostrar el formulario si la cuenta aún no se ha creado
-        <>
-        <h1 className='text-2xl text-center font-semibold pb-5'>Crear cuenta</h1>
-        <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
-          <form onSubmit={handleSubmit} className='w-full flex flex-col gap-5'>
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder='Name'
-                className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
-                id='name'
-                onChange={handleChange}
-              />
-              {errors.name && <p className="text-red-500 text-xs font-semibold mt-1">{errors.name}</p>}
+          <>
+            <div className=' w-[35%] mx-auto bg-orange-50 border-2 border-gray-500 rounded-xl overflow-hidden p-5'>
+            <h1 className='text-2xl text-center font-semibold pb-5'>Crear cuenta</h1>
+              <form onSubmit={handleSubmit} className='w-full flex flex-col gap-5'>
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    placeholder='Name'
+                    className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
+                    id='name'
+                    onChange={handleChange}
+                  />
+                  {errors.name && <p className="text-red-500 text-xs font-semibold mt-1">{errors.name}</p>}
+                </div>
+
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    placeholder='Last Name'
+                    className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
+                    id='lastName'
+                    onChange={handleChange}
+                  />
+                  {errors.lastName && <p className="text-red-500 text-xs font-semibold mt-1">{errors.lastName}</p>}
+                </div>
+
+                <div className="flex flex-col">
+                  <input
+                    type="text"
+                    placeholder='Email'
+                    className={`border p-3 rounded-lg ${errors.email && 'border-red-500'}`}
+                    id='email'
+                    onChange={handleChange}
+                  />
+                  {errors.email && <p className="text-red-500 text-xs font-semibold mt-1">{errors.email}</p>}
+                </div>
+
+                <div className="flex flex-col">
+                  <input
+                    type="password"
+                    placeholder='Password'
+                    className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
+                    id='password'
+                    onChange={handleChange}
+                  />
+                  {errors.password && <p className="text-red-500 text-xs font-semibold mt-1">{errors.password}</p>}
+                </div>
+
+                <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
+                  {state.loading ? 'Cargando...' : 'Registrarse'}
+                </button>
+              </form>
             </div>
 
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder='Last Name'
-                className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
-                id='lastName'
-                onChange={handleChange}
-              />
-              {errors.lastName && <p className="text-red-500 text-xs font-semibold mt-1">{errors.lastName}</p>}
+            <div className='flex items-center justify-center font-bold mt-5 gap-2'>
+              <p>Ya estás registrado?</p>
+              <Link to={'/login'}>
+                <span className='text-blue-700'> Ingresar </span>
+              </Link>
             </div>
-
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder='Email'
-                className={`border p-3 rounded-lg ${errors.email && 'border-red-500'}`}
-                id='email'
-                onChange={handleChange}
-              />
-              {errors.email && <p className="text-red-500 text-xs font-semibold mt-1">{errors.email}</p>}
-            </div>
-
-            <div className="flex flex-col">
-              <input
-                type="password"
-                placeholder='Password'
-                className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
-                id='password'
-                onChange={handleChange}
-              />
-              {errors.password && <p className="text-red-500 text-xs font-semibold mt-1">{errors.password}</p>}
-            </div>
-
-            <button disabled={state.loading} className='bg-orange-600 text-white p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
-              {state.loading ? 'Cargando...' : 'Registrarse'}
-            </button>
-          </form>
-        </div>
-        
-        <div className='flex items-center justify-center mt-5 gap-2'>
-          <p>Ya estás registrado?</p>
-          <Link to={'/login'}>
-            <span className='text-blue-700'> Ingresar </span>
-          </Link>
-        </div>
-        {message && (
-          <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
-            {message.message}
-          </p>
-        )}
-        </>
+            {message && (
+              <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
+                {message.message}
+              </p>
+            )}
+          </>
         ) : (  // Mostrar el mensaje de bienvenida si la cuenta se ha creado con éxito
-        <>
-          <h1 className='text-2xl text-center font-semibold pb-5'>¡Bienvenido!</h1>
-          <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
-          <p className="mt-5 font-semibold text-gray-700">
-            Usuario registrado correctamente. Te hemos enviado un correo de confirmación a {formData.email}. Por favor, verifica tu bandeja de entrada.
-            Si no encuentras el correo, también revisa la carpeta de correo no deseado o spam.
-          </p>
-          </div>
-          <p className="mt-2 text-sm">
-            ¿No has recibido el correo de confirmación?
-            <button
-              className="text-blue-700 ml-1 underline"
-              onClick={() => handleResendConfirmationEmail(formData.email)}
-              disabled={state.loading}
-            >
-              Reenviar correo
-            </button>
-            <button
-              className="text-blue-700 ml-1 underline"
-              onClick={() => handleRedirection()}
-              disabled={state.loading}
-            >
-              Iniciar sesión
-            </button>
-          </p>
-        </>
-      )}
+          <>
+            <h1 className='text-2xl text-center font-semibold pb-5'>¡Bienvenido!</h1>
+            <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
+              <p className="mt-5 font-semibold text-gray-700">
+                Usuario registrado correctamente. Te hemos enviado un correo de confirmación a {formData.email}. Por favor, verifica tu bandeja de entrada.
+                Si no encuentras el correo, también revisa la carpeta de correo no deseado o spam.
+              </p>
+            </div>
+            <p className="mt-2 text-sm">
+              ¿No has recibido el correo de confirmación?
+              <button
+                className="text-blue-700 ml-1 underline"
+                onClick={() => handleResendConfirmationEmail(formData.email)}
+                disabled={state.loading}
+              >
+                Reenviar correo
+              </button>
+              <button
+                className="text-blue-700 ml-1 underline"
+                onClick={() => handleRedirection()}
+                disabled={state.loading}
+              >
+                Iniciar sesión
+              </button>
+            </p>
+          </>
+        )}
       </div>
     </div>
+    </div>
+  </div>
   );
 }
 export default SignUp;

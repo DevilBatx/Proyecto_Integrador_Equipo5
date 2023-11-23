@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
-import imgLog from '../assets/Products/imgLogin.png'
+import imgLog from '../assets/Products/image8.png'
 
 const SignIn = () => {
   const [formData, setFormData] = useState();
@@ -59,28 +59,35 @@ const SignIn = () => {
   }
 
   return (
-    <div className='w-full h-screen min-h-screen flex items-start'>
-      <div className=' w-1/2 h-full flex flex-col'>
-        <img src={imgLog} alt="ImagenBg" className='w-full h-full object-cover' />
-      </div>
-      <div className=' w-1/2 h-full min-h-screen flex flex-col  p-16 my-10'>
-        <p className=' text-xl pt-10'>Bienvenido de nuevo! </p>
-        <h1 className='text-3xl text-center font-semibold p-5'>Ingresar</h1>
-        <div className=' bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
-          <form onSubmit={handleSubmit} className='w-full flex flex-col gap-4'>
+    <div className='w-full h-screen min-h-screen flex '>
+      <div className=' w-full h-full flex flex-col'>
+      <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{backgroundImage:" url("+ imgLog +")"}}>
+  
+    <div className='w-screen h-[100vh] border-orange-200  opacity-25 absolute top-0 left-0'></div>
+      <div className='relative flex flex-col text-center gap-4 py-20  '>
+        
+       
+        <div className='w-[35%] mx-auto bg-orange-50 border-2 border-gray-500  rounded-xl overflow-hidden p-5'>
+       
+        <h1 className='text-2xl text-center font-semibold '>Ingresar</h1>
+          <form onSubmit={handleSubmit} className='p-5 flex flex-col gap-3'>
             <input type="text" placeholder='Email' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
             <input type="password" placeholder='Contraseña' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
-            <button disabled={state.loading} className='bg-orange-600 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.loading ? 'Cargando...' : 'Ingresar'}</button>
+            <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.loading ? 'Cargando...' : 'Ingresar'}</button>
           </form>
-        </div>
-        <div className='flex gap-2 mt-5'>
-          <p>No tienes una cuenta?</p>
+          <p className='font-bold'>No tienes una cuenta?</p>
+          <div className='flex items-center justify-center gap-2 mt-5'>
           <Link to={'/register'}>
-            <span className='text-blue-700'>Crear cuenta</span>
+            <span className='text-blue-700 font-bold'>Crear cuenta</span>
           </Link>
+        </div>
+        
+          
         </div>
         {state.error && <p className='text-red-500 mt-5'>{state.error}</p>}
       </div>
+    </div>
+    </div>
     </div>
   )
 }

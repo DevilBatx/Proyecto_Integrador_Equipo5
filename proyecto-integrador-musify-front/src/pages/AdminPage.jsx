@@ -17,7 +17,7 @@ const AdminPage = () => {
     }, []);
 
     if (isMobileOrTablet) {
-        return <div className="p-28 mt-28 text-center p-4">Pagina no disponible para este dispositivo</div>;
+        return <div className="p-28 mt-28 text-center ">Pagina no disponible para este dispositivo</div>;
         {/*arreglar el footer para cuando se usa otra resolucion*/}
     }
 
