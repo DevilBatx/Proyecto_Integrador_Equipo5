@@ -31,7 +31,7 @@ const CardDetail = () => {
   };
 
   const getProduct = async () => {
-    await dataApi(`http://localhost:8080/api/v1/public/products/${params.id}`);
+    await dataApi(`${apiURL}/public/products/${params.id}`);
   };
 
   useEffect(() => {

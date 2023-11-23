@@ -12,7 +12,7 @@ const PaginationButtons = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/public/products/random`
+          `${apiURL}/public/products/random`
         );
         const result = await response.json();
         setTotalPages(Math.ceil(result.length / itemsPerPage));

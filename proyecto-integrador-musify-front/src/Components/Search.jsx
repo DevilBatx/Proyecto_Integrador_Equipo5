@@ -20,7 +20,7 @@ const Search = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/public/searchproducts?search=${value}`,
+        `${apiURL}/public/searchproducts?search=${value}`,
       );
 
       // Check if this is still the latest request and if the input hasn't been cleared
