@@ -38,7 +38,7 @@ const PaginationButtons = () => {
             key={i}
             onClick={() => setCurrent(pg.page)}
             className={`rounded-full border-orange-500 p-3 font-semibold text-black transition ease-in-out
-             ${current === pg.page && 'bg-orange-500 text-white' }`}>
+             ${current === pg.page && 'bg-orange-500 text-white'}`}>
             {pg.page}
           </button>
         ))}

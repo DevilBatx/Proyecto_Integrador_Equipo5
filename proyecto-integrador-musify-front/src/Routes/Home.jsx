@@ -6,7 +6,7 @@ import fondo2 from '../assets/fondo2.jpg';
 import Calendar from '../Components/Calendar';
 import { useEffect, useContext, useState } from 'react';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
-import PaginationButtons from '../Components/PaginationButtoms';
+import PaginationButtons from '../Components/PaginationButtons';
 
 
 const Home = () => {
@@ -30,15 +30,15 @@ const Home = () => {
     return (
         <div className="bg-white min-h-screen ">
             {/*Banner/buscador*/}
-           <section>
-            <div className='w-full h-[50vh] bg-cover' style={{backgroundImage:" url("+ fondo2 +")"}}>           
+            <section>
+                <div className='w-full h-[50vh] bg-cover' style={{ backgroundImage: " url(" + fondo2 + ")" }}>
                     <div className=' flex flex-col-3 p-[10%] gap-16 '>
-                      
+
                         <Search />
-                    
-                        <Calendar />  
-                        </div>  
-            </div>
+
+                        <Calendar />
+                    </div>
+                </div>
             </section>
             <section className="flex flex-col items-center justify-center">
                 <div className="text-center">
@@ -57,7 +57,7 @@ const Home = () => {
                         ))}
                     </div>
                     <PaginationButtons />
-                  
+
                 </div>
             </section>
         </div>
