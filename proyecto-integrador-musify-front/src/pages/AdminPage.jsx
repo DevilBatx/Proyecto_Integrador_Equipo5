@@ -28,7 +28,7 @@ const AdminPage = () => {
                 <AddProduct />
                 <ListProducts />
                 <UserRoles />
-                <PlaceholderButton2 />
+               {/*  <PlaceholderButton2 />
                 {/* Agregar aca el resto de las opciones de ser necesario */}
             </div>
         </div>
