@@ -41,52 +41,54 @@ function AgregarProducto({ onAdd }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setSuccessMessage("");
-    setErrorMessage("");
+    const selectedCategory = categories.find(cat => cat.id.toString() === category);
 
-    const formData = new FormData();
-    formData.set(
-      "productInfo",
-      new Blob([JSON.stringify({ name, description, category })], {
-        type: "application/json",
-      })
-    );
-    images.forEach((image) => {
-      formData.set("files", image);
+  setSuccessMessage("");
+  setErrorMessage("");
+
+  const formData = new FormData();
+  formData.set(
+    "productInfo",
+    new Blob([JSON.stringify({ name, description, category: selectedCategory })], {
+      type: "application/json",
+    })
+  );
+  images.forEach((image) => {
+    formData.append("files", image);
+  });
+  const token = localStorage.getItem("token");
+  
+  try {      
+    const response = await fetch(`${apiURL}/auth/products`, {
+      method: "POST",
+      body: formData,
+      headers: { Authorization: `Bearer ${token}`},
     });
-const token = localStorage.getItem("token")
-    try {      
-      const response = await fetch(`${apiURL}/auth/products`, {
-        method: "POST",
-        body: formData,
-        headers: { Authorization: `Bearer ${token}`},
-      });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log(result);
-
-      setSuccessMessage("Producto agregado con éxito!");
-      onAdd(result);
-
-      setName("");
-      setDescription("");
-      setCategory("");
-      setImages([]);
-    } catch (error) {
-      console.error(
-        "Error al agregar el producto. Por favor, intente de nuevo:",
-        error
-      );
-
-      setErrorMessage(
-        "Error al agregar el producto. Por favor, intente de nuevo."
-      );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+
+    const result = await response.json();
+    console.log(result);
+
+    setSuccessMessage("Producto agregado con éxito!");
+    onAdd(result);
+
+    setName("");
+    setDescription("");
+    setCategory("");
+    setImages([]);
+  } catch (error) {
+    console.error(
+      "Error al agregar el producto. Por favor, intente de nuevo:",
+      error
+    );
+    setErrorMessage(
+      "Error al agregar el producto. Por favor, intente de nuevo."
+    );
+  }
+};
 
   return (
     <div className="p-16 mt-14 mb-10 bg-gray-100 rounded-xl shadow-md">
