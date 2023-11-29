@@ -44,6 +44,7 @@ function AgregarProducto({ onAdd }) {
     setSuccessMessage("");
     setErrorMessage("");
 
+<<<<<<< Updated upstream
     const formData = new FormData();
     formData.set(
       "productInfo",
@@ -53,6 +54,28 @@ function AgregarProducto({ onAdd }) {
     );
     images.forEach((image) => {
       formData.set("files", image);
+=======
+  setSuccessMessage("");
+  setErrorMessage("");
+
+  const formData = new FormData();
+  formData.set(
+    "productInfo",
+    new Blob([JSON.stringify({ name, description, category: selectedCategory })], {
+      type: "application/json",
+    })
+  );
+  images.forEach((image) => {
+    formData.append("files", image);
+  });
+  const token = sessionStorage.getItem("token");
+  
+  try {      
+    const response = await fetch(`${apiURL}/auth/products`, {
+      method: "POST",
+      body: formData,
+      headers: { Authorization: `Bearer ${token}`},
+>>>>>>> Stashed changes
     });
 const token = localStorage.getItem("token")
     try {      

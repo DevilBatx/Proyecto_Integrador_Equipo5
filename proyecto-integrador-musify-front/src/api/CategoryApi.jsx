@@ -24,7 +24,7 @@ export const createCategory = async (apiURL, categoryData) => {
         const response = await fetch(`${apiURL}/auth/categories`, {
             method: 'POST',
             body: categoryData,
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` },
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,7 +44,7 @@ export const updateCategory = async (apiURL, categoryData) => {
         const response = await fetch(`${apiURL}/auth/categories`, {
             method: 'PUT',
             body: categoryData,
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` },
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,7 +62,7 @@ export const deleteCategory = async (apiURL, categoryId) => {
     try {
         const response = await fetch(`${apiURL}/auth/categories/${categoryId}`, {
             method: 'DELETE',
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` },
         });
         if (response.ok) {
             const data = await response.json();
