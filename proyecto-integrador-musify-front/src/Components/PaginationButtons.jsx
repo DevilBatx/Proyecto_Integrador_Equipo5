@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { GlobalContext } from "./Utils/GlobalContext";
 import Card from "./Card";
 
-const PaginationButtons = () => {
+const PaginationButtons = (props) => {
   const { apiURL } = useContext(GlobalContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
@@ -14,7 +14,7 @@ const PaginationButtons = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${apiURL}/public/products/random`
+          props.endPoint
         );
         const result = await response.json();
         setTotalPages(Math.ceil(result.length / itemsPerPage));

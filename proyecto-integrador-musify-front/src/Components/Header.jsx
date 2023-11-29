@@ -1,7 +1,6 @@
-import React, { useContext, useState,useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
-import { validarToken } from '../api/AuthApi.js';
 import Avatar from './Avatar';
 import logo from '../assets/logo.png';
 
@@ -10,20 +9,6 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
     const navigate = useNavigate();
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-    useEffect(() => {
-        // Comprueba si existe un token en sessionStorage
-        const token = sessionStorage.getItem('token');
-        //debugger;
-        if (token  ) {
-            // El token es válido, autentica al usuario y muestra el avatar
-            const user = JSON.parse(sessionStorage.getItem('user'));
-            
-            dispatch({ type: "SIGN_IN_SUCCESS", payload: user });          
-        } else {
-            // El token no es válido o no existe, muestra los botones de inicio de sesión
-            dispatch({ type: 'SIGN_OUT' });
-        }     
-    }, []);
 
     const handleLogout = () => {
         sessionStorage.removeItem('token');
@@ -81,25 +66,30 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                         )}
                     </div>
                 </div> */}
-                {state.isAuthenticated ? (
-                    <div className='flex gap-4 mt-4'>
+                {sessionStorage.token ? (
+                    <div className='flex gap-4 mt-4' onMouseLeave={()=> setDropdownOpen(!isDropdownOpen)}>
                         <div className="relative group">
                             <button
                                 id="dropdownAvatarNameButton"
-                                onClick={() => setDropdownOpen(!isDropdownOpen)}
-                                className="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-800 dark:hover:text-blue-700 md:me-0  focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
+                                //onClick={() => setDropdownOpen(!isDropdownOpen)}
+                                className="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-800 dark:hover:text-blue-700 md:me-0 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
                                 type="button"
+                                onMouseEnter={() => setDropdownOpen(!isDropdownOpen)}
                             >
                                 <div>
                                     <h4><Avatar /></h4>
-                                    <h4 className='font-semibold'>Bienvenido {state.user?.name}</h4>
+                                    <h4 className='font-semibold'>{state.user?.name} {state.user?.lastName}</h4>
                                 </div>
-                                <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"></svg>
+                                <div className={`transition-transform duration-300 transform ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                                    <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path fill="#000" d="M5 6L0 0h10L5 6z" />
+                                    </svg>
+                                </div>
                             </button>
                             {isDropdownOpen && (
-                                <div id="dropdownAvatarName" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-2">
+                                <div id="dropdownAvatarName" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-0">
                                     <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                                        <div className="font-medium">Pro User</div>
+                                        <div className="font-medium">Bienvenido</div>
                                         <div className="truncate">{state.user.email}</div>
                                     </div>
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownAvatarNameButton">

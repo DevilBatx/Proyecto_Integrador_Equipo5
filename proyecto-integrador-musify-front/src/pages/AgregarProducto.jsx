@@ -16,7 +16,7 @@ function AgregarProducto({ onAdd }) {
     const fetchCategories = async () => {
       try {
         const response = await fetch(`${apiURL}/public/categories`, {
-          method: "GET"         
+          method: "GET"
         });
 
         if (!response.ok) {
@@ -31,8 +31,8 @@ function AgregarProducto({ onAdd }) {
     };
 
     fetchCategories()
-    ;
-    },[]);
+      ;
+  }, []);
 
   const handleImageChange = (event) => {
     setImages([...images, ...event.target.files]);
@@ -44,45 +44,26 @@ function AgregarProducto({ onAdd }) {
     setSuccessMessage("");
     setErrorMessage("");
 
-<<<<<<< Updated upstream
+    setSuccessMessage("");
+    setErrorMessage("");
+
     const formData = new FormData();
     formData.set(
       "productInfo",
-      new Blob([JSON.stringify({ name, description, category })], {
+      new Blob([JSON.stringify({ name, description, category: selectedCategory })], {
         type: "application/json",
       })
     );
     images.forEach((image) => {
-      formData.set("files", image);
-=======
-  setSuccessMessage("");
-  setErrorMessage("");
-
-  const formData = new FormData();
-  formData.set(
-    "productInfo",
-    new Blob([JSON.stringify({ name, description, category: selectedCategory })], {
-      type: "application/json",
-    })
-  );
-  images.forEach((image) => {
-    formData.append("files", image);
-  });
-  const token = sessionStorage.getItem("token");
-  
-  try {      
-    const response = await fetch(`${apiURL}/auth/products`, {
-      method: "POST",
-      body: formData,
-      headers: { Authorization: `Bearer ${token}`},
->>>>>>> Stashed changes
+      formData.append("files", image);
     });
-const token = localStorage.getItem("token")
-    try {      
+    const token = sessionStorage.getItem("token");
+
+    try {
       const response = await fetch(`${apiURL}/auth/products`, {
         method: "POST",
         body: formData,
-        headers: { Authorization: `Bearer ${token}`},
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) {
