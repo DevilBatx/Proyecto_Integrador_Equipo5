@@ -34,7 +34,7 @@ const SignIn = () => {
       }
 
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.token);
         let url;
         data.rolUser == 1 ? url = `${apiURL}/auth/admin/adminProfile` : url = `${apiURL}/auth/user/userProfile`
         const userResponse = await fetch(url, {

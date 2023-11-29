@@ -56,7 +56,7 @@ function AgregarProducto({ onAdd }) {
   images.forEach((image) => {
     formData.append("files", image);
   });
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   
   try {      
     const response = await fetch(`${apiURL}/auth/products`, {

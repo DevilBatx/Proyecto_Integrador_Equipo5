@@ -11,8 +11,8 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
     useEffect(() => {
-        // Comprueba si existe un token en localStorage
-        const token = localStorage.getItem('token');
+        // Comprueba si existe un token en sessionStorage
+        const token = sessionStorage.getItem('token');
         //debugger;
         if (token  ) {
             // El token es válido, autentica al usuario y muestra el avatar
@@ -26,9 +26,9 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
         dispatch({ type: 'SIGN_OUT' });
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
         navigate('/login');
     };
 

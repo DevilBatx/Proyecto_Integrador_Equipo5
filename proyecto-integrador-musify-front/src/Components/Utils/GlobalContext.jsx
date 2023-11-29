@@ -27,8 +27,8 @@ const reducer = (state, action) => {
             return state; //isAuthenticated, que indica si el usuario está autenticado o no.
     }
 };
-const apiURL = "http://localhost:8080/api/v1"
-
+//const apiURL = "http://localhost:8080/api/v1"
+const apiURL = "http://54.197.145.57:8080/api/v1"
 export const ContextProvider = ({ children }) => {
 
     const initialState = { data: [], userReducer: { user: null, loading: false, error: null } }
@@ -44,7 +44,7 @@ export const ContextProvider = ({ children }) => {
 
     }
     const authDataApi = (url) => {
-        return fetch(url, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+        return fetch(url, { headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}` } })
             .then((response) => response.json())
             .then((result) => {
                 dispatch({ type: "USER_FETCH", payload: result })
