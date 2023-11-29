@@ -1,16 +1,21 @@
-import {  Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from './Components/Header.jsx';
 import Footer from './Components/Footer.jsx';
 import { ContextProvider } from './Components/Utils/GlobalContext.jsx';
 
 
+
 function App() {
+
+
+
+
   return (
     <ContextProvider>
       <div>
         <Header />
         <Outlet />
-        <Footer /> 
+        <Footer />
       </div>
     </ContextProvider>
   );

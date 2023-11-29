@@ -59,9 +59,15 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public void deleteCategory(Long id) {
-        Optional<Category> categoryOpional = categoryRepository.findById(id);
-        if (categoryOpional.isPresent()) {
-            categoryRepository.delete(categoryOpional.get());
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+        if (categoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+
+            // Verificar si hay productos asociados a la categoría
+            if(!productRepository.findProductsByCategories_Id(id).isEmpty()) {
+                throw new IllegalStateException("No es posible eliminar la categoría porque tiene productos asociados.");
+            }
+            categoryRepository.delete(categoryOptional.get());
         } else {
             throw new CategoryNotFoundException("Category not found " + id );
         }

@@ -44,7 +44,11 @@ const SignIn = () => {
             'Authorization': `Bearer ${data.token}`,
           },
         });
-        dispatch({ type: "SIGN_IN_SUCCESS", payload: await userResponse.json() });
+        const user = await userResponse.json();
+        sessionStorage.setItem('user', JSON.stringify(user));
+        dispatch({ type: "SIGN_IN_SUCCESS", payload: user });  
+        console.log(user);
+        
         navigate('/');
         dispatch({ type: 'SET_LOADING', payload: false });
       }
