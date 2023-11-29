@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="bg-gradient-to-b from-[#F2A649] via-[#D97236] to-[#D97236] mt-auto">
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
-          <Link to="/home" className="flex items-center mb-4 sm:mb-0">
+          <Link to="/" className="flex items-center mb-4 sm:mb-0">
             <img src={logo} className="h-8 mr-3" alt="Musify Logo" />
             <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white">Musify</span>
           </Link>
