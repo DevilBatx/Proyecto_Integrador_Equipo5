@@ -13,7 +13,7 @@ const ListAllProductsPage = () => {
 
         if (window.confirm('¿Eliminar producto?')) {
             try {
-                const response = await fetch(`${apiURL}/auth/products/${productId}`, {
+                const response = await fetch(`${apiURL}/auth/products?id=${productId}`, {
                     method: 'DELETE',
                     headers: {'Authorization': `Bearer ${sessionStorage.getItem('token')}`}          
                     

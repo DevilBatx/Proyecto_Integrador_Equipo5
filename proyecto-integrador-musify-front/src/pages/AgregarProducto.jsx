@@ -16,7 +16,7 @@ function AgregarProducto({ onAdd }) {
     const fetchCategories = async () => {
       try {
         const response = await fetch(`${apiURL}/public/categories`, {
-          method: "GET"         
+          method: "GET"
         });
 
         if (!response.ok) {
@@ -31,8 +31,8 @@ function AgregarProducto({ onAdd }) {
     };
 
     fetchCategories()
-    ;
-    },[]);
+      ;
+  }, []);
 
   const handleImageChange = (event) => {
     setImages([...images, ...event.target.files]);

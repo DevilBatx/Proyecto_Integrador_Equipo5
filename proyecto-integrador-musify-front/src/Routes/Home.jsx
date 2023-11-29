@@ -4,9 +4,12 @@ import Category from '../Components/Category';
 import fondo2 from '../assets/fondo2.jpg';
 import Calendar from '../Components/Calendar';
 import PaginationButtons from '../Components/PaginationButtons';
+import { useContext } from "react";
+import { GlobalContext } from "../Components/Utils/GlobalContext";
 
 
 const Home = () => {
+    const { apiURL } = useContext(GlobalContext);
 
 
     const handleSearch = (term) => {
@@ -39,7 +42,7 @@ const Home = () => {
             <section className="mb-8 flex gap-5 items-center justify-center">
                 <div className="text-center">
                     <h2 className="text-3xl text-orange-500 font-bold mb-4 p-10">Recomendados</h2>
-                    <PaginationButtons />
+                    <PaginationButtons endPoint = {`${apiURL}/public/products/random`} />
 
                 </div>
             </section>

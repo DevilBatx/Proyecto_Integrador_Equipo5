@@ -4,6 +4,19 @@ import { GlobalContext } from '../Components/Utils/GlobalContext';
 import { useContext } from 'react';
 
 
+// Función para obtener una categoría por id
+export const getCategoryById = async (apiURL, categoryId) => {
+    //const { apiURL } = useApiContext();
+    try {
+        const response = await fetch(`${apiURL}/public/categories/${categoryId}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error al obtener la categoría por id:', error);
+        throw error;
+    }
+};
+
 // Función para obtener la lista de categorías
 export const getCategoryList = async (apiURL) => {
     // const { apiURL } = useApiContext();
@@ -17,8 +30,7 @@ export const getCategoryList = async (apiURL) => {
     }
 };
 
-//TODO -
-// Función para crear una categoría
+
 export const createCategory = async (apiURL, categoryData) => {
     try {
         const response = await fetch(`${apiURL}/auth/categories`, {
