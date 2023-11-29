@@ -8,6 +8,7 @@ import com.grupo5.MusifyBack.services.impl.S3Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -44,7 +47,11 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
     public ResponseEntity<Category> saveCategory(@RequestPart("categoryInfo") Category category, @RequestPart("files") MultipartFile[] files) throws CategoryAlreadyExistsException {
-       //Si la categoria ya existe, lanzo excepcion
+       //si Category viene vacio lanzo bad request
+        if (category == null || category.getName() == "") {
+            return ResponseEntity.badRequest().build();
+        }
+        //Si la categoria ya existe, lanzo excepcion
         if (categoryService.doesCategoryExist(category.getName())) {
             throw new CategoryAlreadyExistsException("La categoria " + category.getName() + " ya se encuentra registrada en la base de datos");
         }
@@ -63,7 +70,7 @@ public class CategoryController {
     @PutMapping(value = "/auth/categories", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity<Category> updateCategory(@RequestPart("categoryInfo") Category category, @RequestPart("newFile") MultipartFile[] newFiles) {
+    public ResponseEntity<Category> updateCategory(@RequestPart("categoryInfo") Category category, @RequestPart(value="newFile", required = false) MultipartFile[] newFiles) {
         //Busco la categoria en la base de datos y la uso para actualizarle los datos nuevos
         Category existingCategory = categoryService.getCategoryById(category.getId());
         //Si no existe, lanzo excepcion
@@ -74,7 +81,7 @@ public class CategoryController {
         logger.info("Inicio actualizacion categoria");
         existingCategory.setName(category.getName());
         //Si se subieron nuevas imagenes, las subo a S3 y actualizo la url
-        if (Arrays.stream(newFiles).anyMatch(file -> file.getSize() > 0)) {
+        if (newFiles != null && Arrays.stream(newFiles).anyMatch(file -> file.getSize() > 0)) {
             try {
                 List<String> images = s3Service.uploadFiles(newFiles, "categories");
                 if(existingCategory.getUrl() != null) {
@@ -94,8 +101,18 @@ public class CategoryController {
     @Transactional
     public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
         logger.info("Inicio eliminacion categoria");
+        try {
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok().body("Category deleted successfully");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Category deleted successfully");
+        return ResponseEntity.ok().body(response);
+        } catch (IllegalStateException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+
+            // Devolver una respuesta con el Map convertido a JSON automáticamente por Spring
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        }
     }
 }
 

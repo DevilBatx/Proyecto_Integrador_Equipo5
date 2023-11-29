@@ -89,6 +89,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
+    @GetMapping("/public/products/category/{id}")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable("id") long id) {
+        logger.info("Incio buesqueda producto por id: " + id);
+        return ResponseEntity.ok(productService.getProductsByCategory(id));
+    }
 
     @PutMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
