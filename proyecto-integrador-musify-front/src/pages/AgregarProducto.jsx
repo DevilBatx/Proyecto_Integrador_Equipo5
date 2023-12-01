@@ -12,6 +12,10 @@ function AgregarProducto({ onAdd }) {
 
   const { apiURL, authDataApi } = useContext(GlobalContext);
 
+  const goBack = () => {
+    window.history.back();
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -92,6 +96,14 @@ function AgregarProducto({ onAdd }) {
 
   return (
     <div className="p-16 mt-14 mb-10 bg-gray-100 rounded-xl shadow-md">
+      <div className ='flex flex-1 justify-end' >
+      <button onClick={goBack}
+            className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
+               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+            </svg>
+          </button>
+      </div>
       <h2 className="text-2xl mb-6 font-bold text-center">Agregar Producto</h2>
       <div className="bg-white p-6 rounded-lg shadow-lg md:w-2/3 mx-auto">
         <form onSubmit={handleSubmit}>

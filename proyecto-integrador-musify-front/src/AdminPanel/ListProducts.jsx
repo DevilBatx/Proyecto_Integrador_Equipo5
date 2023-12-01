@@ -10,7 +10,7 @@ const handleListProducts = () => {
 
     return (
         <button className="bg-orange-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleListProducts}>
-        Listar todos los productos
+        Administracion de Productos
         </button>
     );
 };
