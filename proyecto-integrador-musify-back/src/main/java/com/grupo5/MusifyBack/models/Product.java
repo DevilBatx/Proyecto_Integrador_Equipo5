@@ -12,6 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "producto")
+@EqualsAndHashCode(exclude = {"bookings"})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +34,9 @@ public class Product {
             joinColumns = @JoinColumn(name = "idproducto", referencedColumnName = "idproducto"),
             inverseJoinColumns = @JoinColumn(name = "idcaracteristica", referencedColumnName = "idcaracteristica"))
     private Set<Characteristic> characteristics;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Booking> bookings;
 
 
 }

@@ -45,7 +45,8 @@ public class SecurityConfig {
     };
     private static final String[] AUTH_WHITELIST_USER = {
             // User APIs
-            "/api/v1/auth/user/**"
+            "/api/v1/auth/user/**",
+            "/api/v1/auth/bookings/**"
     };
 
     // User Creation
