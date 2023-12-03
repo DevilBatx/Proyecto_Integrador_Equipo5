@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../Components/Header'; 
-import {
-  AddProduct,
-  ListProducts,
-  PlaceholderButton1,
-  PlaceholderButton2
-} from '../AdminPanel';
+import { AddProduct, ListProducts, UserRoles, ManageCategories } from '../AdminPanel';
 
 const AdminPage = () => {
     const [isMobileOrTablet, setIsMobileOrTablet] = useState(window.innerWidth <= 800);
@@ -16,25 +10,25 @@ const AdminPage = () => {
         };
 
         window.addEventListener('resize', handleResize);
-        
+
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
 
     if (isMobileOrTablet) {
-        return <div className="p-28 mt-28 text-center p-4">Pagina no disponible para este dispositivo</div>;
-        {/*arreglar el footer para cuando se usa otra resolucion*/}
+        return <div className="p-28 mt-28 text-center ">Pagina no disponible para este dispositivo</div>;
+        {/*arreglar el footer para cuando se usa otra resolucion*/ }
     }
 
     return (
-        <div className="p-28 mt-28 mb-10 bg-gray-100 rounded-xl shadow-md">    
-            <h2 className="text-2xl mb-6 font-bold text-center">Panel de Administracion</h2>            
+        <div className="p-28 mt-28 mb-10 bg-gray-100 rounded-xl shadow-md">
+            <h2 className="text-2xl mb-6 font-bold text-center">Panel de Administracion</h2>
             <div className="flex flex-col space-y-4 p-4">
                 <AddProduct />
                 <ListProducts />
-                <PlaceholderButton1 />
-                <PlaceholderButton2 />
+                <UserRoles />
+                <ManageCategories />
                 {/* Agregar aca el resto de las opciones de ser necesario */}
             </div>
         </div>

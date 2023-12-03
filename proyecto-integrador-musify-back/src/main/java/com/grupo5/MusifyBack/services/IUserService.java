@@ -14,4 +14,9 @@ public interface IUserService {
     UserDTO getUserByEmail(String email);
 
     void deleteUser(Long id);
+    void updateAdminRole(String isAdmin, Long id);
+    ResponseEntity<?>  updateUser(UserDTO userDTO, Long id);
+
+    String updateUserPassword(String email, String currentPassword, String newPassword);
+
 }

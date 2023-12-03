@@ -105,4 +105,27 @@ public class UserController {
         return ResponseEntity.ok().body("User deleted successfully");
     }
 
+    @PatchMapping("/user/role")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> updateAdminRole(@RequestBody List<UserDTO> userDTOList) {
+           for (UserDTO userDTO : userDTOList){
+               userService.updateAdminRole(userDTO.getIsAdmin(), userDTO.getId());
+           }
+
+        return ResponseEntity.ok().body("User role updated successfully");
+    }
+    @PatchMapping("/user/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) {
+        userService.updateUser(userDTO, id);
+        return ResponseEntity.ok().body("User updated successfully");
+    }
+
+    @PatchMapping("/user/password")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<?> updateUserPassword(@RequestParam("email") String email, @RequestParam("currentPassword") String currentPassword, @RequestParam("newPassword") String newPassword) {
+        userService.updateUserPassword(email, currentPassword, newPassword);
+        return ResponseEntity.ok().body("Password updated successfully");
+    }
+
 }

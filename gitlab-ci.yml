@@ -1,0 +1,78 @@
+stages:
+  - build
+  - deploy
+
+build_backend:
+  stage: build
+  image: maven:3.8.6-openjdk-18
+  script:
+    - cd proyecto-integrador-musify-back/
+    - echo "Building aplicacion"
+    - mvn clean
+    - mvn package
+    - echo "Finaliza el bulding de Back"
+  artifacts:
+    paths:
+      - ./proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar
+  rules:
+    - changes:
+        - proyecto-integrador-musify-back/**/*
+
+build_frontend:
+  stage: build
+  image: node:latest
+  script:
+    - echo "Building de la aplicacion"
+    - cd proyecto-integrador-musify-front/
+    - ls
+    - yarn install --force
+    - yarn run build
+    - echo "Finaliza el bulding de Front"
+    - ls dist
+    - pwd
+  artifacts:
+    name: react_build
+    paths:
+      - ./proyecto-integrador-musify-front/dist/
+  rules:
+    - changes:
+        - proyecto-integrador-musify-front/**/*
+
+deploy_Backend:
+  stage: deploy
+  needs: [build_backend]
+  image: alpine:3.11
+  before_script:
+    - apk update && apk add openssh-client bash
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - touch ~/.ssh/config
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-keyscan -H "$DEPLOY_SERVER_IP" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "Comenzó el Deploy"
+    - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service"
+    - scp proyecto-integrador-musify-back/target/Musify-Back-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/
+    - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
+    - echo "Finalizo el deploy de la aplicacion de Back"
+  rules:
+    - changes:
+        - proyecto-integrador-musify-back/**/*
+
+deploy_Frontend:
+  stage: deploy
+  needs: [build_frontend]
+  image:
+    name: amazon/aws-cli:latest
+    entrypoint: 
+        - '/usr/bin/env'
+  script:
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws s3 sync proyecto-integrador-musify-front/dist/ s3://c12-grupo5-front
+  rules:
+    - changes:
+        - proyecto-integrador-musify-front/**/*

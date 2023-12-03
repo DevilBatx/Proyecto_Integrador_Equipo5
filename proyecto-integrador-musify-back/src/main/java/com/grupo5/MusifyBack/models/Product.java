@@ -28,6 +28,11 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Image> images;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "producto_caracteristica",
+            joinColumns = @JoinColumn(name = "idproducto", referencedColumnName = "idproducto"),
+            inverseJoinColumns = @JoinColumn(name = "idcaracteristica", referencedColumnName = "idcaracteristica"))
+    private Set<Characteristic> characteristics;
 
 
 }

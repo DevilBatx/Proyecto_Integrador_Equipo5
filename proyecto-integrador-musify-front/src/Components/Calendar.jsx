@@ -14,7 +14,8 @@ const Calendar = () => {
     };
 
     return (
-        <div className="flex items-center justify-center p-10">
+        <div className="flex felx-col">
+            <span className="mx-5 text-white text-center pt-1">Desde</span>
             <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg
@@ -36,7 +37,7 @@ const Calendar = () => {
                     placeholderText="Fecha inicial"
                 />
             </div>
-            <span className="mx-4 text-gray-500">a</span>
+            <span className="mx-5 text-white text-center pt-1">Hasta</span>
             <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <svg

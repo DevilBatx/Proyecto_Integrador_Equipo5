@@ -1,6 +1,7 @@
 package com.grupo5.MusifyBack.services;
 
 import com.grupo5.MusifyBack.dto.ProductDTO;
+import com.grupo5.MusifyBack.dto.SearchProductDTO;
 import com.grupo5.MusifyBack.models.Product;
 
 import java.io.IOException;
@@ -8,7 +9,8 @@ import java.util.List;
 
 public interface IProductService {
 
-    List<ProductDTO> getAllProducts(String search);
+    List<ProductDTO> getAllProducts();
+    List<SearchProductDTO>searchProducts(String search);
 
     ProductDTO getProductById(long id);
 
@@ -18,7 +20,7 @@ public interface IProductService {
 
     Boolean deleteProduct(long id) throws IOException;
 
-    List<ProductDTO> getRandomProducts(int numberOfProducts); //    X productos aleatorios
+    List<ProductDTO> getRandomProducts(); //    X productos aleatorios
 
     Boolean doesProductExist(String name);
     List<ProductDTO> getProductsByCategory(Long idCategory);

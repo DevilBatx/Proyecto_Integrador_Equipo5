@@ -3,6 +3,7 @@ package com.grupo5.MusifyBack.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
+import com.grupo5.MusifyBack.dto.SearchProductDTO;
 import com.grupo5.MusifyBack.models.Image;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.ICategoryRepository;
@@ -38,14 +39,10 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public List<ProductDTO> getAllProducts(String search) {
+    public List<ProductDTO> getAllProducts() {
         //Obtener todos los productos
         List<Product> products = null;
-        if (search != null){
-            products = productRepository.findProductsBySearchString(search);
-        }else{
-            products = productRepository.findAll();
-        }
+        products = productRepository.findAll();
         List<ProductDTO> productsDTO = new ArrayList<>();
         //Convertir los productos a DTO
         for (Product product : products) {
@@ -63,6 +60,20 @@ public class ProductService implements IProductService {
             productsDTO.add(productDTO);
         }
 
+        return productsDTO;
+    }
+
+    @Override
+    public List<SearchProductDTO> searchProducts(String search) {
+        List<Product> products = productRepository.findProductsBySearchString(search);
+        List<SearchProductDTO> productsDTO = new ArrayList<>();
+        //Convertir los productos a DTO
+        for (Product product : products) {
+
+            SearchProductDTO productDTO = mapper.convertValue(product, SearchProductDTO.class);
+            //Agregar el producto a la lista de productos
+            productsDTO.add(productDTO);
+        }
         return productsDTO;
     }
 
@@ -118,14 +129,14 @@ public class ProductService implements IProductService {
             // Agrego las imágenes al producto
             product.setImages(images);
             //Agrego el producto a la entidad categoría
-            if(productDTO.getCategory().getProducts()==null){
+            if (productDTO.getCategory().getProducts() == null) {
                 productDTO.getCategory().setProducts(new HashSet<>());
             }
             Set<Product> products = productDTO.getCategory().getProducts();
             products.add(product);
             productDTO.getCategory().setProducts(products);
             categoryRepository.save(product.getCategory());
-           // categoryService.addProductToCategory(product.getCategory().getId(), product.getId());
+            // categoryService.addProductToCategory(product.getCategory().getId(), product.getId());
 
 
         }
@@ -194,9 +205,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> getRandomProducts(int numberOfProducts) {
+    public List<ProductDTO> getRandomProducts() {
         //Obtener X productos random
-        List<Product> products = productRepository.findRandomProducts(numberOfProducts);
+        List<Product> products = productRepository.findRandomProducts();
         List<ProductDTO> productsDTO = new ArrayList<>();
         //Convertir los productos a DTO
         for (Product product : products) {

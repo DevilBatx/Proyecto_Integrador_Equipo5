@@ -1,55 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import { GlobalContext } from "./Utils/GlobalContext";
+import Card from "./Card";
 
-const PaginationButtons = () => {
-  let [number, setNumber] = useState(1);
-  let [current, setCurrent] = useState(1);
+const PaginationButtons = (props) => {
+  const { apiURL } = useContext(GlobalContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const [data, setData] = useState([]); // Para almacenar los datos obtenidos de la solicitud
+  const itemsPerPage = 10; // Ajusta según tu necesidad
 
-  const pages = [
-    { page: number },
-    { page: number + 1 },
-    { page: number + 2 },
-    { page: number + 3 },
-  ];
+  useEffect(() => {
+    // Función para realizar la solicitud FETCH
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          props.endPoint
+        );
+        const result = await response.json();
+        setTotalPages(Math.ceil(result.length / itemsPerPage));
+        let resultPag = []
+        for (let i = 0; i < result.length; i += itemsPerPage) {
+          const item = result.slice(i, i + itemsPerPage);
+          resultPag.push(item);
+        }
+        setData(resultPag);
 
-  function Next() {
-    if (number === 7) {
-      setNumber(1);
-    } else {
-      setNumber(++number);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Llamada a la función FETCH al cargar la página o al cambiar la página
+    fetchData();
+  }, []);
+
+  const visiblePages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i >= currentPage - 1 && i <= currentPage + 1) {
+      visiblePages.push(i);
     }
   }
 
-  function Prev() {
-    number > 1 && setNumber(--number);
-  }
+  const handlePrevClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
-    <div className='bg-white'>
-      <div className='container mx-auto flex content-baseline items-baseline justify-center gap-6 rounded-lg p-8 drop-shadow-md lg:flex-row lg:gap-2 lg:py-10 xl:gap-6'>
+    <div className="bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {Array.isArray(data[currentPage - 1]) &&
+          data[currentPage - 1].map((product) => <Card key={product.id} data={product} />)}
+      </div>
+      <div className="container mx-auto flex content-baseline items-baseline justify-center gap-6 rounded-lg p-8 drop-shadow-md lg:flex-row lg:gap-2 lg:py-10 xl:gap-6">
         <button
-          onClick={Prev}
-          className='p-3 border-orange-600 px-4 rounded-full hover:bg-orange-200 hover:text-white'
+          onClick={handlePrevClick}
+          className="p-3 border-orange-600 px-4 rounded-full hover:bg-orange-200 hover:text-white"
         >
-          <h3 className='text-sm font-medium'>Prev</h3>
+          <h3 className="text-sm font-medium">Prev</h3>
         </button>
 
-        {pages.map((pg, i) => (
+        {visiblePages.map((pageNumber) => (
           <button
-            key={i}
-            onClick={() => setCurrent(pg.page)}
+            key={pageNumber}
+            onClick={() => handlePageClick(pageNumber)}
             className={`rounded-full border-orange-500 p-3 font-semibold text-black transition ease-in-out ${
-              current === pg.page ? 'bg-orange-500 text-white' : ''
+              currentPage === pageNumber ? "bg-orange-500 text-white" : ""
             }`}
           >
-            {pg.page}
+            {pageNumber}
           </button>
         ))}
 
         <button
-          onClick={Next}
-          className='p-3 border-orange-600 px-4 rounded-full hover:bg-orange-200 hover:text-white'
+          onClick={handleNextClick}
+          className="p-3 border-orange-600 px-4 rounded-full hover:bg-orange-200 hover:text-white"
         >
-          <h3 className='text-sm font-medium'>Next</h3>
+          <h3 className="text-sm font-medium">Next</h3>
         </button>
       </div>
     </div>
@@ -57,4 +95,3 @@ const PaginationButtons = () => {
 };
 
 export default PaginationButtons;
-

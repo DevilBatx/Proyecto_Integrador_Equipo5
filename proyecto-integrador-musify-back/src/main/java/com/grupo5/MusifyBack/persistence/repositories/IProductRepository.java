@@ -11,11 +11,11 @@ import java.util.List;
 public interface IProductRepository extends JpaRepository<Product, Long> {
 
     // Obtener X cantidad de  productos aleatorios de la base de datos
-    @Query(value = "SELECT * FROM producto ORDER BY RAND() LIMIT ?1", nativeQuery = true)
-    List<Product> findRandomProducts(int numberOfProducts);
-    @Query(value = "SELECT * FROM producto WHERE id_categoria = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM producto ORDER BY RAND()", nativeQuery = true)
+    List<Product> findRandomProducts();
+    @Query(value = "SELECT * FROM producto WHERE idcategoria = ?1", nativeQuery = true)
     List<Product> findProductsByCategories_Id(Long idCategory);
-    @Query(value = "SELECT * FROM producto WHERE nombreproducto LIKE %?1%", nativeQuery = true)
+    @Query(value = "SELECT * FROM producto WHERE nombreproducto LIKE %?1% LIMIT 6", nativeQuery = true)
     List<Product> findProductsBySearchString(String search);
     boolean existsByName(String name);
 

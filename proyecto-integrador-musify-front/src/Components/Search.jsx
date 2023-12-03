@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import { GlobalContext } from "./Utils/GlobalContext";
 import Suggestions from './Suggestions';
 
 const Search = () => {
+  const { apiURL } = useContext(GlobalContext);
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const latestRequest = useRef(0);
@@ -20,7 +22,7 @@ const Search = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/public/products?search=${value}`,
+        `${apiURL}/public/searchproducts?search=${value}`,
       );
 
       // Check if this is still the latest request and if the input hasn't been cleared
@@ -48,8 +50,8 @@ const Search = () => {
   };
 
   return (
-    <form>
-      <input placeholder='Buscar intrumentos, accesorios...' onChange={handleInputChange} />
+    <form className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 ps-8 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+      <input placeholder='Buscar intrumentos, accesorios...' onChange={handleInputChange} className='w-full' />
       {isLoading && <div>Cargando productos...</div>}
       {!isLoading && <Suggestions results={results} />}
     </form>

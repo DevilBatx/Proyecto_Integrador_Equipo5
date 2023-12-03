@@ -4,6 +4,7 @@
 
 @layer components {
     .card{
-     @apply bg-white border-2 border-gray-200 rounded-xl overflow-hidden;
+     @apply bg-white border border-orange-300 rounded-xl ;
    }
+   
  }
