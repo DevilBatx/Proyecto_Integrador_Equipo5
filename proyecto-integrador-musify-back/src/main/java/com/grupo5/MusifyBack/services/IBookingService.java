@@ -1,5 +1,7 @@
 package com.grupo5.MusifyBack.services;
 
+
+import com.grupo5.MusifyBack.dto.BookingDTO;
 import com.grupo5.MusifyBack.models.Booking;
 
 import java.time.LocalDate;
@@ -11,6 +13,6 @@ public interface IBookingService {
     List<LocalDate> getAvailableDates(Long idProduct);
     Booking save(Booking booking);
     List<Booking> getAllBookings();
-    List<Booking> getBookingsByUserId(Long idUser);
+    List<BookingDTO> getBookingsByUserId(Long idUser);
 
 }

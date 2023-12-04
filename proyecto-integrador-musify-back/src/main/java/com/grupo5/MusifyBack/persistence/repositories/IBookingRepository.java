@@ -1,5 +1,6 @@
 package com.grupo5.MusifyBack.persistence.repositories;
 
+import com.grupo5.MusifyBack.dto.BookingDTO;
 import com.grupo5.MusifyBack.models.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,7 @@ public interface IBookingRepository extends JpaRepository<Booking, Long> {
                                                   @Param("startDate") LocalDate fechaInicio,
                                                   @Param("endDate") LocalDate fechaFin);
 
-    List<Booking> findByUserId(Long idUser);
+    List<Booking> findBookingsByUserId(Long idUser);
+
+
 }

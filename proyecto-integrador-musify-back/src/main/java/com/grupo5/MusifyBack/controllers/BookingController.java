@@ -1,5 +1,6 @@
 package com.grupo5.MusifyBack.controllers;
 
+import com.grupo5.MusifyBack.dto.BookingDTO;
 import com.grupo5.MusifyBack.models.Booking;
 import com.grupo5.MusifyBack.services.impl.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -34,14 +37,20 @@ public class BookingController {
 
     @GetMapping("/auth/bookings/{idProduct}/booked")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<List<LocalDate>> getBookedDates(@PathVariable("idProduct") Long idProduct) {
-        return ResponseEntity.ok(bookingService.getBookedDates(idProduct));
+    public ResponseEntity<Map<String, List<LocalDate>>> getBookedDates(@PathVariable("idProduct") Long idProduct) {
+        List<LocalDate> bookedDates = bookingService.getBookedDates(idProduct);
+        Map<String, List<LocalDate>> response = new HashMap<>();
+        response.put("dates", bookedDates);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/auth/bookings/{idProduct}/available")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<List<LocalDate>> getAvailableDates(@PathVariable("idProduct") Long idProduct) {
-        return ResponseEntity.ok(bookingService.getAvailableDates(idProduct));
+    public ResponseEntity<Map<String, List<LocalDate>>> getAvailableDates(@PathVariable("idProduct") Long idProduct) {
+        List<LocalDate> availableDates = bookingService.getAvailableDates(idProduct);
+        Map<String, List<LocalDate>> response = new HashMap<>();
+        response.put("dates", availableDates);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/auth/bookings")
@@ -51,7 +60,7 @@ public class BookingController {
     }
     @GetMapping("/auth/bookings/{idUser}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<List<Booking>> getBookingsByUserId(@PathVariable("idUser") Long idUser) {
+    public ResponseEntity<List<BookingDTO>> getBookingsByUserId(@PathVariable("idUser") Long idUser) {
         return ResponseEntity.ok(bookingService.getBookingsByUserId(idUser));
     }
 

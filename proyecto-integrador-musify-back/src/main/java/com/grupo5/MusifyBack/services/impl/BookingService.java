@@ -1,5 +1,8 @@
 package com.grupo5.MusifyBack.services.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.grupo5.MusifyBack.dto.BookingDTO;
+import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.models.Booking;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.IBookingRepository;
@@ -27,6 +30,10 @@ public class BookingService  implements IBookingService {
     IProductRepository productRepository;
     @Autowired
     IUserRepository userRepository;
+    @Autowired
+    ObjectMapper mapper;
+    @Autowired
+    ImageService imageService;
 
     @Override
     public List<LocalDate> getBookedDates(Long idProduct) {
@@ -91,8 +98,22 @@ public class BookingService  implements IBookingService {
 
     @Override
     @Transactional
-    public List<Booking> getBookingsByUserId(Long idUser) {
-        return bookingRepository.findByUserId(idUser);
+    public List<BookingDTO> getBookingsByUserId(Long idUser) {
+        List<Booking> bookings = bookingRepository.findBookingsByUserId(idUser);
+        List<BookingDTO> bookingDTOS = new ArrayList<>();
+        for (Booking booking : bookings) {
+            BookingDTO bookingDTO = mapper.convertValue(booking, BookingDTO.class);
+            Product product = booking.getProduct();
+            ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
+            productDTO.setImages(product.getImages());
+            bookingDTO.setProduct(productDTO);
+
+            bookingDTOS.add(bookingDTO);
+
+        }
+        return bookingDTOS;
+
+
     }
 
     private boolean isAvailable(Booking booking) {

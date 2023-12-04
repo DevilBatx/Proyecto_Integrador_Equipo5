@@ -61,6 +61,7 @@ public class CategoryService implements ICategoryService {
     public void deleteCategory(Long id) {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
+            try{
             Category category = categoryOptional.get();
 
             // Verificar si hay productos asociados a la categoría
@@ -68,6 +69,11 @@ public class CategoryService implements ICategoryService {
                 throw new IllegalStateException("No es posible eliminar la categoría porque tiene productos asociados.");
             }
             categoryRepository.delete(categoryOptional.get());
+            //Elimino la imagen de la categoria
+            s3Service.deleteFiles(List.of(category.getUrl()), "categories");
+            }catch (Exception e){
+                throw new IllegalStateException("No es posible eliminar la categoría porque tiene productos asociados.");
+            }
         } else {
             throw new CategoryNotFoundException("Category not found " + id );
         }

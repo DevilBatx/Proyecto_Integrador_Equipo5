@@ -1,5 +1,6 @@
 package com.grupo5.MusifyBack.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class Image {
     private Integer imageOrder;
     @ManyToOne
     @JoinColumn(name = "idproducto", nullable = false)
+    @JsonIgnore
     private Product product;
 
 
