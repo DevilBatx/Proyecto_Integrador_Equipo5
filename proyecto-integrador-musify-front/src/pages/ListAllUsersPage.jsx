@@ -49,7 +49,7 @@ function ListAllUsersPage() {
 
 
     return (
-        <div className="p-14 mt-14 mb-10 bg-gray-100 rounded-xl shadow-md">
+        <div className="p-52 mb-10 bg-gray-100 rounded-xl shadow-md h-screen">
             <div className ='flex flex-1 justify-end' >
       <button onClick={goBack}
             className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
@@ -58,8 +58,8 @@ function ListAllUsersPage() {
             </svg>
           </button>
       </div>
-            <h1 className="text-2xl font-bold mb-6">Lista de Usuarios</h1>
-            <div className="table-container max-h-96 overflow-y-auto">
+            <h1 className="text-2xl font-bold mb-6">Lista de Usuarios</h1><br />
+            <div className="table-container max-h-full overflow-y-auto">
                 <table className=" w-full bg-white rounded-lg overflow-hidden shadow-lg">
                     <thead className="bg-gray-700 text-white">
                         <tr>

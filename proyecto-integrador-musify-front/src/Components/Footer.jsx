@@ -13,21 +13,21 @@ const Footer = () => {
           </Link>
           <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-white-500 sm:mb-0 dark:text-gray-400">
             <li>
-              <Link to="/about" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">About</Link>
+              {/*<Link to="/about" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">About</Link>*/}
             </li>
             <li>
-              <Link to="/politicas" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Politica de Privacidad</Link>
+              <Link to="/politicas" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Política de Privacidad</Link>
             </li>
             <li>
-              <Link to="/licensing" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Licensing</Link>
+              {/*<Link to="/licensing" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Licensing</Link>*/}
             </li>
             <li>
-              <Link to="/contact" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Contacto</Link>
+              {/*<Link to="/contact" className="font-bold mr-4 hover:underline md:mr-6 text-black-500">Contacto</Link> */}
             </li>
           </ul>
         </div>
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-        <span className="font-bold block text-sm sm:text-left text-black">Musify™ 2023 - All Rights Reserved.</span>
+        <span className="font-bold block text-sm sm:text-left text-black">Musify™ 2023 - Todos los derechos reservados</span>
       </div>
     </footer>
   );

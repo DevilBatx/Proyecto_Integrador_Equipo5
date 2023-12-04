@@ -95,7 +95,7 @@ function AgregarProducto({ onAdd }) {
 };
 
   return (
-    <div className="p-16 mt-14 mb-10 bg-gray-100 rounded-xl shadow-md">
+    <div className="p-52 mb-10 bg-gray-100 rounded-xl shadow-md mt-16 h-screen">
       <div className ='flex flex-1 justify-end' >
       <button onClick={goBack}
             className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
@@ -133,7 +133,7 @@ function AgregarProducto({ onAdd }) {
               id="productDescription"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Descripcion"
+              placeholder="Descripción"
               className="mt-1 p-2 w-full border rounded h-24"
             />
           </div>

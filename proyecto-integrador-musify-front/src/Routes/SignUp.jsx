@@ -110,7 +110,7 @@ const SignUp = () => {
     navigate('/login');
   };
 
-  return (<div className='w-full h-screen flex '>
+  return (<div className='w-full h-screen flex mt-16'>
     <div className='w-full h-full flex flex-col'>
       <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{ backgroundImage: " url(" + imgLog + ")" }}>
 
@@ -125,7 +125,7 @@ const SignUp = () => {
                   <div className="flex flex-col">
                     <input
                       type="text"
-                      placeholder='Name'
+                      placeholder='Nombre'
                       className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
                       id='name'
                       onChange={handleChange}
@@ -136,7 +136,7 @@ const SignUp = () => {
                   <div className="flex flex-col">
                     <input
                       type="text"
-                      placeholder='Last Name'
+                      placeholder='Apellido'
                       className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
                       id='lastName'
                       onChange={handleChange}
@@ -158,7 +158,7 @@ const SignUp = () => {
                   <div className="flex flex-col">
                     <input
                       type="password"
-                      placeholder='Password'
+                      placeholder='Contraseña'
                       className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
                       id='password'
                       onChange={handleChange}
@@ -173,7 +173,7 @@ const SignUp = () => {
               </div>
 
               <div className='flex items-center justify-center font-bold mt-5 gap-2'>
-                <p>Ya estás registrado?</p>
+                <p>¿Ya estás registrado?</p>
                 <Link to={'/login'}>
                   <span className='text-blue-700'> Ingresar </span>
                 </Link>
