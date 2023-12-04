@@ -1,11 +1,17 @@
 package com.grupo5.MusifyBack.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -32,5 +38,8 @@ public class User {
     private String password;
     @Column(name = "esadminusuario")
     private Integer isAdmin;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Booking> bookings;
+
 
 }

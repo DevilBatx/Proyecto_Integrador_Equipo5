@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -48,7 +45,7 @@ public class CategoryController {
     @Transactional
     public ResponseEntity<Category> saveCategory(@RequestPart("categoryInfo") Category category, @RequestPart("files") MultipartFile[] files) throws CategoryAlreadyExistsException {
        //si Category viene vacio lanzo bad request
-        if (category == null || category.getName() == "") {
+        if (category == null || Objects.equals(category.getName(), "")) {
             return ResponseEntity.badRequest().build();
         }
         //Si la categoria ya existe, lanzo excepcion
@@ -107,12 +104,11 @@ public class CategoryController {
             response.put("message", "Category deleted successfully");
         return ResponseEntity.ok().body(response);
         } catch (IllegalStateException e) {
+            logger.error("Error al eliminar caracteristica", e);
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", e.getMessage());
-
             // Devolver una respuesta con el Map convertido a JSON automáticamente por Spring
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
         }
     }
 }
-

@@ -9,21 +9,21 @@ import java.util.List;
 
 public interface IProductService {
 
-    List<ProductDTO> getAllProducts();
+    List<Product> getAllProducts();
     List<SearchProductDTO>searchProducts(String search);
 
-    ProductDTO getProductById(long id);
+    Product getProductById(long id);
 
-    Product saveProduct(ProductDTO product,List<String> imageUrls);
+    Product saveProduct(Product product,List<String> imageUrls);
 
-    Product updateProduct(ProductDTO product,List<String> newImageUrls);
+    Product updateProduct(Product product,List<String> newImageUrls);
 
     Boolean deleteProduct(long id) throws IOException;
 
-    List<ProductDTO> getRandomProducts(); //    X productos aleatorios
+    List<Product> getRandomProducts(); //    X productos aleatorios
 
     Boolean doesProductExist(String name);
-    List<ProductDTO> getProductsByCategory(Long idCategory);
+    List<Product> getProductsByCategory(Long idCategory);
 
 
 }

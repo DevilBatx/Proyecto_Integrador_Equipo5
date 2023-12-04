@@ -80,7 +80,7 @@ public class CategoryService implements ICategoryService {
         if (categoryOpional.isPresent()) {
             Category category = categoryOpional.get();
             Product product = productRepository.findById(idProduct).get();
-            Set<Product> products = category.getProducts();
+            List<Product> products = category.getProducts();
             products.add(product);
             categoryRepository.save(category);
         } else {

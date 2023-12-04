@@ -18,7 +18,6 @@ const ListAllProductsPage = () => {
                     headers: {'Authorization': `Bearer ${sessionStorage.getItem('token')}`}          
                     
                 });
-
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -63,7 +62,6 @@ const ListAllProductsPage = () => {
                                 >
                                     Editar
                                 </button>
-
                                 {/* Delete button */}
                                 <button
                                     onClick={() => handleDelete(product.id)}

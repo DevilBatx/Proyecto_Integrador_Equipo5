@@ -7,31 +7,34 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
 
+@Entity
+@Table(name = "reserva")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = " caracteristica")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Characteristic {
-    @Column(name = "idcaracteristica")
+@EqualsAndHashCode(exclude = {"user"})
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idreserva")
     private Long id;
-    @Column(name = "nombrecaracteristica")
-    private String name;
-    @Column(name = "urliconocaracteristica")
-    private String iconUrl;
-    @ManyToMany(mappedBy = "characteristics")
+    @Column(name = "fechainicioreserva")
+    private LocalDate startDate;
+    @Column(name = "fechafinreserva")
+    private LocalDate endDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idproducto", nullable = false)
     @JsonManagedReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    private List<Product> products = new ArrayList<Product>();
+    private Product product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idusuario", nullable = false)
+    @JsonIgnore
+    private User user;
 
 }

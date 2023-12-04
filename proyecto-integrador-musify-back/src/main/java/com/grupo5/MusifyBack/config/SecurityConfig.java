@@ -39,13 +39,19 @@ public class SecurityConfig {
     };
     private static final String[] AUTH_WHITELIST_ADMIN = {
             // Admin APIs
+            "/api/v1/public/**",
             "/api/v1/auth/admin/**",
             "/api/v1/auth/products/**",
-            "/api/v1/auth/categories/**"
+            "/api/v1/auth/categories/**",
+            "/auth/characteristics/**"
+
     };
     private static final String[] AUTH_WHITELIST_USER = {
             // User APIs
-            "/api/v1/auth/user/**"
+            "/api/v1/public/**",
+            "/api/v1/auth/user/**",
+            "/api/v1/auth/bookings/**"
+
     };
 
     // User Creation
