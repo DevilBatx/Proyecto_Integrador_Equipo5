@@ -16,73 +16,40 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
     };
 
     return (
-        <header className="bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] top-0 left-0 right-0 z-50">
-        <div className='container mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between'>
-            <div className='flex items-center mb-2 md:mb-0'>
-                <Link to="/"><img className='h-16 md:h-20' src={logo} alt="logoEmpresa" /></Link>
-                <div className="ml-2 md:ml-4">
-                    <h1 className="text-2xl md:text-3xl font-bold text-blue">{title}</h1>
-                    <p className="hidden md:block text-sm text-blue font-semibold">{subtitle}</p>
-                </div>
-            </div>
-            {/* {state.isAuthenticated ? (
-                <div className='flex gap-4 mt-4'>
-                    <div className="relative group">
-                        <button
-                            id="dropdownAvatarNameButton"
-                            onClick={() => setDropdownOpen(!isDropdownOpen)}
-                            className="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-800 dark:hover:text-blue-700 md:me-0  focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
-                            type="button"
-                        >
-                            <div>
-                                <h4><Avatar /></h4>
-                                <h4 className='font-semibold'>Bienvenido {state.user?.name}</h4>
-                            </div>
-                            <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"></svg>
-                        </button>
-                        {isDropdownOpen && (
-                            <div id="dropdownAvatarName" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-2">
-                                <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                                    <div className="font-medium">Pro User</div>
-                                    <div className="truncate">{state.email?.name}</div>
-                                </div>
-                                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownAvatarNameButton">
-                                    <li>
-                                        <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mi perfil</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ajustes</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Favoritos</Link>
-                                    </li>
-                                </ul>
-                                <div className="py-2">
-                                    <Link to="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleLogout()}>Cerrar sesión</Link>
-                                </div>
-                            </div>
-                        )}
+        <header className="bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] z-50 fixed top-0 left-0 right-0 w-full bg-white shadow-md z-10 transform translate-y-0" >
+            <div className='container mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between'>
+                <div className='flex items-center mb-2 md:mb-0'>
+                    <Link to="/"><img className='h-16 md:h-20' src={logo} alt="logoEmpresa" /></Link>
+                    <div className="ml-2 md:ml-4">
+                        <h1 className="text-2xl md:text-3xl font-bold text-blue">{title}</h1>
+                        <p className="hidden md:block text-sm text-blue font-semibold">{subtitle}</p>
                     </div>
-                </div> */}
+                </div>
                 {state.isAuthenticated ? (
-                    <div className='flex gap-4 mt-4'>
+                    <div className='flex gap-4 mt-4' onMouseLeave={() => setDropdownOpen(!isDropdownOpen)} >
                         <div className="relative group">
                             <button
                                 id="dropdownAvatarNameButton"
-                                onClick={() => setDropdownOpen(!isDropdownOpen)}
-                                className="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-800 dark:hover:text-blue-700 md:me-0  focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
+                                
+                                className="flex items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-blue-800 dark:hover:text-blue-700 md:me-0 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white relative" 
                                 type="button"
+                                onMouseEnter={() => setDropdownOpen(!isDropdownOpen)}
+                                
                             >
                                 <div>
                                     <h4><Avatar /></h4>
                                     <h4 className='font-semibold'>Bienvenido {state.user?.name}</h4>
                                 </div>
-                                <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"></svg>
+                                <div className={`absolute right-2 transform ${isDropdownOpen ? 'rotate-180' : ''}`}> {/* Añade 'absolute right-2' y ajusta según sea necesario */}
+                                    <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                        <path fill="#000" d="M5 6L0 0h10L5 6z" />
+                                    </svg>
+                                </div>
                             </button>
                             {isDropdownOpen && (
-                                <div id="dropdownAvatarName" className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-2">
-                                    <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                                        <div className="font-medium">Pro User</div>
+                                
+                                <div id="dropdownAvatarName" className="z-10 bg-white divide-y divide-gray-300 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-0" >
+                                    <div className="px-4 py-3 text-sm text-gray-900 dark:text-white" >
                                         <div className="truncate">{state.user.email}</div>
                                     </div>
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownAvatarNameButton">

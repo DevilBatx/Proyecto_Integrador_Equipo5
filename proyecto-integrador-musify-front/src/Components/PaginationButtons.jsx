@@ -61,34 +61,40 @@ const PaginationButtons = () => {
     <div className="bg-white">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         {Array.isArray(data[currentPage - 1]) &&
-          data[currentPage - 1].map((product) => <Card key={product.id} data={product} />)}
-      </div>
-      <div className="container mx-auto flex content-baseline items-baseline justify-center gap-6 rounded-lg p-8 drop-shadow-md lg:flex-row lg:gap-2 lg:py-10 xl:gap-6">
+        data[currentPage - 1].map((product) => (
+          <Card key={product.id} data={product} />
+        ))}
+    </div>
+    <div className="container mx-auto flex content-baseline items-baseline justify-center gap-6 rounded-lg p-8 drop-shadow-md lg:flex-row lg:gap-2 lg:py-10 xl:gap-6">
+      {currentPage > 1 && (
         <button
           onClick={handlePrevClick}
           className="p-3 border-orange-600 px-4 rounded-full hover:bg-orange-200 hover:text-white"
         >
-          <h3 className="text-sm font-medium">Prev</h3>
+          <h3 className="text-sm font-medium">Anterior</h3>
         </button>
+      )}
 
-        {visiblePages.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handlePageClick(pageNumber)}
-            className={`rounded-full border-orange-500 p-3 font-semibold text-black transition ease-in-out ${
-              currentPage === pageNumber ? "bg-orange-500 text-white" : ""
-            }`}
-          >
-            {pageNumber}
-          </button>
-        ))}
+      {visiblePages.map((pageNumber) => (
+        <button
+          key={pageNumber}
+          onClick={() => handlePageClick(pageNumber)}
+          className={`rounded-full border-orange-500 p-3 font-semibold text-black transition ease-in-out ${
+            currentPage === pageNumber ? "bg-orange-500 text-white" : ""
+          }`}
+        >
+          {pageNumber}
+        </button>
+      ))}
 
+      {currentPage < totalPages && (
         <button
           onClick={handleNextClick}
           className="p-3 border-orange-600 px-4 rounded-full hover:bg-orange-200 hover:text-white"
         >
-          <h3 className="text-sm font-medium">Next</h3>
+          <h3 className="text-sm font-medium">Siguiente</h3>
         </button>
+      )}
       </div>
     </div>
   );
