@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { GlobalContext } from "./Utils/GlobalContext";
 import Suggestions from './Suggestions';
 
@@ -7,10 +7,10 @@ const Search = () => {
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const latestRequest = useRef(0);
-  const inputRef = useRef(""); // Ref to keep track of the current input value
+  const inputRef = useRef("");
 
   const handleInputChange = async ({ target: { value } }) => {
-    inputRef.current = value; // Update the current input value
+    inputRef.current = value;
     if (!value.trim()) {
       setResults([]);
       setIsLoading(false);
@@ -25,7 +25,6 @@ const Search = () => {
         `${apiURL}/public/searchproducts?search=${value}`,
       );
 
-      // Check if this is still the latest request and if the input hasn't been cleared
       if (currentRequest !== latestRequest.current || !inputRef.current.trim()) {
         return;
       }
@@ -42,16 +41,31 @@ const Search = () => {
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     } finally {
-      // Only stop loading if this is the latest request
       if (currentRequest === latestRequest.current) {
         setIsLoading(false);
       }
     }
   };
 
+  const handleClickOutside = (event) => {
+    const formElement = document.getElementById("search-form");
+
+    if (formElement && !formElement.contains(event.target)) {
+      setResults([]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <form className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 ps-8 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-      <input placeholder='Buscar intrumentos, accesorios...' onChange={handleInputChange} className='w-full' />
+    <form id="search-form" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 ps-8 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+      <input placeholder='Buscar instrumentos, accesorios...' onChange={handleInputChange} className='w-full' />
       {isLoading && <div>Cargando productos...</div>}
       {!isLoading && <Suggestions results={results} />}
     </form>

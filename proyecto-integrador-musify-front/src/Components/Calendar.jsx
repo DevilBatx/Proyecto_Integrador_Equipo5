@@ -13,6 +13,11 @@ const Calendar = () => {
         setEndDate(end);
     };
 
+    const handleSearchClick = () => {
+        // Lógica para realizar la búsqueda con las fechas seleccionadas
+        console.log('Realizar búsqueda con fechas:', startDate, endDate);
+    };
+
     return (
         <div className="flex felx-col">
             <span className="mx-5 text-white text-center pt-1">Desde</span>
@@ -61,6 +66,7 @@ const Calendar = () => {
                     placeholderText="Fecha final"
                 />
             </div>
+            
         </div>
     );
 }
