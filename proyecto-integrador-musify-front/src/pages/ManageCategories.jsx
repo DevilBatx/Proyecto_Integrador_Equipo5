@@ -84,13 +84,13 @@ function ManageCategories() {
 
   const handleDeleteCategory = async () => {
     try {
-    dispatch({ type: 'SET_LOADING', payload: true });
-    await deleteCategory(apiURL, selectedCategory.id);
-    setSelectedCategory(null);
-    setCategoryName("");
-    setShowModalDelete(false);
-    setTitulo("");
-    loadCategories();
+      dispatch({ type: 'SET_LOADING', payload: true });
+      await deleteCategory(apiURL, selectedCategory.id);
+      setSelectedCategory(null);
+      setCategoryName("");
+      setShowModalDelete(false);
+      setTitulo("");
+      loadCategories();
     } catch (error) {
       console.error('Error al manejar la eliminación de la categoría:', error);
       setErrorMessage({ ...errorMessage, categoryDeleteError: error.message })
@@ -132,14 +132,14 @@ function ManageCategories() {
 
 
   return (
-    <div className="p-14 mt-14 mb-10 mx-16 bg-gray-100 rounded-xl shadow-md" >
-      <div className ='flex flex-1 justify-end' >
-      <button onClick={goBack}
-            className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-14 my-5'>
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-            </svg>
-          </button>
+    <div className="p-14 mt-14 mb-10 mx-16 bg-gray-100 rounded-xl shadow-md h-screen" >
+      <div className='flex flex-1 justify-end' >
+        <button onClick={goBack}
+          className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-14 my-5'>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+          </svg>
+        </button>
       </div>
       <div className=" flex justify-between mb-6">
         <h1 className="text-2xl font-bold mb-6">Administrar Categorías</h1>

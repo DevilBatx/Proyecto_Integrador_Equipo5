@@ -1,38 +1,49 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from './Utils/GlobalContext';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Calendar from './Calendar';
-
-//#4
-//Visualizar un bloque de header el cual deberá cubrir el 100 % del ancho de la pantalla.	✔							
-//El título del producto deben estar alineados a la izquierda.	✔							
-//La flecha para volver atrás debe estar alineada a la derecha.		✔						
-//En el body debe estar el texto descriptivo del producto y sus imágenes.		✔						
-//#5						
-//Debe presentar un bloque al 100 % del ancho del contenedor que incluye 5 imágenes.	✔												
-//La imagen principal debe estar posicionada en la mitad izquierda del bloque de imágenes.	✔												
-//En la versión desktop, una grilla de 2 filas y 2 columnas debe estar en la mitad derecha del bloque donde se visualizarán las 4 imágenes restantes. ✔													
-//El bloque debe incluir en su región inferior derecha el texto “Ver más”, el cual, permitirá acceder a un componente para ver todas las imágenes disponibles del producto.	✔												
-//La galería debe ser responsiva a los diferentes dispositivos como mobile y tablet.	✔												
-
-
 
 const CardDetail = () => {
   const params = useParams();
-  const { state, dataApi,apiURL } = useContext(GlobalContext);
+  const { state, dataApi, apiURL } = useContext(GlobalContext);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [visible, setVisible] = useState(false)
+  const [showModalimg, setShowModalimg] = useState(false)
+  const [saveImg, setSaveimg] = useState("")
+  const navigate = useNavigate();
 
   const goBack = () => {
     window.history.back();
   };
 
-  const handleReservaClick = () => {
-    setShowCalendar(!showCalendar);
+  const handleReservaClick = async () => {
+    // Primero, asegúrate de tener los datos del producto
+    await getProduct();
+
+    // Luego, verifica si el usuario está autenticado
+    if (state.isAuthenticated) {
+      // Si está autenticado, navega a la página de reservas con el ID del producto
+      navigate(`/reservas/${params.id}`);
+    } else {
+      // Si no está autenticado, muestra un mensaje o realiza alguna otra acción
+      setShowCalendar(!showCalendar);
+    }
   };
 
   const getProduct = async () => {
     await dataApi(`${apiURL}/public/products/${params.id}`);
   };
+
+
+  const handleMoreClick = () => {
+    setVisible(!visible);
+  };
+
+
+  const handleImgClick = (imageUrl) => {
+    setShowModalimg(!showModalimg)
+    setSaveimg(imageUrl)
+  }
 
   useEffect(() => {
     getProduct();
@@ -40,7 +51,7 @@ const CardDetail = () => {
 
   return (
     <>
-      <div className='p-20 mt-5 '>
+      <div className='p-20 mt-20 '>
         <div className='flex flex-1 justify-between'>
           <h1 className='text-left text-xl text-orange-500 font-bold py-5'>{state.data.name}</h1>
           <button onClick={goBack}
@@ -57,7 +68,7 @@ const CardDetail = () => {
               className="block h-full w-full rounded-lg object-cover object-center "
               src={state.data.images[0].imageUrl} />}
           </div>
-              
+
 
           {Array.from({ length: 4 }).map((_, index) => (
             <div className=' aspect-[4/2.8] border border-gray-400 rounded-md' key={index}>
@@ -71,38 +82,54 @@ const CardDetail = () => {
             </div>
           ))}
 
-          {/* <div className=' aspect-[4/2.8] border border-gray-400 rounded-md'>
-          {state.data && state.data.images && state.data.images.length > 2 &&  <img
-              alt="gallery"
-              className="block h-full w-full rounded-lg object-cover object-center"
-              src={state.data.images[2].imageUrl} />}
-          </div>
-
-          <div className=' aspect-[4/2.8] border border-gray-400 rounded-md'>
-          {state.data && state.data.images && state.data.images.length > 3 &&  <img
-              alt="gallery"
-              className="block h-full w-full rounded-lg object-cover object-center"
-              src={state.data.images[3].imageUrl} />}
-          </div>
-
-          <div className=' aspect-[4/2.8] border border-gray-400 rounded-md'>
-          {state.data && state.data.images && state.data.images.length > 4 &&  <img
-              alt="gallery"
-              className="block h-full w-full rounded-lg object-cover object-center"
-              src={state.data.images[4].imageUrl} />}
-          </div> */}
         </div>
         <div className='text-right p-5 gap-4'>
-          <button className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">Ver mas</button>
-          <button onClick={handleReservaClick} className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
-          Reserva disponibles
-        </button>
-        {showCalendar && <Calendar />}
+          <button onClick={() => handleMoreClick()}
+            className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
+            {visible ? "Ver menos" : "Ver mas"}
+          </button>
+          <Link to={`/reservas/${params.id}`}>
+            <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
+              Reservas disponibles
+            </button>
+          </Link>
         </div>
+        {visible && (
+          <div className="flex gap-2">
+            {state.data.images.map((image, index) =>
+              <button key={index} onClick={() => handleImgClick(image.imageUrl)}>
+                <img src={image.imageUrl} alt={image.name} className='w-40 w-40 object-cover rounded-md' />
+              </button>
+            )}
+          </div>)
+        }
+
+        {showModalimg && (
+          <div className=" z-50 flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
+            <div className="bg-white rounded-lg w-96">
+              <form className="w-full">
+                <div className="flex flex-col items-start p-4">
+                  <div className='flex items-center w-full border-b pb-4'>
+                    <button
+                      className="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer "
+                      onClick={() => setShowModalimg(false)}
+                    >
+                      <span>✖</span>
+                    </button>
+                  </div>
+                  <div>
+                    <img src={saveImg} alt="" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        )
+        }
 
         <h2 className='text-left text-orange-500 font-bold p-5'>DESCRIPCION:</h2>
         <p>{state.data.description}</p>
-        
+
 
         <h4 className='text-left text-orange-500 font-bold p-5' >CARACTERÍSTICAS:</h4>
         <ul>

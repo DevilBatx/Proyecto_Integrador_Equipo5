@@ -63,7 +63,7 @@ const SignIn = () => {
   }
 
   return (
-    <div className='w-full h-screen min-h-screen flex '>
+    <div className='w-full h-screen min-h-screen flex mt-16'>
       <div className=' w-full h-full flex flex-col'>
         <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{ backgroundImage: " url(" + imgLog + ")" }}>
 
@@ -80,7 +80,7 @@ const SignIn = () => {
                 <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>{state.loading ? 'Cargando...' : 'Ingresar'}</button>
               </form>
               {state.error && <p className='text-red-500 mt-5 mb-2'>{state.error}</p>}
-              <p className='font-bold'>No tienes una cuenta?</p>
+              <p className='font-bold'>¿No tienes una cuenta?</p>
               <div className='flex items-center justify-center gap-2 mt-5'>
                 <Link to={'/register'}>
                   <span className='text-blue-700 font-bold'>Crear cuenta</span>

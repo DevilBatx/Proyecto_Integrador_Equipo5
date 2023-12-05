@@ -11,7 +11,10 @@ export default {
         "custom-color": "#F2EFDF", 
         "custom-color": "#D97236",
         "custom-color": "#F2A649",
-      }
+      },
+      borderWidth: {
+        '60': '60px',
+      },
     }, 
   },
   plugins: [
