@@ -77,7 +77,7 @@ function AgregarProducto({ onAdd }) {
     console.log(result);
 
     setSuccessMessage("Producto agregado con éxito!");
-    onAdd(result);
+  
 
     setName("");
     setDescription("");

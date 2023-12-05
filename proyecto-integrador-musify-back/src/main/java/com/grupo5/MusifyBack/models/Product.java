@@ -1,10 +1,11 @@
 package com.grupo5.MusifyBack.models;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "producto")
 @EqualsAndHashCode(exclude = {"bookings"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,16 +29,16 @@ public class Product {
     @JoinColumn(name = "idcategoria", nullable = false)
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<Image> images;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "producto_caracteristica",
-            joinColumns = @JoinColumn(name = "idproducto", referencedColumnName = "idproducto"),
-            inverseJoinColumns = @JoinColumn(name = "idcaracteristica", referencedColumnName = "idcaracteristica"))
-    private Set<Characteristic> characteristics;
+    @JsonManagedReference
+    private List<Image> images;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "producto_caracteristica",
+//            joinColumns = @JoinColumn(name = "idproducto", referencedColumnName = "idproducto"),
+//            inverseJoinColumns = @JoinColumn(name = "idcaracteristica", referencedColumnName = "idcaracteristica"))
+//    private Set<Characteristic> characteristics;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<Booking> bookings;
+    private List<Booking> bookings;
 
 
 }

@@ -5,6 +5,7 @@ import com.grupo5.MusifyBack.models.Characteristic;
 import com.grupo5.MusifyBack.models.Image;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,8 +17,8 @@ public class ProductDTO {
     private String description;
     //private String brand;
     private Category category;
-    private Set<Image> images;
-    private Set<Characteristic> characteristics;
+    private List<Image> images;
+//    private Set<Characteristic> characteristics;
 
 
 }

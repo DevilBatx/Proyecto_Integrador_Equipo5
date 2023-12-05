@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { getProductList, updateProduct, deleteProduct, getCategories } from '../api/ProductApi'; 
+import { getProductList, updateProduct, deleteProduct, getCategories } from '../api/ProductApi';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ function ManageProducts() {
   const [titulo, setTitulo] = useState("");
   const [productName, setProductName] = useState("");
   const { apiURL, state, dispatch } = useContext(GlobalContext);
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const [errorMessage, setErrorMessage] = useState({ imageError: "", productNameError: "", productDeleteError: "" })
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
@@ -30,57 +30,64 @@ function ManageProducts() {
   const loadProducts = async () => {
     const productList = await getProductList(apiURL);
     setProducts(productList);
-  };   
+  };
 
   const loadCategories = async () => {
     const fetchedCategories = await getCategories(apiURL);
     setCategories(fetchedCategories);
   };
-  
+
   const handleAddProduct = () => {
     navigate("/agregarproducto");
-};
-
-const handleUpdateProduct = async () => {
-  dispatch({ type: 'SET_LOADING', payload: true });
-  
-  const productInfo = {
-    id: selectedProduct.id,
-    name: productName,
-    category: categories.find(cat => cat.id.toString() === selectedCategory)
   };
 
-  const productData = new FormData();
-  productData.append(
-    'productInfo',
-    new Blob([JSON.stringify(productInfo)], {
-      type: 'application/json',
-    })
-  );
+  const handleUpdateProduct = async () => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+try {
+  debugger;
+    const productInfo = {
+      id: selectedProduct.id,
+      name: productName,
+      category: selectedCategory,
+    };
 
-  if (image) {
-    productData.append("newFile", image);
-  }
+    const productData = new FormData();
+    productData.append(
+      'productInfo',
+      new Blob([JSON.stringify(productInfo)], {
+        type: 'application/json',
+      })
+    );
 
-  await updateProduct(apiURL, productData);
+    if (images) {
+      productData.append("NewFiles", images);
+    }
+
+    await updateProduct(apiURL, productData);
+
+    loadProducts();
+  } catch (error) {
+    console.error('Error al manejar la actualización del producto:', error);
+    setErrorMessage({ ...errorMessage, productUpdateError: error.message })
+    
+    }
     setSelectedProduct(null);
     setProductName("");
-    setImage(null);
+    setImages(null);
     setShowModal(false);
     setTitulo("");
-    loadProducts();
     dispatch({ type: 'SET_LOADING', payload: false });
   };
 
   const handleDeleteProduct = async () => {
     try {
-    dispatch({ type: 'SET_LOADING', payload: true });
-    await deleteProduct(apiURL, selectedProduct.id);
-    setSelectedProduct(null);
-    setProductName("");
-    setShowModalDelete(false);
-    setTitulo("");
-    loadProducts();
+      dispatch({ type: 'SET_LOADING', payload: true });
+      await deleteProduct(apiURL, selectedProduct.id);
+      setSelectedProduct(null);
+      setProductName("");
+      setShowModalDelete(false);
+      setTitulo("");
+      loadProducts();
     } catch (error) {
       console.error('Error al manejar la eliminación del producto:', error);
       setErrorMessage({ ...errorMessage, productDeleteError: error.message })
@@ -94,8 +101,10 @@ const handleUpdateProduct = async () => {
     setShowModal(true);
     setErrorMessage({ imageError: "", productNameError: "" })
     setProductName(product.name);
+    setSelectedCategory(product.category);
+    dispatch({ type: 'SET_LOADING', payload: false });
   };
-  
+
   const handleDeleteClick = (product) => {
     setSelectedProduct(product);
     setProductName(product.name);
@@ -105,23 +114,23 @@ const handleUpdateProduct = async () => {
   };
   const handleProductName = (event) => {
     setProductName(event.target.value);
-    setErrorMessage({ ...errorMessage, productNameError: "" })  
+    setErrorMessage({ ...errorMessage, productNameError: "" })
   };
   const handleImageChange = (event) => {
-    const selectedImage = event.target.files[0];
-    setImage(selectedImage);
+    setImages([ ...event.target.files]);
     setErrorMessage({ ...errorMessage, imageError: "" })
   };
 
+
   return (
     <div className="p-14 mt-14 mb-10 mx-16 bg-gray-100 rounded-xl shadow-md" >
-      <div className ='flex flex-1 justify-end' >
-      <button onClick={goBack}
-            className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-14 my-5'>
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-            </svg>
-          </button>
+      <div className='flex flex-1 justify-end' >
+        <button onClick={goBack}
+          className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-14 my-5'>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+          </svg>
+        </button>
       </div>
       <div className=" flex justify-between mb-6">
         <h1 className="text-2xl font-bold mb-6">Administrar Productos</h1>
@@ -134,7 +143,7 @@ const handleUpdateProduct = async () => {
         <thead className="bg-gray-700 text-white">
           <tr>
             <th className="border p-3 ">ID</th>
-            <th className="border p-3">Nombre</th>            
+            <th className="border p-3">Nombre</th>
             <th className="border p-3">Acciones</th>
           </tr>
         </thead>
@@ -142,7 +151,7 @@ const handleUpdateProduct = async () => {
           {products.map((product, index) => (
             <tr key={product.id} className={index % 2 ? 'bg-gray-100' : ''}>
               <td className='text-center border p-3'>{product.id}</td>
-              <td className="border p-3">{product.name}</td>              
+              <td className="border p-3">{product.name}</td>
               <td className='border p-3 items-center space-x-2'>
                 <button
                   className="bg-gray-800 hover:bg-gray-100 text-white hover:text-gray-800 font-bold py-1 px-2 rounded shadow-md"
@@ -199,28 +208,29 @@ const handleUpdateProduct = async () => {
                     className='mt-2 text-sm pl-2 pr-4 rounded-lg py-2'
                     type="file"
                     onChange={handleImageChange}
+                    multiple
                   />
                 </div>
                 <div>
-        <label
-          htmlFor="productCategory"
-          className="block font-medium text-sm text-gray-700"
-        >
-          Categoría
-        </label>
-        <select
-          id="productCategory"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="mt-1 p-2 w-full border rounded"
-        >
-          <option value="">Seleccionar Categoría</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>{cat.name}</option>
-          ))}
-        </select>
-      </div>
-                <div className='text-sm font-semibold text-red-700'>{errorMessage.productNameError}</div>                
+                  <label
+                    htmlFor="productCategory"
+                    className="block font-medium text-sm text-gray-700"
+                  >
+                    Categoría
+                  </label>
+                  <select
+                    id="productCategory"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="mt-1 p-2 w-full border rounded"
+                  >
+                    <option value="">Seleccionar Categoría</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat}>{cat.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className='text-sm font-semibold text-red-700'>{errorMessage.productNameError}</div>
                 <div className=' text-sm font-semibold text-red-700'>{errorMessage.imageError}</div>
                 <div className='ml-auto'>
                   <button
@@ -254,7 +264,7 @@ const handleUpdateProduct = async () => {
                   </button>
                 </div>
                 <div className="w-full py-10">
-                  <div>                    
+                  <div>
                     ¿Está seguro que desea eliminar el producto <span className='font-bold'>{productName}</span>?
                   </div>
                 </div>

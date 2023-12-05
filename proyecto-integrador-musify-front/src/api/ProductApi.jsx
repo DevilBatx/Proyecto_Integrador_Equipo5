@@ -21,26 +21,26 @@ export const getProductList = async (apiURL) => {
     }
 };
 
-export const updateProduct = async (apiURL, productId, productInfo, newImages) => {
+export const updateProduct = async (apiURL, productData) => {
     try {
-        const formData = new FormData();
+        //const formData = new FormData();
         
-        formData.append(
-            "productInfo",
-            new Blob([JSON.stringify({ ...productInfo, id: productId })], {
-                type: "application/json",
-            })
-        );
+        // formData.append(
+        //     "productInfo",
+        //     new Blob([JSON.stringify({ ...productInfo, id: productId })], {
+        //         type: "application/json",
+        //     })
+        // );
 
-        if (newImages && newImages.length > 0) {
-            newImages.forEach((image) => {
-                formData.append("newFiles", image);
-            });
-        }
+        // if (newImages && newImages.length > 0) {
+        //     newImages.forEach((image) => {
+        //         formData.append("newFiles", image);
+        //     });
+        // }
 
         const response = await fetch(`${apiURL}/auth/products`, {
             method: 'PUT',
-            body: formData,
+            body: productData,
             headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` },
         });
 
@@ -66,7 +66,7 @@ export const deleteProduct = async (apiURL, productId) => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);            
         } 
-        const data = await response.json();
+        const data = await response.text();
         return data;        
     } catch (error) {
         console.error('Error al eliminar el producto:', error);
