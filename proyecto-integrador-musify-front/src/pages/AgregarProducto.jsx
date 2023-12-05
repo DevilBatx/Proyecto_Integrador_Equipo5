@@ -47,62 +47,61 @@ function AgregarProducto({ onAdd }) {
 
     const selectedCategory = categories.find(cat => cat.id.toString() === category);
 
-  setSuccessMessage("");
-  setErrorMessage("");
+    setSuccessMessage("");
+    setErrorMessage("");
 
-  const formData = new FormData();
-  formData.set(
-    "productInfo",
-    new Blob([JSON.stringify({ name, description, category: selectedCategory })], {
-      type: "application/json",
-    })
-  );
-  images.forEach((image) => {
-    formData.append("files", image);
-  });
-  const token = sessionStorage.getItem("token");
-  
-  try {      
-    const response = await fetch(`${apiURL}/auth/products`, {
-      method: "POST",
-      body: formData,
-      headers: { Authorization: `Bearer ${token}`},
+    const formData = new FormData();
+    formData.set(
+      "productInfo",
+      new Blob([JSON.stringify({ name, description, category: selectedCategory })], {
+        type: "application/json",
+      })
+    );
+    images.forEach((image) => {
+      formData.append("files", image);
     });
+    const token = sessionStorage.getItem("token");
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await fetch(`${apiURL}/auth/products`, {
+        method: "POST",
+        body: formData,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result);
+
+      setSuccessMessage("Producto agregado con éxito!");
+
+      setName("");
+      setDescription("");
+      setCategory("");
+      setImages([]);
+    } catch (error) {
+      console.error(
+        "Error al agregar el producto. Por favor, intente de nuevo:",
+        error
+      );
+      setErrorMessage(
+        "Error al agregar el producto. Por favor, intente de nuevo."
+      );
     }
-
-    const result = await response.json();
-    console.log(result);
-
-    setSuccessMessage("Producto agregado con éxito!");
-    onAdd(result);
-
-    setName("");
-    setDescription("");
-    setCategory("");
-    setImages([]);
-  } catch (error) {
-    console.error(
-      "Error al agregar el producto. Por favor, intente de nuevo:",
-      error
-    );
-    setErrorMessage(
-      "Error al agregar el producto. Por favor, intente de nuevo."
-    );
-  }
-};
+  };
 
   return (
     <div className="p-52 mb-10 bg-gray-100 rounded-xl shadow-md mt-16 h-screen">
-      <div className ='flex flex-1 justify-end' >
-      <button onClick={goBack}
-            className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-            </svg>
-          </button>
+      <div className='flex flex-1 justify-end' >
+        <button onClick={goBack}
+          className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+          </svg>
+        </button>
       </div>
       <h2 className="text-2xl mb-6 font-bold text-center">Agregar Producto</h2>
       <div className="bg-white p-6 rounded-lg shadow-lg md:w-2/3 mx-auto">

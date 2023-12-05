@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AddProduct, ListProducts, UserRoles, PlaceholderButton2 } from '../AdminPanel';
+import { AddProduct, ListProducts, UserRoles, ManageCategories } from '../AdminPanel';
 import imgLog from '../assets/Products/image8.png'
 
 const AdminPage = () => {
