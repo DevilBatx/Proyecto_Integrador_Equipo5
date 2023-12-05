@@ -7,9 +7,9 @@ function ListAllUsersPage() {
     const [response, setResponse] = useState(null)
     const goBack = () => {
         window.history.back();
-      };
+    };
 
-    
+
 
     useEffect(() => {
         const UsersApiUrl = (`${apiURL}/auth/user/allUsers`);
@@ -35,14 +35,14 @@ function ListAllUsersPage() {
 
     const handlerClick = async (userData) => {
 
-        setResponse( await fetch(`${apiURL}/auth/user/role`, {
+        setResponse(await fetch(`${apiURL}/auth/user/role`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             },
             body: JSON.stringify(userData)
-            
+
         }))
         setChangeUserData([]);
     }
@@ -50,14 +50,14 @@ function ListAllUsersPage() {
 
     return (
         <div className="p-52 mb-10 bg-gray-100 rounded-xl shadow-md h-screen">
-            <div className ='flex flex-1 justify-end' >
-      <button onClick={goBack}
-            className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-            </svg>
-          </button>
-      </div>
+            <div className='flex flex-1 justify-end' >
+                <button onClick={goBack}
+                    className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                    </svg>
+                </button>
+            </div>
             <h1 className="text-2xl font-bold mb-6">Lista de Usuarios</h1><br />
             <div className="table-container max-h-full overflow-y-auto">
                 <table className=" w-full bg-white rounded-lg overflow-hidden shadow-lg">
@@ -94,7 +94,7 @@ function ListAllUsersPage() {
             </div>
             <div className='flex justify-end p-4'>
                 <p>
-                {response && response.status === 200 && <p className='text-green-500'>Se ha cambiado el rol del usuario</p>}
+                    {response && response.status === 200 && <p className='text-green-500'>Se ha cambiado el rol del usuario</p>}
                 </p>
             </div>
         </div>

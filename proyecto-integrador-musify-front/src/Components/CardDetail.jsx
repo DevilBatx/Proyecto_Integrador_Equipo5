@@ -7,6 +7,9 @@ const CardDetail = () => {
   const params = useParams();
   const { state, dataApi, apiURL } = useContext(GlobalContext);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [visible, setVisible] = useState(false)
+  const [showModalimg, setShowModalimg] = useState(false)
+  const [saveImg, setSaveimg] = useState("")
   const navigate = useNavigate();
 
   const goBack = () => {
@@ -31,13 +34,24 @@ const CardDetail = () => {
     await dataApi(`${apiURL}/public/products/${params.id}`);
   };
 
+
+  const handleMoreClick = () => {
+    setVisible(!visible);
+  };
+
+
+  const handleImgClick = (imageUrl) => {
+    setShowModalimg(!showModalimg)
+    setSaveimg(imageUrl)
+  }
+
   useEffect(() => {
     getProduct();
   }, [params]);
 
   return (
     <>
-      <div className='p-20 mt-5 '>
+      <div className='p-20 mt-20 '>
         <div className='flex flex-1 justify-between'>
           <h1 className='text-left text-xl text-orange-500 font-bold py-5'>{state.data.name}</h1>
           <button onClick={goBack}
@@ -70,8 +84,9 @@ const CardDetail = () => {
 
         </div>
         <div className='text-right p-5 gap-4'>
-          <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
-            Ver mas
+          <button onClick={() => handleMoreClick()}
+            className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
+            {visible ? "Ver menos" : "Ver mas"}
           </button>
           <Link to={`/reservas/${params.id}`}>
             <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
@@ -79,6 +94,38 @@ const CardDetail = () => {
             </button>
           </Link>
         </div>
+        {visible && (
+          <div className="flex gap-2">
+            {state.data.images.map((image, index) =>
+              <button key={index} onClick={() => handleImgClick(image.imageUrl)}>
+                <img src={image.imageUrl} alt={image.name} className='w-40 w-40 object-cover rounded-md' />
+              </button>
+            )}
+          </div>)
+        }
+
+        {showModalimg && (
+          <div className=" z-50 flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
+            <div className="bg-white rounded-lg w-96">
+              <form className="w-full">
+                <div className="flex flex-col items-start p-4">
+                  <div className='flex items-center w-full border-b pb-4'>
+                    <button
+                      className="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer "
+                      onClick={() => setShowModalimg(false)}
+                    >
+                      <span>✖</span>
+                    </button>
+                  </div>
+                  <div>
+                    <img src={saveImg} alt="" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        )
+        }
 
         <h2 className='text-left text-orange-500 font-bold p-5'>DESCRIPCION:</h2>
         <p>{state.data.description}</p>

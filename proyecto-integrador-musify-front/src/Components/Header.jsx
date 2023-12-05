@@ -42,12 +42,7 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                                     <h4><Avatar /></h4>
                                     <h4 className='font-semibold'>{state.user?.name} {state.user?.lastName}</h4>
                                 </div>
-                                <div className={`transition-transform duration-300 transform ${isDropdownOpen ? 'rotate-180' : ''}`}>
-                                    <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path fill="#000" d="M5 6L0 0h10L5 6z" />
-                                    </svg>
-                                </div>
-                                <div className={`absolute right-2 transform ${isDropdownOpen ? 'rotate-180' : ''}`}> {/* Añade 'absolute right-2' y ajusta según sea necesario */}
+                                <div className={`absolute right-2 transform ${isDropdownOpen ? 'rotate-180' : ''}`}>
                                     <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path fill="#000" d="M5 6L0 0h10L5 6z" />
                                     </svg>
@@ -63,15 +58,9 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                                         <li>
                                             <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mi perfil</Link>
                                         </li>
-                                        <li>
-                                            <Link to="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ajustes</Link>
-                                        </li>
                                         {state.user.isAdmin == 1 && (<li>
                                             <Link to="/administracion" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Panel Administracion</Link>
                                         </li>)}
-                                        <li>
-                                            <Link to="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Favoritos</Link>
-                                        </li>
                                     </ul>
                                     <div className="py-2">
                                         <Link to="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleLogout()}>Cerrar sesión</Link>
