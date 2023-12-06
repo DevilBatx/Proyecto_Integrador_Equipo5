@@ -78,10 +78,16 @@ public class BookingService  implements IBookingService {
     }
 
     @Override
-    public Booking save(Booking booking) {
+    public Booking save(BookingDTO bookingDto) {
 
 // Validar disponibilidad antes de crear la reserva
-        if(isAvailable(booking)) {
+        if(isAvailable(bookingDto)) {
+            Booking booking = new Booking();
+            booking.setStartDate(bookingDto.getStartDate());
+            booking.setEndDate(bookingDto.getEndDate());
+            booking.setProduct(productRepository.findById(bookingDto.getProductId()).get());
+            booking.setUser(userRepository.findById(bookingDto.getUserId()).get());
+
             return bookingRepository.save(booking);
         }else{
             throw new IllegalStateException("No es posible crear la reserva porque el producto no está disponible en las fechas seleccionadas.");
@@ -98,28 +104,28 @@ public class BookingService  implements IBookingService {
 
     @Override
     @Transactional
-    public List<BookingDTO> getBookingsByUserId(Long idUser) {
+    public List<Booking> getBookingsByUserId(Long idUser) {
         List<Booking> bookings = bookingRepository.findBookingsByUserId(idUser);
         List<BookingDTO> bookingDTOS = new ArrayList<>();
-        for (Booking booking : bookings) {
-            BookingDTO bookingDTO = mapper.convertValue(booking, BookingDTO.class);
-            Product product = booking.getProduct();
-            ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
-            productDTO.setImages(product.getImages());
-            bookingDTO.setProduct(productDTO);
-
-            bookingDTOS.add(bookingDTO);
-
-        }
-        return bookingDTOS;
+//        for (Booking booking : bookings) {
+//            BookingDTO bookingDTO = mapper.convertValue(booking, BookingDTO.class);
+//            Product product = booking.getProduct();
+//            ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
+//            productDTO.setImages(product.getImages());
+//            bookingDTO.setProduct(productDTO);
+//
+//            bookingDTOS.add(bookingDTO);
+//
+//        }
+        return bookings;
 
 
     }
 
-    private boolean isAvailable(Booking booking) {
-        List<Booking> bookings = bookingRepository.findByProductAndOverlappingDate(booking.getProduct().getId(), booking.getStartDate(), booking.getEndDate());
+    private boolean isAvailable(BookingDTO bookingDto) {
+        List<Booking> bookings = bookingRepository.findByProductAndOverlappingDate(bookingDto.getProductId(), bookingDto.getStartDate(), bookingDto.getEndDate());
         for (Booking booking1 : bookings) {
-            if (booking.getStartDate().isBefore(booking1.getEndDate()) && booking.getEndDate().isAfter(booking1.getStartDate())) {
+            if (bookingDto.getStartDate().isBefore(booking1.getEndDate()) && bookingDto.getEndDate().isAfter(booking1.getStartDate())) {
                 return false;
             }
         }

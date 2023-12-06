@@ -11,8 +11,8 @@ public interface IBookingService {
     List<LocalDate> getBookedDates(Long idProduct);
     List<LocalDate> getFreeDates(List<LocalDate> bookedDates);
     List<LocalDate> getAvailableDates(Long idProduct);
-    Booking save(Booking booking);
+    Booking save(BookingDTO booking);
     List<Booking> getAllBookings();
-    List<BookingDTO> getBookingsByUserId(Long idUser);
+    List<Booking> getBookingsByUserId(Long idUser);
 
 }

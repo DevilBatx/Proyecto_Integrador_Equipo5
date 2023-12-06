@@ -2,6 +2,7 @@ package com.grupo5.MusifyBack.services;
 
 import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.dto.SearchProductDTO;
+import com.grupo5.MusifyBack.dto.request.SearchRequest;
 import com.grupo5.MusifyBack.models.Product;
 
 import java.io.IOException;
@@ -24,6 +25,8 @@ public interface IProductService {
 
     Boolean doesProductExist(String name);
     List<ProductDTO> getProductsByCategory(Long idCategory);
+
+    List<ProductDTO> searchProduct(SearchRequest search);
 
 
 }

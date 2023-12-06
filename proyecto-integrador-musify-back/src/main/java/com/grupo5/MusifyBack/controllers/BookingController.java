@@ -24,9 +24,9 @@ public class BookingController {
 
     @PostMapping("/auth/bookings")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<?> saveBooking(@RequestBody Booking booking) {
+    public ResponseEntity<?> saveBooking(@RequestBody BookingDTO bookingDto) {
         try {
-            Booking newBooking = bookingService.save(booking);
+            Booking newBooking = bookingService.save(bookingDto);
             return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
         } catch (Exception e) {
             String errorMessage = "Error al procesar la solicitud: " + e.getMessage();
@@ -60,7 +60,7 @@ public class BookingController {
     }
     @GetMapping("/auth/bookings/{idUser}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<List<BookingDTO>> getBookingsByUserId(@PathVariable("idUser") Long idUser) {
+    public ResponseEntity<List<Booking>> getBookingsByUserId(@PathVariable("idUser") Long idUser) {
         return ResponseEntity.ok(bookingService.getBookingsByUserId(idUser));
     }
 

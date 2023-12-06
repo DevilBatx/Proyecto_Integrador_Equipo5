@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.dto.SearchProductDTO;
+import com.grupo5.MusifyBack.dto.request.SearchRequest;
 import com.grupo5.MusifyBack.models.Image;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.ICategoryRepository;
@@ -240,6 +241,30 @@ public class ProductService implements IProductService {
     public List<ProductDTO> getProductsByCategory(Long idCategory) {
         //Obtener todos los productos de una categoria
         List<Product> products = productRepository.findProductsByCategories_Id(idCategory);
+        List<ProductDTO> productsDTO = new ArrayList<>();
+        //Convertir los productos a DTO
+        for (Product product : products) {
+
+            ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
+            List<Image> imagesDTO = new ArrayList<>();
+            //Convertir las imagenes a DTO
+            for (Image image : product.getImages()) {
+                Image imageDTO = mapper.convertValue(image, Image.class);
+                imagesDTO.add(imageDTO);
+            }
+            //Establecer las imagenes en el producto
+            productDTO.setImages(imagesDTO);
+            //Agregar el producto a la lista de productos
+            productsDTO.add(productDTO);
+        }
+
+        return productsDTO;
+
+    }
+
+    @Override
+    public List<ProductDTO> searchProduct(SearchRequest search) {
+        List<Product> products = productRepository.findProductByDateRange(search.getWord(), search.getStartDate(), search.getEndDate());
         List<ProductDTO> productsDTO = new ArrayList<>();
         //Convertir los productos a DTO
         for (Product product : products) {
