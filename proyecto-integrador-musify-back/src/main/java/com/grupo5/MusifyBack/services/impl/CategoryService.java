@@ -7,6 +7,7 @@ import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.ICategoryRepository;
 import com.grupo5.MusifyBack.persistence.repositories.IProductRepository;
 import com.grupo5.MusifyBack.services.ICategoryService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,7 @@ public class CategoryService implements ICategoryService {
     public void deleteCategory(Long id) {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
+            try{
             Category category = categoryOptional.get();
 
             // Verificar si hay productos asociados a la categoría
@@ -68,6 +70,11 @@ public class CategoryService implements ICategoryService {
                 throw new IllegalStateException("No es posible eliminar la categoría porque tiene productos asociados.");
             }
             categoryRepository.delete(categoryOptional.get());
+            //Elimino la imagen de la categoria
+            s3Service.deleteFiles(List.of(category.getUrl()), "categories");
+            }catch (Exception e){
+                throw new IllegalStateException("No es posible eliminar la categoría porque tiene productos asociados.");
+            }
         } else {
             throw new CategoryNotFoundException("Category not found " + id );
         }
@@ -75,12 +82,13 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    @Transactional
     public void addProductToCategory(Long idCategory, Long idProduct) {
         Optional<Category> categoryOpional = categoryRepository.findById(idCategory);
         if (categoryOpional.isPresent()) {
             Category category = categoryOpional.get();
             Product product = productRepository.findById(idProduct).get();
-            Set<Product> products = category.getProducts();
+            List<Product> products = category.getProducts();
             products.add(product);
             categoryRepository.save(category);
         } else {

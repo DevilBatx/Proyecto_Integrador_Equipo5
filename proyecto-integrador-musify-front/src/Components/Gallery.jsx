@@ -1,5 +1,3 @@
-// Gallery.jsx
-
 import React, { useState } from 'react';
 
 const Gallery = ({ images }) => {
@@ -61,4 +59,3 @@ const Gallery = ({ images }) => {
 };
 
 export default Gallery;
-

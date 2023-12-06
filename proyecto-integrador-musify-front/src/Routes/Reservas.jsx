@@ -26,7 +26,7 @@ const Reservas = () => {
     // Muestra el mensaje y el enlace de inicio de sesión si el usuario no está autenticado
     if (showLoginMessage) {
         return (
-            <div className="p-20 mt-5 text-center">
+            <div className="p-20 mt-96 text-center h-screen">
                 <h1 className="text-4xl text-orange-500 font-bold py-5">
                     ¡Debes iniciar sesión para reservar un producto!
                 </h1>

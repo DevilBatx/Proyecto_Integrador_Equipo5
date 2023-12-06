@@ -1,22 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import { addMonths } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
+import { GlobalContext } from './Utils/GlobalContext';
 
 const Calendar = () => {
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const { dispatch } = useContext(GlobalContext);
 
-    const onChange = (dates) => {
-        const [start, end] = dates;
-        setStartDate(start);
-        setEndDate(end);
-    };
+  const onChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
 
-    const handleSearchClick = () => {
-        // Lógica para realizar la búsqueda con las fechas seleccionadas
-        console.log('Realizar búsqueda con fechas:', startDate, endDate);
-    };
+    // Dispatch para enviar las fechas al contexto global
+    dispatch({
+      type: "SET_DATE",
+      payload: {
+        startDate: start,
+        endDate: end,
+      },
+    });
+}
 
     return (
         <div className="flex felx-col">
@@ -36,7 +42,7 @@ const Calendar = () => {
                 <DatePicker
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     selected={startDate}
-                    onChange={(date) => setStartDate(date)}
+                    onChange={onChange}
                     minDate={new Date()}
                     maxDate={addMonths(new Date(), 5)}
                     placeholderText="Fecha inicial"
@@ -66,7 +72,6 @@ const Calendar = () => {
                     placeholderText="Fecha final"
                 />
             </div>
-            
         </div>
     );
 }

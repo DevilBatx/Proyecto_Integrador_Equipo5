@@ -21,7 +21,7 @@ public class Characteristic {
     private String name;
     @Column(name = "urliconocaracteristica")
     private String iconUrl;
-    @ManyToMany(mappedBy = "characteristics")
-    private Set<Product> products;
-    //TODO Cambiar en base de datos a relacion muchos a muchos
+//    @ManyToMany(mappedBy = "characteristics")
+//    private Set<Product> products;
+//    //TODO Cambiar en base de datos a relacion muchos a muchos
 }

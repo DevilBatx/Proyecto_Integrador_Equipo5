@@ -1,5 +1,6 @@
 package com.grupo5.MusifyBack.models;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "producto_imagen",uniqueConstraints = @UniqueConstraint(columnNames = "urlimgproducto"))
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "imageUrl")
 public class Image {
     @Id
     @Column(name = "urlimgproducto")
@@ -17,6 +19,7 @@ public class Image {
     private Integer imageOrder;
     @ManyToOne
     @JoinColumn(name = "idproducto", nullable = false)
+    @JsonBackReference
     private Product product;
 
 

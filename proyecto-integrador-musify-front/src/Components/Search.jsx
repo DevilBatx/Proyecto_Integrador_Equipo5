@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import { GlobalContext } from "./Utils/GlobalContext";
 import Suggestions from './Suggestions';
@@ -47,6 +48,11 @@ const Search = () => {
     }
   };
 
+  const handleSelect = (selectedValue) => {
+    inputRef.current = selectedValue;
+    setResults([]); // Limpiar las sugerencias después de seleccionar
+  };
+
   const handleClickOutside = (event) => {
     const formElement = document.getElementById("search-form");
 
@@ -65,9 +71,9 @@ const Search = () => {
 
   return (
     <form id="search-form" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 ps-8 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-      <input placeholder='Buscar instrumentos, accesorios...' onChange={handleInputChange} className='w-full' />
+      <input placeholder='Buscar instrumentos, accesorios...' onChange={handleInputChange} value={inputRef.current} className='w-full' />
       {isLoading && <div>Cargando productos...</div>}
-      {!isLoading && <Suggestions results={results} />}
+      {!isLoading && <Suggestions results={results} onSelect={handleSelect} />}
     </form>
   );
 };

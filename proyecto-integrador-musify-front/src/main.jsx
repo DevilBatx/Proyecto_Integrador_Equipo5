@@ -10,7 +10,7 @@ import Nopage from './Routes/Nopage.jsx'
 import Detail from './Routes/Detail.jsx'
 import AdminPage from './pages/AdminPage.jsx'
 import AgregarProducto from './pages/AgregarProducto.jsx'
-import ListAllProductsPage from './pages/ListAllProductsPage.jsx'
+import ManageProducts from './pages/ManageProducts.jsx'
 import './index.css'
 import Profile from './Routes/Profile.jsx';
 import PrivateRoute from './Components/PrivateRoute.jsx';
@@ -31,20 +31,18 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/categories/:id" element={<Products />} />
           <Route path="/products" element={<Products />} />
           <Route path="/administracion" element={<AdminPage />} />
-          <Route path="/allproducts" element={<ListAllProductsPage />} />
+          <Route path="/allproducts" element={<ManageProducts />} />
           <Route path="/allusers" element={<ListAllUsersPage />} />
           <Route path="/adminCategories" element={<ManageCategories />} />
           <Route path="/agregarproducto" element={<AgregarProducto />} />
+          <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/politicas' element={<Politicas />} />
-          <Route path='/reservas/:productId' element={<Reservas />} />
+          <Route path='/profile' element={<Profile/>} /> 
+          <Route path='/politicas' element={<Politicas/>}/>
+          <Route path='/reservas/:productId' element={<Reservas />} />        
           <Route path="*" element={<Nopage />} />
           <Route element={<PrivateRoute />}>
           <Route path='/profile' element={<Profile />} />
-           <Route path="/login" element={<SignIn />} />
-         
-            
           </Route>
         </Route>
       </Routes>

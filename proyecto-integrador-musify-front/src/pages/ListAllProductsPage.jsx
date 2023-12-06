@@ -13,9 +13,9 @@ const ListAllProductsPage = () => {
 
         if (window.confirm('¿Eliminar producto?')) {
             try {
-                const response = await fetch(`${apiURL}/auth/products?id=${productId}`, {
+                const response = await fetch(`${apiURL}/auth/products/${productId}`, {
                     method: 'DELETE',
-                    headers: {'Authorization': `Bearer ${sessionStorage.getItem('token')}`}          
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}          
                     
                 });
 
@@ -40,7 +40,7 @@ const ListAllProductsPage = () => {
     };
 
     return (
-        <div className="p-14 mt-14 mb-10 bg-gray-100 rounded-xl shadow-md">
+        <div className="p-14 mt-16 mb-10 bg-gray-100 rounded-xl shadow-md">
             <h1 className="text-2xl font-bold mb-6">Lista de Productos</h1>
             <table className="w-full bg-white rounded-lg overflow-hidden shadow-lg">
                 <thead className="bg-gray-700 text-white">

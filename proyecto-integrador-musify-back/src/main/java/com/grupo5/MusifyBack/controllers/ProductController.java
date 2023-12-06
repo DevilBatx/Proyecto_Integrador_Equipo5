@@ -5,6 +5,7 @@ import com.grupo5.MusifyBack.controllers.exceptions.ProductAlreadyExistsExceptio
 import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.dto.SearchProductDTO;
+import com.grupo5.MusifyBack.dto.request.SearchRequest;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.services.impl.ProductService;
 import com.grupo5.MusifyBack.services.impl.S3Service;
@@ -142,6 +143,12 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
+    }
+
+    @GetMapping("/public/search")
+    public ResponseEntity<List<ProductDTO>> searchProduct(@RequestBody SearchRequest search) {
+        logger.info("Inicio busqueda productos");
+        return ResponseEntity.ok(productService.searchProduct(search));
     }
 
 

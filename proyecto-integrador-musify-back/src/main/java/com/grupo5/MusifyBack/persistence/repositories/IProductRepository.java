@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -19,4 +20,16 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     List<Product> findProductsBySearchString(String search);
     boolean existsByName(String name);
 
+    @Query(value = """
+            select * from producto
+            where producto.nombreProducto like concat('%',?1, '%') and  (           
+            select count(*) from reserva where reserva.idproducto=producto.idProducto
+            and (
+            (fechaInicioReserva >= ?2 and ?3>=fechaInicioreserva) or
+            (?2>= fechaInicioreserva and ?3 <= fechafinreserva) or
+            (?3 >= fechafinreserva and fechafinreserva >= ?2) or
+            (fechaInicioreserva >= ?2 and ?3 >= fechafinreserva)
+            ) limit 1                      
+            ) < 1""", nativeQuery = true)
+    List<Product> findProductByDateRange(String word, LocalDate startDate, LocalDate endDate);
 }

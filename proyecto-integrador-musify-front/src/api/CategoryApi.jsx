@@ -1,6 +1,6 @@
 // CategoryApi.jsx
 
-import { GlobalContext } from '../Components/Utils/GlobalContext';
+import { GlobalContext } from '../Components/Utils/GlobalContext'; 
 import { useContext } from 'react';
 
 

@@ -12,6 +12,9 @@ function ManageCategories() {
   const { apiURL, state, dispatch } = useContext(GlobalContext);
   const [image, setImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState({ imageError: "", categoryNameError: "", categoryDeleteError: "" })
+  const goBack = () => {
+    window.history.back();
+  };
 
   useEffect(() => {
     loadCategories();
@@ -81,13 +84,13 @@ function ManageCategories() {
 
   const handleDeleteCategory = async () => {
     try {
-    dispatch({ type: 'SET_LOADING', payload: true });
-    await deleteCategory(apiURL, selectedCategory.id);
-    setSelectedCategory(null);
-    setCategoryName("");
-    setShowModalDelete(false);
-    setTitulo("");
-    loadCategories();
+      dispatch({ type: 'SET_LOADING', payload: true });
+      await deleteCategory(apiURL, selectedCategory.id);
+      setSelectedCategory(null);
+      setCategoryName("");
+      setShowModalDelete(false);
+      setTitulo("");
+      loadCategories();
     } catch (error) {
       console.error('Error al manejar la eliminación de la categoría:', error);
       setErrorMessage({ ...errorMessage, categoryDeleteError: error.message })
@@ -129,11 +132,19 @@ function ManageCategories() {
 
 
   return (
-    <div className="p-14 mt-14 mb-10 mx-16 bg-gray-100 rounded-xl shadow-md" >
+    <div className="p-14 mt-14 mb-10 mx-16 bg-gray-100 rounded-xl shadow-md h-screen" >
+      <div className='flex flex-1 justify-end' >
+        <button onClick={goBack}
+          className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-14 my-5'>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+          </svg>
+        </button>
+      </div>
       <div className=" flex justify-between mb-6">
         <h1 className="text-2xl font-bold mb-6">Administrar Categorías</h1>
         <button
-          className="text-white mt-5 bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] hover:bg-blue-800 focus:ring-3 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center dark:bg-orange-500 dark:hover:bg-orange-100 dark:hover:text-orange-500 dark:focus:ring-blue-800 hover:opacity-90 self-end"
+          className="text-white mt-5 border-solid border-2 border-orange-500 bg-orange-500 hover:bg-gray-100  font-medium rounded-lg text-sm px-4 py-2.5 text-center hover:bg-gray-100 hover:text-orange-500 self-end"
           onClick={handleCreateClick}>Nueva Categoría
         </button>
       </div>
@@ -156,10 +167,10 @@ function ManageCategories() {
               </td>
               <td className='border p-3 items-center space-x-2'>
                 <button
-                  className="bg-gray-800 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded shadow-md"
+                  className="bg-gray-800 hover:bg-gray-100 text-white hover:text-gray-800 font-bold py-1 px-2 rounded shadow-md"
                   onClick={() => handleEditClick(category)}>Editar</button>
                 <button
-                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded shadow-md"
+                  className="bg-orange-500 hover:bg-gray-100 text-white hover:text-orange-500 font-bold py-1 px-2 rounded shadow-md"
                   disabled={state.loading}
                   onClick={() => handleDeleteClick(category)}>Eliminar</button>
               </td>
