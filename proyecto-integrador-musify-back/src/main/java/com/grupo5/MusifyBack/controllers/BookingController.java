@@ -35,8 +35,7 @@ public class BookingController {
 
     }
 
-    @GetMapping("/auth/bookings/{idProduct}/booked")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/public/bookings/{idProduct}/booked")
     public ResponseEntity<Map<String, List<LocalDate>>> getBookedDates(@PathVariable("idProduct") Long idProduct) {
         List<LocalDate> bookedDates = bookingService.getBookedDates(idProduct);
         Map<String, List<LocalDate>> response = new HashMap<>();
@@ -44,8 +43,7 @@ public class BookingController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/auth/bookings/{idProduct}/available")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/public/bookings/{idProduct}/available")
     public ResponseEntity<Map<String, List<LocalDate>>> getAvailableDates(@PathVariable("idProduct") Long idProduct) {
         List<LocalDate> availableDates = bookingService.getAvailableDates(idProduct);
         Map<String, List<LocalDate>> response = new HashMap<>();
