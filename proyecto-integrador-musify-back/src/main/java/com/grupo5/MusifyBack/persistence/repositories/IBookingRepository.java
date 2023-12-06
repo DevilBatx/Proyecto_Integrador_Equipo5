@@ -1,6 +1,5 @@
 package com.grupo5.MusifyBack.persistence.repositories;
 
-import com.grupo5.MusifyBack.dto.BookingDTO;
 import com.grupo5.MusifyBack.models.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,32 +1,33 @@
 package com.grupo5.MusifyBack.services;
 
-import com.grupo5.MusifyBack.dto.ProductDTO;
+
 import com.grupo5.MusifyBack.dto.SearchProductDTO;
 import com.grupo5.MusifyBack.dto.request.SearchRequest;
 import com.grupo5.MusifyBack.models.Product;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface IProductService {
 
-    List<ProductDTO> getAllProducts();
+    List<Product> getAllProducts();
     List<SearchProductDTO>searchProducts(String search);
 
-    ProductDTO getProductById(long id);
+    Optional<Product> getProductById(long id);
 
-    Product saveProduct(ProductDTO product,List<String> imageUrls);
+    Product saveProduct(Product product,List<String> imageUrls);
 
-    Product updateProduct(ProductDTO product,List<String> newImageUrls);
+    void updateProduct(Product product, List<String> newImageUrls);
 
     Boolean deleteProduct(long id) throws IOException;
 
-    List<ProductDTO> getRandomProducts(); //    X productos aleatorios
+    List<Product> getRandomProducts(); //     productos aleatorios
 
     Boolean doesProductExist(String name);
-    List<ProductDTO> getProductsByCategory(Long idCategory);
+    List<Product> getProductsByCategory(Long idCategory);
 
-    List<ProductDTO> searchProduct(SearchRequest search);
+    List<Product> searchProduct(SearchRequest search);
 
 
 }

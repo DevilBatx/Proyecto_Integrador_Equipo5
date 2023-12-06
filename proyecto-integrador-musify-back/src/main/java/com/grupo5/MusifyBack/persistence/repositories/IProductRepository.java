@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
 
-    // Obtener X cantidad de  productos aleatorios de la base de datos
+    // Obtener productos aleatorios de la base de datos
     @Query(value = "SELECT * FROM producto ORDER BY RAND()", nativeQuery = true)
     List<Product> findRandomProducts();
     @Query(value = "SELECT * FROM producto WHERE idcategoria = ?1", nativeQuery = true)

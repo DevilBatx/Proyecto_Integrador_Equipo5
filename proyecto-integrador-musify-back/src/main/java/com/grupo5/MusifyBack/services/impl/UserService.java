@@ -3,7 +3,6 @@ package com.grupo5.MusifyBack.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.UserAlreadyExistException;
 import com.grupo5.MusifyBack.dto.UserDTO;
-import com.grupo5.MusifyBack.dto.response.AuthResponse;
 import com.grupo5.MusifyBack.dto.response.RegistrationSuccesResponse;
 import com.grupo5.MusifyBack.models.User;
 import com.grupo5.MusifyBack.persistence.repositories.IUserRepository;

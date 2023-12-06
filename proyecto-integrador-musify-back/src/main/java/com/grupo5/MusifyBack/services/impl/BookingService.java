@@ -1,24 +1,17 @@
 package com.grupo5.MusifyBack.services.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.dto.BookingDTO;
-import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.models.Booking;
-import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.persistence.repositories.IBookingRepository;
 import com.grupo5.MusifyBack.persistence.repositories.IProductRepository;
 import com.grupo5.MusifyBack.persistence.repositories.IUserRepository;
 import com.grupo5.MusifyBack.services.IBookingService;
-import com.grupo5.MusifyBack.services.IProductService;
-import com.grupo5.MusifyBack.services.IUserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class BookingService  implements IBookingService {
@@ -30,10 +23,7 @@ public class BookingService  implements IBookingService {
     IProductRepository productRepository;
     @Autowired
     IUserRepository userRepository;
-    @Autowired
-    ObjectMapper mapper;
-    @Autowired
-    ImageService imageService;
+
 
     @Override
     public List<LocalDate> getBookedDates(Long idProduct) {
@@ -107,16 +97,6 @@ public class BookingService  implements IBookingService {
     public List<Booking> getBookingsByUserId(Long idUser) {
         List<Booking> bookings = bookingRepository.findBookingsByUserId(idUser);
         List<BookingDTO> bookingDTOS = new ArrayList<>();
-//        for (Booking booking : bookings) {
-//            BookingDTO bookingDTO = mapper.convertValue(booking, BookingDTO.class);
-//            Product product = booking.getProduct();
-//            ProductDTO productDTO = mapper.convertValue(product, ProductDTO.class);
-//            productDTO.setImages(product.getImages());
-//            bookingDTO.setProduct(productDTO);
-//
-//            bookingDTOS.add(bookingDTO);
-//
-//        }
         return bookings;
 
 
