@@ -44,7 +44,6 @@ function ManageProducts() {
   const handleUpdateProduct = async () => {
     dispatch({ type: 'SET_LOADING', payload: true });
 try {
-  debugger;
     const productInfo = {
       id: selectedProduct.id,
       name: productName,

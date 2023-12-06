@@ -1,6 +1,7 @@
 package com.grupo5.MusifyBack.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,10 +29,10 @@ public class Booking {
     private LocalDate endDate;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idproducto", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     private Product product;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idusuario", nullable = false)
+    @JsonIgnore
     private User user;
 
 }

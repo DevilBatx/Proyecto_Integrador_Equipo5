@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "producto_imagen",uniqueConstraints = @UniqueConstraint(columnNames = "urlimgproducto"))
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "imageUrl")
 public class Image {
     @Id
     @Column(name = "urlimgproducto")

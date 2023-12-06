@@ -13,6 +13,7 @@ import AgregarProducto from './pages/AgregarProducto.jsx'
 import ManageProducts from './pages/ManageProducts.jsx'
 import './index.css'
 import Profile from './Routes/Profile.jsx';
+import HistorialReservas from './Routes/HistorialReservas.jsx';
 import PrivateRoute from './Components/PrivateRoute.jsx';
 import ListAllUsersPage from './pages/ListAllUsersPage.jsx';
 import Politicas from './Routes/Politicas.jsx';
@@ -37,7 +38,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/agregarproducto" element={<AgregarProducto />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
-          <Route path='/profile' element={<Profile/>} /> 
+          <Route path='/profile' element={<Profile/>} />
+          <Route path='/misReservas' element={<HistorialReservas/>}/> 
           <Route path='/politicas' element={<Politicas/>}/>
           <Route path='/reservas/:productId' element={<Reservas />} />        
           <Route path="*" element={<Nopage />} />

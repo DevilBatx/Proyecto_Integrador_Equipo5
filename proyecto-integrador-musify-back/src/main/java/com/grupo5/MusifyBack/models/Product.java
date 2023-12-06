@@ -13,7 +13,6 @@ import java.util.List;
 @Entity
 @Table(name = "producto")
 @EqualsAndHashCode(exclude = {"bookings"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

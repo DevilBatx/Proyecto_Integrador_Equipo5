@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductAlreadyExistsException;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.SearchProductDTO;
+import com.grupo5.MusifyBack.dto.request.MessageResponse;
 import com.grupo5.MusifyBack.dto.request.SearchRequest;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.services.impl.ProductService;
@@ -61,11 +62,12 @@ public class ProductController {
     @PostMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity<Product> saveProduct(@RequestPart("productInfo") Product product, @RequestPart("files") MultipartFile[] files) throws ProductAlreadyExistsException {
+    public ResponseEntity<?> saveProduct(@RequestPart("productInfo") Product product, @RequestPart("files") MultipartFile[] files) throws ProductAlreadyExistsException {
 
 
         if (productService.doesProductExist(product.getName())) {
-            throw new ProductAlreadyExistsException("El producto " + product.getName() + " ya se encuentra registrado en la base de datos");
+            MessageResponse messageResponse = new MessageResponse("El producto " + product.getName() + " ya se encuentra registrado en la base de datos");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(messageResponse);
         } else {
             try {
                 List<String> imageUrls = null;
