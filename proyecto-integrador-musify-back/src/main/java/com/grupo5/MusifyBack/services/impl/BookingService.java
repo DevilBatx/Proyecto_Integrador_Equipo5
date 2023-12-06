@@ -9,6 +9,8 @@ import com.grupo5.MusifyBack.services.IBookingService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,8 @@ public class BookingService  implements IBookingService {
     @Autowired
     IUserRepository userRepository;
 
+    @Autowired
+    EmailService emailService;
 
     @Override
     public List<LocalDate> getBookedDates(Long idProduct) {
@@ -78,7 +82,22 @@ public class BookingService  implements IBookingService {
             booking.setProduct(productRepository.findById(bookingDto.getProductId()).get());
             booking.setUser(userRepository.findById(bookingDto.getUserId()).get());
 
-            return bookingRepository.save(booking);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            Booking savedBooking = bookingRepository.save(booking);
+            emailService.sendEmail(booking.getUser().getEmail(), "Reserva creada",
+                    "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; margin: 0; padding: 0;\">\n" +
+                            "    <div style=\"max-width: 600px; margin: 50px auto; background-color: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\">\n" +
+                            "        <h1 style=\"color: #333333;\">Reserva creada!</h1>\n" +
+                            "        <p style=\"color: #666666;\">Tu reserva ha sido creada exitosamente.</p>\n" +
+                            "        <h3 style=\"color: #666666;\">Detalles de la reserva:</h3>\n" +
+                            "        <p style=\"color: #666666;\">Producto: "+ booking.getProduct().getName()+"</p>\n" +
+                            "        <p style=\"color: #666666;\">Fecha de inicio: "+ booking.getStartDate().format(formatter)+"</p>\n" +
+                            "        <p style=\"color: #666666;\">Fecha de fin: "+ booking.getEndDate().format(formatter)+"</p>\n" +
+                            "        <a href=\"http://c12-grupo5-front.s3-website-us-east-1.amazonaws.com/#/details/" + booking.getProduct().getId() + "\" style=\"display: inline-block; padding: 10px 20px; background-color: #f58d42; color: #ffffff; text-decoration: none; border-radius: 5px; margin-top: 20px;\">Ver Producto</a>\n" +
+                            "    </div>\n" +
+                            "</body>");
+
+            return savedBooking;
         }else{
             throw new IllegalStateException("No es posible crear la reserva porque el producto no está disponible en las fechas seleccionadas.");
         }
