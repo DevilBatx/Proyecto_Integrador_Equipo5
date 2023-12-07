@@ -6,6 +6,7 @@ import com.grupo5.MusifyBack.dto.request.SearchRequest;
 import com.grupo5.MusifyBack.models.Product;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public interface IProductService {
     Boolean doesProductExist(String name);
     List<Product> getProductsByCategory(Long idCategory);
 
-    List<Product> searchProduct(SearchRequest search);
+    List<Product> searchProduct(String search, LocalDate starDate, LocalDate endDate);
 
 
 }

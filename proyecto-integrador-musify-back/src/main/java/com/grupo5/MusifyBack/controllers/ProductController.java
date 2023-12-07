@@ -1,6 +1,5 @@
 package com.grupo5.MusifyBack.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductAlreadyExistsException;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
 import com.grupo5.MusifyBack.dto.SearchProductDTO;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -154,9 +154,9 @@ public class ProductController {
     }
 
     @GetMapping("/public/search")
-    public ResponseEntity<List<Product>> searchProduct(@RequestBody SearchRequest search) {
+    public ResponseEntity<List<Product>> searchProduct(@RequestParam String query, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
         logger.info("Inicio busqueda productos");
-        return ResponseEntity.ok(productService.searchProduct(search));
+        return ResponseEntity.ok(productService.searchProduct(query, startDate, endDate));
     }
 
 
