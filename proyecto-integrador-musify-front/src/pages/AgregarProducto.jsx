@@ -94,7 +94,7 @@ function AgregarProducto({ onAdd }) {
   };
 
   return (
-    <div className="p-52 mb-10 bg-gray-100 rounded-xl shadow-md mt-16 h-screen">
+    <div className="h-screen flex flex-col justify-center mx-auto py-40 bg-gray-100 rounded-xl shadow-md h-auto">
       <div className='flex flex-1 justify-end' >
         <button onClick={goBack}
           className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>

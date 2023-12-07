@@ -7,11 +7,11 @@ const Card = ({ data: { id, name, description, images } }) => {
 
   return (
     <div className='hover:drop-shadow-lg'>
-      <div className="w-full max-w-sm h-96 bg-white border border-orange-300 rounded-lg flex flex-col items-center ">
+      <div className="w-full max-w-sm h-96 bg-write border border-orange-300 rounded-lg flex flex-col items-center  ">
 
-        <div className='w-full h-2/3'>
-          <Link className='flex h-full justify-center items-center' to={`/details/${id}`}>
-            {images.length > 0 && <img className="rounded-t-lg w-auto h-2/3" src={images[0].imageUrl} alt="imagen del producto" />}
+        <div className='w-full h-2/3 overflow-hidden '>
+          <Link className='flex h-full justify-center items-center p-3' to={`/details/${id}`}>
+            {images.length > 0 && <img className="rounded-lg w-full h-full" src={images[0].imageUrl} alt="imagen del producto" />}
           </Link>
         </div>
         <div className="flex flex-col place-content-evenly w-full h-1/3 pb-3">

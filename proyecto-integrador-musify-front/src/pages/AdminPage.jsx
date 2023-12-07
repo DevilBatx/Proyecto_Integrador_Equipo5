@@ -24,8 +24,8 @@ const AdminPage = () => {
 
     return (
         <div className=' bg-center bg-cover relative' style={{ backgroundImage: " url(" + imgLog + ")" }}>
-        <div className="p-96 mt-50 rounded-xl shadow-md h-screen">
-            <h2 className="text-2xl mb-6 font-bold text-center">Panel de Administración</h2>
+        <div className="w-[600px] flex flex-col justify-center mx-auto rounded-xl shadow-md h-screen">
+            <h2 className="text-2xl mb-6 font-bold text-center ">Panel de Administración</h2>
             <div className="flex flex-col space-y-4 p-4">
                 <AddProduct />
                 <ListProducts />

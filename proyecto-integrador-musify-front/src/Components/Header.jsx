@@ -18,7 +18,7 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
     };
 
     return (
-        <header className="bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] z-50 fixed top-0 left-0 right-0 w-full bg-white shadow-md z-10 transform translate-y-0" >
+        <header className="bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] z-50 fixed top-0 left-0 right-0 w-full bg-white shadow-md transform translate-y-0" >
             <div className='container mx-auto px-4 py-2 flex flex-col md:flex-row items-center justify-between'>
                 <div className='flex items-center mb-2 md:mb-0'>
                     <Link to="/"><img className='h-16 md:h-20' src={logo} alt="logoEmpresa" /></Link>

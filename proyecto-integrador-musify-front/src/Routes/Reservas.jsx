@@ -3,6 +3,7 @@ import { GlobalContext } from '../Components/Utils/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import Gallery from '../Components/Gallery';
 import Calendar from '../Components/Calendar';
+import imgLog from '../assets/Products/dino.png'
 
 const Reservas = () => {
     const { state, dispatch } = useContext(GlobalContext);
@@ -23,10 +24,13 @@ const Reservas = () => {
         }
     }, [state.isAuthenticated, state.data]);
 
+
     // Muestra el mensaje y el enlace de inicio de sesión si el usuario no está autenticado
     if (showLoginMessage) {
         return (
-            <div className="p-20 mt-96 text-center h-screen">
+            
+            <div className="flex flex-col items-center justify-center mx-auto text-center h-screen">
+                <img className='mb-5' src={imgLog} alt="Not Found" />
                 <h1 className="text-4xl text-orange-500 font-bold py-5">
                     ¡Debes iniciar sesión para reservar un producto!
                 </h1>
@@ -34,6 +38,7 @@ const Reservas = () => {
                     Haz <span className="text-blue-500 cursor-pointer" onClick={() => navigate('/login')}>click aquí</span> para iniciar sesión.
                 </p>
             </div>
+            
         );
     }
 
@@ -45,7 +50,7 @@ const Reservas = () => {
                     <h1 className='text-center text-4xl text-orange-500 font-bold py-5'>Reservas de instrumentos</h1>
                 </div>
                 <h1 className='text-left text-xl text-orange-500 font-bold py-5'>{state.data.name}</h1>
-                <Gallery images={images} />
+                    <Gallery images={images} />
                 <div>
                     <h1 className='text-left text-xl text-orange-500 font-bold py-5'> Descripcion:  </h1>
                     <p>{state.data.description}</p>

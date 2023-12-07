@@ -2,7 +2,7 @@ import React from "react";
 
 const Politicas = () => {
   return (
-    <div className="mt-40 w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-10 h-screen p-12 ">
+    <div className="mt-28 mb-6 w-auto h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-10">
       <div>
         <h1 className="text-center text-2xl underline h-[12%] font-bold ">
           {" "}

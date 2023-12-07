@@ -6,6 +6,7 @@ import Calendar from '../Components/Calendar';
 import PaginationButtons from '../Components/PaginationButtons';
 import { useContext } from "react";
 import { GlobalContext } from "../Components/Utils/GlobalContext";
+import SearchWithCalendar from '../Components/SearchWithCalendar';
 
 
 const Home = () => {
@@ -24,11 +25,8 @@ const Home = () => {
                 <div
                     className="w-full h-[60vh] bg-cover"
                     style={{ backgroundImage: " url(" + fondo2 + ")" }}
-                >
-                    <div className=" flex flex-col-3 pt-[17%] px-[10%] gap-16 ">
-                        <Search />
-
-                        <Calendar />
+                ><div className="w-full h-[60vh] bg-cover">
+                        <SearchWithCalendar />
                     </div>
                 </div>
             </section>
@@ -42,7 +40,8 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-            <section className="mb-8 flex gap-5 items-center justify-center">
+            
+            <section className="flex flex-col items-center justify-center p-10">
                 <div className="text-center">
                     <h2 className="text-3xl text-orange-500 font-bold mb-4 p-10">Recomendados</h2>
                     <PaginationButtons endPoint = {`${apiURL}/public/products/random`} />

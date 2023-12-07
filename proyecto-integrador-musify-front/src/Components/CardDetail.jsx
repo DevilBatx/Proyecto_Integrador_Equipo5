@@ -1,7 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from './Utils/GlobalContext';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import Calendar from './Calendar';
+import imgRestaurado from '../assets/Products/Refubrish.png'
+import imgCredito from '../assets/Products/Credito.png'
+import imgGarantia from '../assets/Products/Garantia.png'
+import imgDelivery from '../assets/Products/Delivery.png'
+import imgEfectivo from '../assets/Products/Efectivo.png'
 
 const CardDetail = () => {
   const params = useParams();
@@ -89,7 +93,7 @@ const CardDetail = () => {
             {visible ? "Ver menos" : "Ver mas"}
           </button>
           <Link to={`/reservas/${params.id}`}>
-            <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
+            <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base ml-2">
               Reservas disponibles
             </button>
           </Link>
@@ -98,7 +102,7 @@ const CardDetail = () => {
           <div className="flex gap-2">
             {state.data.images.map((image, index) =>
               <button key={index} onClick={() => handleImgClick(image.imageUrl)}>
-                <img src={image.imageUrl} alt={image.name} className='w-40 w-40 object-cover rounded-md' />
+                <img src={image.imageUrl} alt={image.name} className='w-24 h-24 object-cover rounded-md' />
               </button>
             )}
           </div>)
@@ -130,22 +134,28 @@ const CardDetail = () => {
         <h2 className='text-left text-orange-500 font-bold p-5'>DESCRIPCION:</h2>
         <p>{state.data.description}</p>
 
-
-        <h4 className='text-left text-orange-500 font-bold p-5' >CARACTERÍSTICAS:</h4>
-        <ul>
-          <li>Kit de batería completo con hardware Toms montados en bombo para tocar cómodamente y configurar fácilmente</li>
-          <li>Capas de álamo para un cálido sonido de tambor completo.</li>
-          <li>Bordes de apoyo SONIClear para un sonido de calidad y fácil afinación</li>
-        </ul>
-
-        <h4 className='text-left text-orange-500 font-bold p-5'>ESPECIFICACIONES:</h4>
-        <ul>
-          <li> Bordes de rodamiento SONIClear™</li>
-          <li> Capas de álamo de 9 capas de 7,2 mm</li>
-          <li> Tambor a juego</li>
-          <li>Parches Remo UC</li>
-          <li>Brillo de galaxia negra</li>
-          <li>Cromo</li>
+        <h2 className='text-left text-orange-500 font-bold p-5'>CARACTERISTICAS:</h2>
+        <ul className='pl-5 flex flex-wrap justify-center items-center space-x-4'>
+          <li className='flex items-center mb-4'>
+            <img src={imgRestaurado} alt="Refurbish" className='w-10 h-10' />
+            <span className="ml-2">Restaurado</span>
+          </li>
+          <li className='flex items-center mb-4'>
+            <img src={imgCredito} alt="Refurbish" className='w-10 h-10 mr-1' />
+            <span className="ml-2">Crédito y Débito</span>
+          </li>
+          <li className='flex items-center mb-4'>
+            <img src={imgEfectivo} alt="Refurbish" className='w-10 h-10 mr-1' />
+            <span className="ml-2">Efectivo</span>
+          </li>
+          <li className='flex items-center mb-4'>
+            <img src={imgGarantia} alt="Refurbish" className='w-10 h-10 mr-1' />
+            <span className="ml-2">Garantía</span>
+          </li>
+          <li className='flex items-center mb-4'>
+            <img src={imgDelivery} alt="Refurbish" className='w-12 h-12 mr-1' />
+            <span className="ml-2">Delivery</span>
+          </li>
         </ul>
       </div>
     </>

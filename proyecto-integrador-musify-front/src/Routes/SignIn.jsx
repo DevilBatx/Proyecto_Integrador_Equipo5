@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../Components/Utils/GlobalContext';
-import imgLog from '../assets/Products/image8.png'
+import imgLog from '../assets/Products/Guitarra1.jpeg'
 
 const SignIn = () => {
   const [formData, setFormData] = useState();
@@ -63,15 +63,15 @@ const SignIn = () => {
   }
 
   return (
-    <div className='w-full h-screen min-h-screen flex mt-16'>
+    <div className='w-full h-screen min-h-screen flex  '>
       <div className=' w-full h-full flex flex-col'>
         <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{ backgroundImage: " url(" + imgLog + ")" }}>
-
+        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20 p-52'>
           <div className='w-screen h-[100vh] border-orange-200  opacity-25 absolute top-0 left-0'></div>
-          <div className='relative flex flex-col text-center gap-4 py-20  '>
+          <div className='relative flex flex-col text-center gap-4 '>
 
 
-            <div className='w-[35%] mx-auto bg-orange-50 border-2 border-gray-500  rounded-xl overflow-hidden p-5'>
+            <div className='w-[35%] mx-auto bg-orange-50 border-2 border-gray-500 rounded-xl overflow-hidden p-5'>
 
               <h1 className='text-2xl text-center font-semibold '>Ingresar</h1>
               <form onSubmit={handleSubmit} className='p-5 flex flex-col gap-3'>
@@ -93,6 +93,7 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   )
 }

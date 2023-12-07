@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import imgLog from '../assets/Products/image8.png'
+import imgLog from '../assets/Products/Guitarra1.jpeg'
 import { GlobalContext } from '../Components/Utils/GlobalContext';
 
 
@@ -110,108 +110,110 @@ const SignUp = () => {
     navigate('/login');
   };
 
-  return (<div className='w-full h-screen flex mt-16'>
+  return (<div className='w-full h-full flex mt-16'>
     <div className='w-full h-full flex flex-col'>
       <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{ backgroundImage: " url(" + imgLog + ")" }}>
+        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20 p-52'>
+          <div className=' relative flex flex-col text-center gap-4'>
 
-        <div className='w-screen h-[100vh] border-orange-200 opacity-25 absolute top-0 left-0'></div>
-        <div className=' relative flex flex-col  text-center gap-4 py-14 '>
+            {!accountCreated ? (// Mostrar el formulario si la cuenta aún no se ha creado
+              <>
+                <div className=' w-[35%] mx-auto bg-orange-50 border-2 border-gray-500 rounded-xl overflow-hidden p-5'>
+                  <h1 className='text-2xl text-center font-semibold pb-5'>Crear cuenta</h1>
+                  <form onSubmit={handleSubmit} className='w-full flex flex-col gap-5'>
+                    <div className="flex flex-col">
+                      <input
+                        type="text"
+                        placeholder='Nombre'
+                        className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
+                        id='name'
+                        onChange={handleChange}
+                      />
+                      {errors.name && <p className="text-red-500 text-xs font-semibold mt-1">{errors.name}</p>}
+                    </div>
 
-          {!accountCreated ? (// Mostrar el formulario si la cuenta aún no se ha creado
-            <>
-              <div className=' w-[35%] mx-auto bg-orange-50 border-2 border-gray-500 rounded-xl overflow-hidden p-5'>
-                <h1 className='text-2xl text-center font-semibold pb-5'>Crear cuenta</h1>
-                <form onSubmit={handleSubmit} className='w-full flex flex-col gap-5'>
-                  <div className="flex flex-col">
-                    <input
-                      type="text"
-                      placeholder='Nombre'
-                      className={`border p-3 rounded-lg ${errors.name && 'border-red-500'}`}
-                      id='name'
-                      onChange={handleChange}
-                    />
-                    {errors.name && <p className="text-red-500 text-xs font-semibold mt-1">{errors.name}</p>}
-                  </div>
+                    <div className="flex flex-col">
+                      <input
+                        type="text"
+                        placeholder='Apellido'
+                        className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
+                        id='lastName'
+                        onChange={handleChange}
+                      />
+                      {errors.lastName && <p className="text-red-500 text-xs font-semibold mt-1">{errors.lastName}</p>}
+                    </div>
 
-                  <div className="flex flex-col">
-                    <input
-                      type="text"
-                      placeholder='Apellido'
-                      className={`border p-3 rounded-lg ${errors.lastName && 'border-red-500'}`}
-                      id='lastName'
-                      onChange={handleChange}
-                    />
-                    {errors.lastName && <p className="text-red-500 text-xs font-semibold mt-1">{errors.lastName}</p>}
-                  </div>
+                    <div className="flex flex-col">
+                      <input
+                        type="text"
+                        placeholder='Email'
+                        className={`border p-3 rounded-lg ${errors.email && 'border-red-500'}`}
+                        id='email'
+                        onChange={handleChange}
+                      />
+                      {errors.email && <p className="text-red-500 text-xs font-semibold mt-1">{errors.email}</p>}
+                    </div>
 
-                  <div className="flex flex-col">
-                    <input
-                      type="text"
-                      placeholder='Email'
-                      className={`border p-3 rounded-lg ${errors.email && 'border-red-500'}`}
-                      id='email'
-                      onChange={handleChange}
-                    />
-                    {errors.email && <p className="text-red-500 text-xs font-semibold mt-1">{errors.email}</p>}
-                  </div>
+                    <div className="flex flex-col">
+                      <input
+                        type="password"
+                        placeholder='Contraseña'
+                        className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
+                        id='password'
+                        onChange={handleChange}
+                      />
+                      {errors.password && <p className="text-red-500 text-xs font-semibold mt-1">{errors.password}</p>}
+                    </div>
 
-                  <div className="flex flex-col">
-                    <input
-                      type="password"
-                      placeholder='Contraseña'
-                      className={`border p-3 rounded-lg ${errors.password && 'border-red-500'}`}
-                      id='password'
-                      onChange={handleChange}
-                    />
-                    {errors.password && <p className="text-red-500 text-xs font-semibold mt-1">{errors.password}</p>}
-                  </div>
+                    <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
+                      {state.loading ? 'Cargando...' : 'Registrarse'}
+                    </button>
+                  </form>
+                </div>
 
-                  <button disabled={state.loading} className='bg-gradient-to-b from-[#D97236] via-[#D97236] to-[#F2A649] text-white font-bold p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-70'>
-                    {state.loading ? 'Cargando...' : 'Registrarse'}
+                <div className='flex items-center justify-center font-bold gap-2'>
+                  <p className='text-white'>¿Ya estás registrado?</p>
+                  <Link to={'/login'}>
+                    <span className='text-blue-500'> Ingresar </span>
+                  </Link>
+                </div>
+                <div>
+                {message && (
+                  <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
+                    {message.message}
+                  </p>
+                )}
+                </div>
+              </>
+            ) : (  // Mostrar el mensaje de bienvenida si la cuenta se ha creado con éxito
+              <>
+                <h1 className='text-2xl text-center font-semibold pb-5 text-white'>¡Bienvenido!</h1>
+                <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
+                  <p className="mt-5 font-semibold text-gray-700">
+                    Usuario registrado correctamente. Te hemos enviado un correo de confirmación a {formData.email}. Por favor, verifica tu bandeja de entrada.
+                    Si no encuentras el correo, también revisa la carpeta de correo no deseado o spam.
+                  </p>
+                </div>
+                <p className="mt-2 text-sm mt-5 text-white">
+                  ¿No has recibido el correo de confirmación?
+                  <button
+                    className="text-blue-300 ml-1 underline"
+                    onClick={() => handleResendConfirmationEmail(formData.email)}
+                    disabled={state.loading}
+                  >
+                    Reenviar correo
                   </button>
-                </form>
-              </div>
-
-              <div className='flex items-center justify-center font-bold mt-5 gap-2'>
-                <p>¿Ya estás registrado?</p>
-                <Link to={'/login'}>
-                  <span className='text-blue-700'> Ingresar </span>
-                </Link>
-              </div>
-              {message && (
-                <p className={`mt-5 font-semibold ${message.isSuccess ? 'text-green-500' : 'text-red-500'}`}>
-                  {message.message}
+                  <button
+                    className="text-blue-300 ml-1 underline"
+                    onClick={() => handleRedirection()}
+                    disabled={state.loading}
+                  >
+                    Iniciar sesión
+                  </button>
                 </p>
-              )}
-            </>
-          ) : (  // Mostrar el mensaje de bienvenida si la cuenta se ha creado con éxito
-            <>
-              <h1 className='text-2xl text-center font-semibold pb-5'>¡Bienvenido!</h1>
-              <div className='max-h-full bg-orange-50 border-2 border-gray-200 rounded-xl overflow-hidden p-5'>
-                <p className="mt-5 font-semibold text-gray-700">
-                  Usuario registrado correctamente. Te hemos enviado un correo de confirmación a {formData.email}. Por favor, verifica tu bandeja de entrada.
-                  Si no encuentras el correo, también revisa la carpeta de correo no deseado o spam.
-                </p>
-              </div>
-              <p className="mt-2 text-sm">
-                ¿No has recibido el correo de confirmación?
-                <button
-                  className="text-blue-700 ml-1 underline"
-                  onClick={() => handleResendConfirmationEmail(formData.email)}
-                  disabled={state.loading}
-                >
-                  Reenviar correo
-                </button>
-                <button
-                  className="text-blue-700 ml-1 underline"
-                  onClick={() => handleRedirection()}
-                  disabled={state.loading}
-                >
-                  Iniciar sesión
-                </button>
-              </p>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

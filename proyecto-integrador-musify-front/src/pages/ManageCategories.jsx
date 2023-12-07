@@ -144,7 +144,7 @@ function ManageCategories() {
       <div className=" flex justify-between mb-6">
         <h1 className="text-2xl font-bold mb-6">Administrar Categorías</h1>
         <button
-          className="text-white mt-5 border-solid border-2 border-orange-500 bg-orange-500 hover:bg-gray-100  font-medium rounded-lg text-sm px-4 py-2.5 text-center hover:bg-gray-100 hover:text-orange-500 self-end"
+          className="text-white mt-5 border-solid border-2 border-orange-500 bg-orange-500 hover:bg-gray-100  font-medium rounded-lg text-sm px-4 py-2.5 text-center hover:text-orange-500 self-end"
           onClick={handleCreateClick}>Nueva Categoría
         </button>
       </div>
