@@ -45,7 +45,6 @@ const Reservas = () => {
     const userId = state.user.id || 0;
 
     const bookingData = {
-      id: 0,
       startDate,
       endDate,
       productId,

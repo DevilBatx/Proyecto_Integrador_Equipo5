@@ -3,6 +3,9 @@ import DatePicker from 'react-datepicker';
 import { addMonths } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import { GlobalContext } from './Utils/GlobalContext';
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import es from 'date-fns/locale/es';
+registerLocale('es', es)
 
 const Calendar = ({ onSetStartDate, onSetEndDate }) => {
     const [startDate, setStartDate] = useState(new Date());
@@ -36,6 +39,7 @@ const Calendar = ({ onSetStartDate, onSetEndDate }) => {
                     </svg>
                 </div>
                 <DatePicker
+                    locale="es"
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     selected={startDate}
                     dateFormat='dd/MM/yyyy'
@@ -44,7 +48,7 @@ const Calendar = ({ onSetStartDate, onSetEndDate }) => {
                         onSetStartDate?.(date);
                     }}
                     minDate={new Date()}
-                    maxDate={addMonths(new Date(), 5)}
+                    maxDate={addMonths(new Date(), 4)}
                     placeholderText="Fecha inicial"
                 />
             </div>
@@ -62,6 +66,7 @@ const Calendar = ({ onSetStartDate, onSetEndDate }) => {
                     </svg>
                 </div>
                 <DatePicker
+                    locale="es"
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                     selected={endDate}
                     dateFormat='dd/MM/yyyy'
@@ -73,6 +78,7 @@ const Calendar = ({ onSetStartDate, onSetEndDate }) => {
                     startDate={startDate}
                     endDate={endDate}
                     minDate={startDate}
+                    maxDate={addMonths(new Date(), 4)}
                     placeholderText="Fecha final"
                 />
             </div>

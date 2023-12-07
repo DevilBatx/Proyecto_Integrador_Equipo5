@@ -3,22 +3,25 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { addMonths } from 'date-fns';
 import { GlobalContext } from './Utils/GlobalContext';
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import es from 'date-fns/locale/es';
+registerLocale('es', es)
 
 const ReservationCalendar = () => {
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState(null);
   const [bookedDates, setBookedDates] = useState([]);
-  const { dispatch, apiURL } = useContext(GlobalContext);
+  const { state, dispatch, apiURL } = useContext(GlobalContext);
 
   useEffect(() => {
 
-    fetch(`${apiURL}/public/bookings/1115/booked`)
+    fetch(`${apiURL}/public/bookings/${state.data.id}/booked`)
       .then(response => response.json())
       .then(data => {
         if (data && data.dates) {
           const formattedDates = data.dates.map(dateString => new Date(dateString));
           setBookedDates(formattedDates);
-          
+
         } else {
           console.error('Unexpected response format:', data);
         }
@@ -27,31 +30,33 @@ const ReservationCalendar = () => {
   }, []);
 
   useEffect(() => {
-        dispatch({
+    dispatch({
       type: "SET_BOOKING",
       payload: {
-        startDate, 
+        startDate,
         endDate,
       },
     });
   }, [startDate, endDate, dispatch]);
-  
+
   return (
     <div className="flex flex-row">
       <span className="text-orange-500 mr-4 font-bold text-center text-xl pt-1">Desde</span>
       <DatePicker
+        locale="es"
         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
         selected={startDate}
         onChange={date => setStartDate(date)}
         excludeDates={bookedDates}
         dateFormat='dd/MM/yyyy'
         minDate={new Date()}
-        maxDate={addMonths(new Date(), 5)}
+        maxDate={addMonths(new Date(), 4)}
         placeholderText="Fecha inicial"
       />
 
       <span className="text-orange-500 mx-4 font-bold text-center text-xl pt-1">Hasta</span>
       <DatePicker
+        locale="es"
         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
         selected={endDate}
         onChange={date => setEndDate(date)}
@@ -60,7 +65,8 @@ const ReservationCalendar = () => {
         selectsEnd
         startDate={startDate}
         endDate={endDate}
-        minDate={startDate}
+        minDate={new Date()}
+        maxDate={addMonths(new Date(), 4)}
         placeholderText="Fecha final"
       />
     </div>
