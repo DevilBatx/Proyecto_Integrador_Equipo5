@@ -6,6 +6,7 @@ import imgCredito from '../assets/Products/Credito.png'
 import imgGarantia from '../assets/Products/Garantia.png'
 import imgDelivery from '../assets/Products/Delivery.png'
 import imgEfectivo from '../assets/Products/Efectivo.png'
+import imgCompartir from '../assets/Products/Compartir.png'
 
 const CardDetail = () => {
   const params = useParams();
@@ -14,6 +15,7 @@ const CardDetail = () => {
   const [visible, setVisible] = useState(false)
   const [showModalimg, setShowModalimg] = useState(false)
   const [saveImg, setSaveimg] = useState("")
+  const [favorite, setFavorite] = useState("")
   const navigate = useNavigate();
 
   const goBack = () => {
@@ -49,6 +51,11 @@ const CardDetail = () => {
     setSaveimg(imageUrl)
   }
 
+  const handleFavoriteClick = () => {
+    setFavorite(!favorite);
+  };
+
+
   useEffect(() => {
     getProduct();
   }, [params]);
@@ -64,6 +71,10 @@ const CardDetail = () => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
             </svg>
           </button>
+        </div>
+        <div className='flex'>
+        <button><img src={imgCompartir} alt="Compartir" className='w-8 h-8 mr-1' /></button>
+        <button onClick={handleFavoriteClick} style={{ fontSize: '1.5em' }} >{favorite ? "❤️" : "🤍"}</button>
         </div>
         <div className=' grid h-full w-full grid-cols-2 gap-3 pt-4 md:grid-cols-4'>
           <div className='col-span-2 row-span-2 aspect-[4/2.8] border border-gray-400 rounded-md'>
@@ -90,7 +101,7 @@ const CardDetail = () => {
         <div className='text-right p-5 gap-4'>
           <button onClick={() => handleMoreClick()}
             className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
-            {visible ? "Ver menos" : "Ver mas"}
+            {visible ? "Ver menos" : "Ver más"}
           </button>
           <Link to={`/reservas/${params.id}`}>
             <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base ml-2">
@@ -135,7 +146,7 @@ const CardDetail = () => {
         <p>{state.data.description}</p>
 
         <h2 className='text-left text-orange-500 font-bold p-5'>CARACTERISTICAS:</h2>
-        <ul className='pl-5 flex flex-wrap justify-center items-center space-x-4'>
+        <ul className='pl-5 flex flex-wrap justify-between items-center space-x-4'>
           <li className='flex items-center mb-4'>
             <img src={imgRestaurado} alt="Refurbish" className='w-10 h-10' />
             <span className="ml-2">Restaurado</span>

@@ -25,8 +25,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "idcategoria", nullable = false)
     private Category category;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
     private List<Image> images;
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name = "producto_caracteristica",

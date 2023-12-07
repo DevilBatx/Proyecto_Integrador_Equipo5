@@ -110,10 +110,10 @@ const SignUp = () => {
     navigate('/login');
   };
 
-  return (<div className='w-full h-full flex mt-16'>
-    <div className='w-full h-full flex flex-col'>
+  return (<div className='w-full h-full flex'>
+    <div className='w-auto h-auto '>
       <div className='w-screen h-[100vh] bg-center bg-cover bg-no-repeat relative ' style={{ backgroundImage: " url(" + imgLog + ")" }}>
-        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20 p-52'>
+        <div className='absolute top-0 left-0 w-full h-full bg-white bg-opacity-20 p-28'>
           <div className=' relative flex flex-col text-center gap-4'>
 
             {!accountCreated ? (// Mostrar el formulario si la cuenta aún no se ha creado
@@ -194,7 +194,7 @@ const SignUp = () => {
                     Si no encuentras el correo, también revisa la carpeta de correo no deseado o spam.
                   </p>
                 </div>
-                <p className="mt-2 text-sm mt-5 text-white">
+                <p className="text-sm mt-5 text-white">
                   ¿No has recibido el correo de confirmación?
                   <button
                     className="text-blue-300 ml-1 underline"

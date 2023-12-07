@@ -18,7 +18,7 @@ public class Image {
     private Integer imageOrder;
     @ManyToOne
     @JoinColumn(name = "idproducto", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Product product;
 
 
