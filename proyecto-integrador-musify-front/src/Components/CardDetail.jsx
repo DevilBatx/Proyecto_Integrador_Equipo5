@@ -101,7 +101,7 @@ const CardDetail = () => {
         <div className='text-right p-5 gap-4'>
           <button onClick={() => handleMoreClick()}
             className="bg-white hover:bg-gray-100  text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base">
-            {visible ? "Ver menos" : "Ver mas"}
+            {visible ? "Ver menos" : "Ver más"}
           </button>
           <Link to={`/reservas/${params.id}`}>
             <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base ml-2">
@@ -146,7 +146,7 @@ const CardDetail = () => {
         <p>{state.data.description}</p>
 
         <h2 className='text-left text-orange-500 font-bold p-5'>CARACTERISTICAS:</h2>
-        <ul className='pl-5 flex flex-wrap justify-center items-center space-x-4'>
+        <ul className='pl-5 flex flex-wrap justify-between items-center space-x-4'>
           <li className='flex items-center mb-4'>
             <img src={imgRestaurado} alt="Refurbish" className='w-10 h-10' />
             <span className="ml-2">Restaurado</span>

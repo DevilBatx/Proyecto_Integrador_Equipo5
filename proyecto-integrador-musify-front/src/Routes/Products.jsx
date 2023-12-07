@@ -28,8 +28,8 @@ useEffect(() => {
 }, []);
 
   return (
-    <div className=' mr-10 ml-10'>
-      <h1 className=' text-2xl text-center my-8 mt-40 font-bold'>{ `${category.name}`}</h1>
+    <div className='text-center mr-10 ml-10'>
+      <h1 className='text-2xl text-center my-8 mt-40 font-bold'>{ `${category.name}`}</h1>
       <PaginationButtons endPoint = {`${apiURL}/public/products/category/${param.id}`} />
     </div>
   )
