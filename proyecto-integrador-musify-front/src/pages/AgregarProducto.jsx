@@ -95,7 +95,7 @@ function AgregarProducto({ onAdd }) {
 
   return (
     <div className="h-screen flex flex-col justify-center mx-auto py-40 bg-gray-100 rounded-xl shadow-md h-auto">
-      <div className='flex flex-1 justify-end' >
+      <div className='flex flex-1 justify-end mt-10' >
         <button onClick={goBack}
           className='mr-25 text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 mx-44 '>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
