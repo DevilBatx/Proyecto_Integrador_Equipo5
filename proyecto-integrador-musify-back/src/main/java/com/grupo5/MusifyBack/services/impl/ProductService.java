@@ -15,9 +15,11 @@ import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -263,8 +265,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductDTO> searchProduct(SearchRequest search) {
-        List<Product> products = productRepository.findProductByDateRange(search.getWord(), search.getStartDate(), search.getEndDate());
+    public List<ProductDTO> searchProduct(String search, LocalDate startDate, LocalDate endDate) {
+        List<Product> products = productRepository.findProductByDateRange(search, startDate, endDate);
         List<ProductDTO> productsDTO = new ArrayList<>();
         //Convertir los productos a DTO
         for (Product product : products) {

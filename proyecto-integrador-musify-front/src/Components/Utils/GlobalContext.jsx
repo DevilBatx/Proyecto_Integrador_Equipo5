@@ -4,6 +4,7 @@ import { createContext, useReducer } from "react";
 export const GlobalContext = createContext();
 
 const reducer = (state, action) => {
+    
     switch (action.type) {
         // case "LIGHT-THEME":
         //     return { ...state, theme: "light" }
@@ -33,7 +34,7 @@ const reducer = (state, action) => {
 const apiURL = "http://54.197.145.57:8080/api/v1"
 export const ContextProvider = ({ children }) => {
 
-    const initialState = { data: [], userReducer: { user: null, loading: false, error: null } }
+    const initialState = { data: [], userReducer: { user: null, loading: false, error: null }, dates: {startDate: new Date(), endDate: null} }
 
     const [state, dispatch] = useReducer(reducer, initialState);
 

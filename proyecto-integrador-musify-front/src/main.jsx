@@ -18,6 +18,7 @@ import ListAllUsersPage from './pages/ListAllUsersPage.jsx';
 import Politicas from './Routes/Politicas.jsx';
 import ManageCategories from './pages/ManageCategories.jsx';
 import Reservas from './Routes/Reservas.jsx';
+import SearchList from './Routes/SearchList.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
@@ -40,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='/profile' element={<Profile/>} /> 
           <Route path='/politicas' element={<Politicas/>}/>
           <Route path='/reservas/:productId' element={<Reservas />} />        
+          <Route path='/searchlist' element={<SearchList />} />        
           <Route path="*" element={<Nopage />} />
           <Route element={<PrivateRoute />}>
           <Route path='/profile' element={<Profile />} />

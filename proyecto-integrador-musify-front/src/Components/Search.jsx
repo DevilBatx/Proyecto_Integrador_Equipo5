@@ -1,9 +1,8 @@
-
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import { GlobalContext } from "./Utils/GlobalContext";
 import Suggestions from './Suggestions';
 
-const Search = () => {
+const Search = ({onHandleChange}) => {
   const { apiURL } = useContext(GlobalContext);
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -11,6 +10,7 @@ const Search = () => {
   const inputRef = useRef("");
 
   const handleInputChange = async ({ target: { value } }) => {
+    onHandleChange?.(value);
     inputRef.current = value;
     if (!value.trim()) {
       setResults([]);
@@ -50,6 +50,7 @@ const Search = () => {
 
   const handleSelect = (selectedValue) => {
     inputRef.current = selectedValue;
+    onHandleChange(selectedValue);
     setResults([]); // Limpiar las sugerencias después de seleccionar
   };
 
@@ -79,3 +80,5 @@ const Search = () => {
 };
 
 export default Search;
+
+

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -146,9 +147,9 @@ public class ProductController {
     }
 
     @GetMapping("/public/search")
-    public ResponseEntity<List<ProductDTO>> searchProduct(@RequestBody SearchRequest search) {
+    public ResponseEntity<List<ProductDTO>> searchProduct(@RequestParam String query, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
         logger.info("Inicio busqueda productos");
-        return ResponseEntity.ok(productService.searchProduct(search));
+        return ResponseEntity.ok(productService.searchProduct(query, startDate, endDate));
     }
 
 
