@@ -8,11 +8,11 @@ const ReservationCalendar = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [bookedDates, setBookedDates] = useState([]);
-  const { dispatch } = useContext(GlobalContext);
+  const { dispatch, apiURL } = useContext(GlobalContext);
 
   useEffect(() => {
 
-    fetch('http://54.197.145.57:8080/api/v1/public/bookings/1115/booked')
+    fetch(`${apiURL}/public/bookings/1115/booked`)
       .then(response => response.json())
       .then(data => {
         if (data && data.dates) {
@@ -38,7 +38,7 @@ const ReservationCalendar = () => {
   
   return (
     <div className="flex flex-row">
-      <span className="mx-5 text-white text-center pt-1">Desde</span>
+      <span className="text-orange-500 mr-4 font-bold text-center text-xl pt-1">Desde</span>
       <DatePicker
         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
         selected={startDate}
@@ -50,7 +50,7 @@ const ReservationCalendar = () => {
         placeholderText="Fecha inicial"
       />
 
-      <span className="mx-5 text-white text-center pt-1">Hasta</span>
+      <span className="text-orange-500 mx-4 font-bold text-center text-xl pt-1">Hasta</span>
       <DatePicker
         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
         selected={endDate}
