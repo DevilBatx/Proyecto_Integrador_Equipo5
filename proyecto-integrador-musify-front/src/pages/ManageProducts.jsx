@@ -12,6 +12,7 @@ function ManageProducts() {
   const [showModalCancel, setShowModalCancel] = useState(false)
   const [titulo, setTitulo] = useState("");
   const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
   const { apiURL, state, dispatch } = useContext(GlobalContext);
   const [images, setImages] = useState([]);
   const [errorMessage, setErrorMessage] = useState({ imageError: "", productNameError: "", productDeleteError: "" })
@@ -52,6 +53,7 @@ function ManageProducts() {
       const productInfo = {
         id: selectedProduct.id,
         name: productName,
+        description: productDescription,
         category: selectedCategory,
       };
 
@@ -129,6 +131,9 @@ function ManageProducts() {
   const handleProductName = (event) => {
     setProductName(event.target.value);
     setErrorMessage({ ...errorMessage, productNameError: "" })
+  };
+  const handleProductDescription = (event) => {
+    setProductDescription(event.target.value);
   };
   const handleImageChange = (event) => {
     setImages([...event.target.files]);
@@ -219,6 +224,21 @@ function ManageProducts() {
                     type="text"
                     value={productName}
                     onChange={(e) => handleProductName(e)}
+                  />
+                </div>
+                <div className="w-full">
+                  <label
+                    htmlFor="productDescription"
+                    className="block font-medium text-sm text-gray-700"
+                  >
+                    Descripción
+                  </label>
+                  <textarea
+                    id="productName"
+                    className='mt-2 text-sm pl-2 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400'
+                    type="text"
+                    value={productDescription}
+                    onChange={(e) => handleProductDescription(e)}
                   />
                 </div>
                 <div className="py-4 border-b w-full mb-4">
