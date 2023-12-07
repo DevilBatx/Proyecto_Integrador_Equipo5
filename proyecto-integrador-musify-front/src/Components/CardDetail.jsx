@@ -6,6 +6,7 @@ import imgCredito from '../assets/Products/Credito.png'
 import imgGarantia from '../assets/Products/Garantia.png'
 import imgDelivery from '../assets/Products/Delivery.png'
 import imgEfectivo from '../assets/Products/Efectivo.png'
+import imgCompartir from '../assets/Products/Compartir.png'
 
 const CardDetail = () => {
   const params = useParams();
@@ -14,6 +15,7 @@ const CardDetail = () => {
   const [visible, setVisible] = useState(false)
   const [showModalimg, setShowModalimg] = useState(false)
   const [saveImg, setSaveimg] = useState("")
+  const [favorite, setFavorite] = useState("")
   const navigate = useNavigate();
 
   const goBack = () => {
@@ -49,6 +51,11 @@ const CardDetail = () => {
     setSaveimg(imageUrl)
   }
 
+  const handleFavoriteClick = () => {
+    setFavorite(!favorite);
+  };
+
+
   useEffect(() => {
     getProduct();
   }, [params]);
@@ -64,6 +71,10 @@ const CardDetail = () => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
             </svg>
           </button>
+        </div>
+        <div className='flex'>
+        <button><img src={imgCompartir} alt="Compartir" className='w-8 h-8 mr-1' /></button>
+        <button onClick={handleFavoriteClick} style={{ fontSize: '1.5em' }} >{favorite ? "❤️" : "🤍"}</button>
         </div>
         <div className=' grid h-full w-full grid-cols-2 gap-3 pt-4 md:grid-cols-4'>
           <div className='col-span-2 row-span-2 aspect-[4/2.8] border border-gray-400 rounded-md'>
