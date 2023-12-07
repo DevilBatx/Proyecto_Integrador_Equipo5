@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -24,9 +23,9 @@ public class BookingController {
 
     @PostMapping("/auth/bookings")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<?> saveBooking(@RequestBody Booking booking) {
+    public ResponseEntity<?> saveBooking(@RequestBody BookingDTO bookingDto) {
         try {
-            Booking newBooking = bookingService.save(booking);
+            Booking newBooking = bookingService.save(bookingDto);
             return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
         } catch (Exception e) {
             String errorMessage = "Error al procesar la solicitud: " + e.getMessage();
@@ -35,8 +34,7 @@ public class BookingController {
 
     }
 
-    @GetMapping("/auth/bookings/{idProduct}/booked")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/public/bookings/{idProduct}/booked")
     public ResponseEntity<Map<String, List<LocalDate>>> getBookedDates(@PathVariable("idProduct") Long idProduct) {
         List<LocalDate> bookedDates = bookingService.getBookedDates(idProduct);
         Map<String, List<LocalDate>> response = new HashMap<>();
@@ -44,8 +42,7 @@ public class BookingController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/auth/bookings/{idProduct}/available")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/public/bookings/{idProduct}/available")
     public ResponseEntity<Map<String, List<LocalDate>>> getAvailableDates(@PathVariable("idProduct") Long idProduct) {
         List<LocalDate> availableDates = bookingService.getAvailableDates(idProduct);
         Map<String, List<LocalDate>> response = new HashMap<>();
@@ -60,7 +57,7 @@ public class BookingController {
     }
     @GetMapping("/auth/bookings/{idUser}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<List<BookingDTO>> getBookingsByUserId(@PathVariable("idUser") Long idUser) {
+    public ResponseEntity<List<Booking>> getBookingsByUserId(@PathVariable("idUser") Long idUser) {
         return ResponseEntity.ok(bookingService.getBookingsByUserId(idUser));
     }
 

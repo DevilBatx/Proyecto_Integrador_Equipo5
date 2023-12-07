@@ -1,4 +1,4 @@
-package com.grupo5.MusifyBack.dto;
+package com.grupo5.MusifyBack.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,8 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingDTO {
-    private Long id;
+public class SearchRequest {
+    private String word;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Long productId;
-    private Long userId;
 }

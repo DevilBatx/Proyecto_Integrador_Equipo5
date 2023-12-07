@@ -9,6 +9,7 @@ function ManageProducts() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showModalCancel, setShowModalCancel] = useState(false)
   const [titulo, setTitulo] = useState("");
   const [productName, setProductName] = useState("");
   const { apiURL, state, dispatch } = useContext(GlobalContext);
@@ -17,6 +18,9 @@ function ManageProducts() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+
+  const [successMessage, setSuccessMessage] = useState("");
   const goBack = () => {
     window.history.back();
   };
@@ -26,6 +30,7 @@ function ManageProducts() {
     loadProducts();
     loadCategories();
   }, []);
+
 
   const loadProducts = async () => {
     const productList = await getProductList(apiURL);
@@ -43,38 +48,40 @@ function ManageProducts() {
 
   const handleUpdateProduct = async () => {
     dispatch({ type: 'SET_LOADING', payload: true });
-try {
-  debugger;
-    const productInfo = {
-      id: selectedProduct.id,
-      name: productName,
-      category: selectedCategory,
-    };
+    try {
+      const productInfo = {
+        id: selectedProduct.id,
+        name: productName,
+        category: selectedCategory,
+      };
 
-    const productData = new FormData();
-    productData.append(
-      'productInfo',
-      new Blob([JSON.stringify(productInfo)], {
-        type: 'application/json',
-      })
-    );
+      const productData = new FormData();
+      productData.append(
+        'productInfo',
+        new Blob([JSON.stringify(productInfo)], {
+          type: 'application/json',
+        })
+      );
 
-    if (images) {
-      productData.append("NewFiles", images);
-    }
+      if (images) {
+        images.forEach((image) => {
+          productData.append("files", image);
+        });
+      }
 
-    await updateProduct(apiURL, productData);
 
-    loadProducts();
-  } catch (error) {
-    console.error('Error al manejar la actualización del producto:', error);
-    setErrorMessage({ ...errorMessage, productUpdateError: error.message })
-    
+      await updateProduct(apiURL, productData);
+      setSuccessMessage('Producto actualizado con éxito');
+      setShowModalCancel(true)
+      setShowModal(false);
+    } catch (error) {
+      console.error('Error al manejar la actualización del producto:', error);
+      setErrorMessage({ ...errorMessage, productUpdateError: error.message })
+
     }
     setSelectedProduct(null);
     setProductName("");
     setImages(null);
-    setShowModal(false);
     setTitulo("");
     dispatch({ type: 'SET_LOADING', payload: false });
   };
@@ -85,9 +92,10 @@ try {
       await deleteProduct(apiURL, selectedProduct.id);
       setSelectedProduct(null);
       setProductName("");
+      setShowModalCancel(true)
       setShowModalDelete(false);
       setTitulo("");
-      loadProducts();
+      setSuccessMessage('Producto eliminado con éxito');
     } catch (error) {
       console.error('Error al manejar la eliminación del producto:', error);
       setErrorMessage({ ...errorMessage, productDeleteError: error.message })
@@ -100,16 +108,22 @@ try {
     setTitulo("Editar Producto");
     setShowModal(true);
     setErrorMessage({ imageError: "", productNameError: "" })
+    setSuccessMessage("");
     setProductName(product.name);
+    setCategoryId(product.category.id);
     setSelectedCategory(product.category);
     dispatch({ type: 'SET_LOADING', payload: false });
   };
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(categories.find(cat => cat.id.toString() === event.target.value));
+  }
 
   const handleDeleteClick = (product) => {
     setSelectedProduct(product);
     setProductName(product.name);
     setTitulo("Eliminar Producto");
     setShowModalDelete(true);
+    setSuccessMessage("");
     setErrorMessage({ ...errorMessage, productDeleteError: "" })
   };
   const handleProductName = (event) => {
@@ -117,9 +131,19 @@ try {
     setErrorMessage({ ...errorMessage, productNameError: "" })
   };
   const handleImageChange = (event) => {
-    setImages([ ...event.target.files]);
+    setImages([...event.target.files]);
     setErrorMessage({ ...errorMessage, imageError: "" })
   };
+  const handlerClose = () => {
+    setShowModalCancel(false);
+    setSuccessMessage("");
+    setErrorMessage({ ...errorMessage, productUpdateError: "", productDeleteError: "" })
+    setTimeout(() => {
+      loadProducts();
+      
+    }, 0);
+  
+  }
 
 
   return (
@@ -181,6 +205,7 @@ try {
                     <span>✖</span>
                   </button>
                 </div>
+
                 <div className="w-full">
                   <label
                     htmlFor="productName"
@@ -220,18 +245,16 @@ try {
                   </label>
                   <select
                     id="productCategory"
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    value={selectedCategory.id}
+                    onChange={(e) => handleCategoryChange(e)}
                     className="mt-1 p-2 w-full border rounded"
                   >
                     <option value="">Seleccionar Categoría</option>
                     {categories.map((cat) => (
-                      <option key={cat.id} value={cat}>{cat.name}</option>
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
                   </select>
                 </div>
-                <div className='text-sm font-semibold text-red-700'>{errorMessage.productNameError}</div>
-                <div className=' text-sm font-semibold text-red-700'>{errorMessage.imageError}</div>
                 <div className='ml-auto'>
                   <button
                     className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded"
@@ -243,6 +266,19 @@ try {
                     disabled={state.loading}
                     onClick={() => setShowModal(false)}>Cancelar</button>
                 </div>
+                {/* Success Message */}
+                {successMessage && (
+                  <div className="mt-4 text-sm font-medium text-green-600">
+                    {successMessage}
+                  </div>
+                )}
+
+                {/* Error Message */}
+                {errorMessage && (
+                  <div className="mt-4 text-sm font-medium text-red-600">
+                    {errorMessage.productUpdateError}
+                  </div>
+                )}
               </div>
             </form>
           </div>
@@ -279,6 +315,41 @@ try {
                     type="button"
                     disabled={state.loading}
                     onClick={() => setShowModalDelete(false)}>Cancelar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )
+      }
+      {showModalCancel && (
+        <div className=" flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
+          <div className="bg-white rounded-lg w-1/2">
+            <form className="w-full">
+              <div className="flex flex-col items-start p-4">
+                <div className='flex items-center w-full border-b pb-4'>
+                  <h2 className="text-gray-900 font-medium text-lg">Resultado</h2>
+                  <button
+                    className="ml-auto fill-current text-gray-700 w-6 h-6 cursor-pointer "
+                    onClick={handlerClose}
+                  >
+                    <span>✖</span>
+                  </button>
+                </div>
+                <div className="w-full py-10 text-center">
+                  <div className="mt-4 text-md font-medium text-green-600">
+                    {successMessage}
+                  </div>
+                  <div className="mt-4 text-md font-medium text-red-600">
+                    {errorMessage.productUpdateError}
+                  </div>
+                </div>
+                <div className='ml-auto'>
+                  <button
+                    className="bg-gray-500 text-white font-bold py-2 px-4  ml-2 rounded"
+                    type="button"
+                    disabled={state.loading}
+                    onClick={handlerClose}>Cerrar</button>
                 </div>
               </div>
             </form>

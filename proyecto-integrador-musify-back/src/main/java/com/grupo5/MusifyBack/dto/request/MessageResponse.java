@@ -1,4 +1,4 @@
-package com.grupo5.MusifyBack.dto;
+package com.grupo5.MusifyBack.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchProductDTO {
-    private Long id;
-    private String name;
+public class MessageResponse {
+
+    private String message;
 }

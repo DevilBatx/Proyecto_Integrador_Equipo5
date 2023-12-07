@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.core.env.Environment;
 
 
-import java.net.Socket;
 import java.util.Properties;
 
 @Service

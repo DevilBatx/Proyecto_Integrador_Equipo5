@@ -23,20 +23,6 @@ export const getProductList = async (apiURL) => {
 
 export const updateProduct = async (apiURL, productData) => {
     try {
-        //const formData = new FormData();
-
-        // formData.append(
-        //     "productInfo",
-        //     new Blob([JSON.stringify({ ...productInfo, id: productId })], {
-        //         type: "application/json",
-        //     })
-        // );
-
-        // if (newImages && newImages.length > 0) {
-        //     newImages.forEach((image) => {
-        //         formData.append("newFiles", image);
-        //     });
-        // }
 
         const response = await fetch(`${apiURL}/auth/products`, {
             method: 'PUT',
@@ -48,7 +34,7 @@ export const updateProduct = async (apiURL, productData) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = await response.text();
         return data;
     } catch (error) {
         console.error('Error al actualizar el producto:', error);

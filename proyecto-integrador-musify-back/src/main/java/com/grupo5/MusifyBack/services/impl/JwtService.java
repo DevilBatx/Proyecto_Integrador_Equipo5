@@ -80,8 +80,7 @@ public class JwtService {
             userDetails = (UserDetails) principal;
         }
         assert userDetails != null;
-        String userName = userDetails.getUsername();
-        return userName;
+        return userDetails.getUsername();
 
     }
 

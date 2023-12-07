@@ -1,10 +1,10 @@
 package com.grupo5.MusifyBack.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductAlreadyExistsException;
 import com.grupo5.MusifyBack.controllers.exceptions.ProductNotFoundException;
-import com.grupo5.MusifyBack.dto.ProductDTO;
 import com.grupo5.MusifyBack.dto.SearchProductDTO;
+import com.grupo5.MusifyBack.dto.request.MessageResponse;
+import com.grupo5.MusifyBack.dto.request.SearchRequest;
 import com.grupo5.MusifyBack.models.Product;
 import com.grupo5.MusifyBack.services.impl.ProductService;
 import com.grupo5.MusifyBack.services.impl.S3Service;
@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -35,11 +37,9 @@ public class ProductController {
     @Autowired
     private S3Service s3Service;
 
-    @Autowired
-    ObjectMapper mapper;
 
     @GetMapping("/public/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProducts() {
         logger.info("Inicio busqueda productos");
 
         return ResponseEntity.ok(productService.getAllProducts());
@@ -53,7 +53,7 @@ public class ProductController {
 
 
     @GetMapping("/public/products/random")
-    public ResponseEntity<List<ProductDTO>> getRandomProducts() {
+    public ResponseEntity<List<Product>> getRandomProducts() {
         logger.info("Inicio busqueda productos");
         return ResponseEntity.ok(productService.getRandomProducts());
     }
@@ -62,19 +62,19 @@ public class ProductController {
     @PostMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity<Product> saveProduct(@RequestPart("productInfo") ProductDTO product, @RequestPart("files") MultipartFile[] files) throws ProductAlreadyExistsException {
+    public ResponseEntity<?> saveProduct(@RequestPart("productInfo") Product product, @RequestPart("files") MultipartFile[] files) throws ProductAlreadyExistsException {
 
 
         if (productService.doesProductExist(product.getName())) {
-            throw new ProductAlreadyExistsException("El producto " + product.getName() + " ya se encuentra registrado en la base de datos");
+            MessageResponse messageResponse = new MessageResponse("El producto " + product.getName() + " ya se encuentra registrado en la base de datos");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(messageResponse);
         } else {
             try {
                 List<String> imageUrls = null;
                 Product savedProduct = productService.saveProduct(product, imageUrls);
                 imageUrls = s3Service.uploadFiles(files, String.valueOf(savedProduct.getId()));
                 logger.info("Registrando Producto");
-                ProductDTO savedProductDTO = mapper.convertValue(savedProduct, ProductDTO.class);
-                return ResponseEntity.ok(productService.saveProduct(savedProductDTO, imageUrls));
+                return ResponseEntity.ok(productService.saveProduct(savedProduct, imageUrls));
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,13 +84,18 @@ public class ProductController {
     }
 
     @GetMapping("/public/products/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") long id) {
         logger.info("Incio buesqueda producto por id: " + id);
-        return ResponseEntity.ok(productService.getProductById(id));
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isPresent()) {
+            return ResponseEntity.ok(product.get());
+        } else {
+            throw new ProductNotFoundException("El producto con Id " + id + " no existe");
+        }
     }
 
     @GetMapping("/public/products/category/{id}")
-    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable("id") long id) {
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("id") long id) {
         logger.info("Incio buesqueda producto por id: " + id);
         return ResponseEntity.ok(productService.getProductsByCategory(id));
     }
@@ -98,11 +103,12 @@ public class ProductController {
     @PutMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity<Product> updateProduct(@RequestPart("productInfo") ProductDTO product, @RequestPart("NewFiles") MultipartFile[] newFiles) throws IOException {
+    public ResponseEntity<String> updateProduct(@RequestPart("productInfo") Product product, @RequestPart(value = "NewFiles",required = false) MultipartFile[] newFiles) throws IOException {
         //Obtengo el producto a modificar
-        ProductDTO existingProduct = productService.getProductById(product.getId());
+        Optional<Product> targetProduct = productService.getProductById(product.getId());
         //Si existe el producto, lo modifico
-        if (existingProduct != null) {
+        if (targetProduct.isPresent()) {
+            Product existingProduct = targetProduct.get();
             existingProduct.setName(product.getName());
             existingProduct.setDescription(product.getDescription());
             //existingProduct.setBrand(product.getBrand());
@@ -111,11 +117,14 @@ public class ProductController {
             List<String> newImageUrls = new ArrayList<>();
             //verifica y agrega las imagenes al producto
             //compruebo si newfiles viene vacio
-            if(Arrays.stream(newFiles).anyMatch(file -> file.getSize() > 0)){
-                newImageUrls = s3Service.uploadFiles(newFiles, String.valueOf(existingProduct.getId()));
+            if(newFiles != null){
+                if(Arrays.stream(newFiles).anyMatch(file -> file.getSize() > 0)){
+                    newImageUrls = s3Service.uploadFiles(newFiles, String.valueOf(product.getId()));
+                }
             }
             //Guardo el producto modificado
-            return ResponseEntity.ok(productService.updateProduct(existingProduct, newImageUrls));
+            productService.updateProduct(existingProduct, newImageUrls);
+            return ResponseEntity.ok("El producto " + product.getName() + " fue modificado");
         } else {
             //Si no existe el producto, retorno un error
             throw new ProductNotFoundException("El producto con Id " + product.getId() + " no existe");
@@ -142,6 +151,12 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
+    }
+
+    @GetMapping("/public/search")
+    public ResponseEntity<List<Product>> searchProduct(@RequestParam String query, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        logger.info("Inicio busqueda productos");
+        return ResponseEntity.ok(productService.searchProduct(query, startDate, endDate));
     }
 
 
