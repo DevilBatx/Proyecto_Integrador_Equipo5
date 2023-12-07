@@ -35,4 +35,5 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             ) limit 1                      
             ) < 1""", nativeQuery = true)
     List<Product> findProductByDateRange(String word, LocalDate startDate, LocalDate endDate);
+
 }

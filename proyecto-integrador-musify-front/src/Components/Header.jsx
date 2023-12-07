@@ -11,10 +11,11 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
 
 
     const handleLogout = () => {
+        navigate('/login');
         sessionStorage.removeItem('token');
         dispatch({ type: 'SIGN_OUT' });
         sessionStorage.removeItem('user');
-        navigate('/login');
+        
     };
 
     return (
@@ -66,7 +67,7 @@ const Header = ({ title = "Musify", subtitle = "Donde la música y la pasión se
                                         </li>)}
                                     </ul>
                                     <div className="py-2">
-                                        <Link to="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleLogout()}>Cerrar sesión</Link>
+                                        <button  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => handleLogout()}>Cerrar sesión</button>
                                     </div>
                                 </div>
                             )}

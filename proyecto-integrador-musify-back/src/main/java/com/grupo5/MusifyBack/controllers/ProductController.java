@@ -103,7 +103,7 @@ public class ProductController {
     @PutMapping(value = "/auth/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity<String> updateProduct(@RequestPart("productInfo") Product product, @RequestPart("NewFiles") MultipartFile[] newFiles) throws IOException {
+    public ResponseEntity<String> updateProduct(@RequestPart("productInfo") Product product, @RequestPart(value = "NewFiles",required = false) MultipartFile[] newFiles) throws IOException {
         //Obtengo el producto a modificar
         Optional<Product> targetProduct = productService.getProductById(product.getId());
         //Si existe el producto, lo modifico
@@ -117,8 +117,10 @@ public class ProductController {
             List<String> newImageUrls = new ArrayList<>();
             //verifica y agrega las imagenes al producto
             //compruebo si newfiles viene vacio
-            if(Arrays.stream(newFiles).anyMatch(file -> file.getSize() > 0)){
-                newImageUrls = s3Service.uploadFiles(newFiles, String.valueOf(product.getId()));
+            if(newFiles != null){
+                if(Arrays.stream(newFiles).anyMatch(file -> file.getSize() > 0)){
+                    newImageUrls = s3Service.uploadFiles(newFiles, String.valueOf(product.getId()));
+                }
             }
             //Guardo el producto modificado
             productService.updateProduct(existingProduct, newImageUrls);

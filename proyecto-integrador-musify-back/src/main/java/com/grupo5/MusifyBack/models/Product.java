@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "producto")
-@EqualsAndHashCode(exclude = {"bookings"})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

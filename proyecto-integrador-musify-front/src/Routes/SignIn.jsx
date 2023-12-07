@@ -48,8 +48,7 @@ const SignIn = () => {
         sessionStorage.setItem('user', JSON.stringify(user));
         dispatch({ type: "SIGN_IN_SUCCESS", payload: user });  
         console.log(user);
-        
-        navigate('/');
+        user.isAdmin == 1 ? navigate('/administracion') : navigate('/');
         dispatch({ type: 'SET_LOADING', payload: false });
       }
     } catch (error) {
