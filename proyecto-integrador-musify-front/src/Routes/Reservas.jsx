@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Gallery from "../Components/Gallery";
 import ReservationCalendar from "../Components/ReservationCalendar";
 import imgLog from "../assets/Products/dino.png";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 const Reservas = () => {
   const params = useParams();
@@ -20,6 +20,10 @@ const Reservas = () => {
     window.history.back();
   };
 
+  const redirectToHome = () => {
+    navigate("/");
+  };
+
   const formatDateForDisplay = (date) => {
     if (!date) return null;
     const d = new Date(date);
@@ -28,6 +32,7 @@ const Reservas = () => {
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
   };
+  
 
   const formatDateForPayload = (date) => {
     if (!date) return null;
@@ -107,63 +112,75 @@ const Reservas = () => {
 
   return (
     <div className="p-14 mt-14 mb-10 mx-16 bg-gray-100 rounded-xl shadow-md h-screen">
-    <div className='flex justify-end'>
-      <button onClick={goBack} className='text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 my-5'>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-10 h-10 text-gray-700 hover:text-orange-500 ">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+      <div className="flex justify-end">
+        <button
+          onClick={goBack}
+          className="text-xs font-semibold uppercase transition ease-in-out hover:text-sky-500 my-5"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            className="w-10 h-10 text-gray-700 hover:text-orange-500 "
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+            />
           </svg>
         </button>
       </div>
-  
-      <div className="flex flex-col lg:flex-row justify-between items-start">
-      {/* Gallery Section */}
-      <div className="lg:w-1/4 p-2 mb-4 lg:mb-0">
-        <Gallery images={images} />
-      </div>
 
-      {/* Description, User Data, and Reservation Calendar Section */}
-      <div className="lg:w-3/4 p-2">
-        <div>
-          <h1 className="text-xl text-orange-500 font-bold py-5">
-            {state.data.name}
-          </h1>
-          <h1 className="text-xl text-orange-500 font-bold py-5">
-            Descripcion:
-          </h1>
-          <p>{state.data.description}</p>
+      <div className="flex flex-col lg:flex-row">
+        {/* Gallery Section */}
+        <div className=" p-2 mb-4 lg:mb-0 ">
+          <Gallery images={images} />
         </div>
-        
 
-        {state.user && (
-          <div className="mt-4">
+        {/* Description, User Data, and Reservation Calendar Section */}
+        <div className="lg:w-3/4 p-2">
+          <div>
             <h1 className="text-xl text-orange-500 font-bold py-5">
-              Datos del usuario para la reserva:
+              {state.data.name}
             </h1>
-            <p>Nombre: {state.user.name}</p>
-            <p>Apellido: {state.user.lastName}</p>
-            <p>Email: {state.user.email}</p>
+            <h1 className="text-xl text-orange-500 font-bold py-5">
+              Descripcion:
+            </h1>
+            <p>{state.data.description}</p>
           </div>
-        )}
 
-        <div className="flex flex-col lg:flex-row lg:items-center mt-10">
-          <ReservationCalendar productId={productId} />
-          <button
-            onClick={handleBooking}
-            className="text-white border-solid border-2 border-orange-500 bg-orange-500 hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center hover:text-orange-500 mt-4 lg:mt-0 lg:ml-4"
-          >
-            Reservar
-          </button>
+          {state.user && (
+            <div className="mt-4">
+              <h1 className="text-xl text-orange-500 font-bold py-5">
+                Datos del usuario para la reserva:
+              </h1>
+              <p>Nombre: {state.user.name}</p>
+              <p>Apellido: {state.user.lastName}</p>
+              <p>Email: {state.user.email}</p>
+            </div>
+          )}
+
+          <div className="flex flex-col lg:flex-row lg:items-center mt-10">
+            <ReservationCalendar productId={productId} />
+            <button
+              onClick={handleBooking}
+              className="text-white border-solid border-2 border-orange-500 bg-orange-500 hover:bg-gray-100 font-medium rounded-lg text-sm px-4 py-2.5 text-center hover:text-orange-500 mt-4 lg:mt-0 lg:ml-10"
+            >
+              Reservar
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-
 
       {showConfirmationModal && (
         <div className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-90">
-          <div className="bg-white rounded-lg w-1/2">
+          <div className="bg-white scale-50 mt-28 ">
             <div className="flex flex-col items-start p-4">
-              <div className="flex items-center w-full border-b pb-4">
-                <h2 className="text-gray-900 font-medium text-lg">
+              <div className="flex justify-items-end w-full border-b pb-4">
+                <h2 className="text-gray-400 font-small">
                   Confirmación de Reserva
                 </h2>
                 <button
@@ -173,26 +190,35 @@ const Reservas = () => {
                   <span>✖</span>
                 </button>
               </div>
-              <div className="w-full py-10 content-center justify-center">
-                <p className="text-base">¡Reserva confirmada con éxito!</p>
-                <p>Desde: {formatDateForDisplay(state.booking.startDate)}</p>
-                <p>Hasta: {formatDateForDisplay(state.booking.endDate)}</p>
-                <p>Producto: {state.data.name}</p>
-                {state.data.images && state.data.images.length > 0 && (
-                  <img
-                    src={state.data.images[0].imageUrl}
-                    alt={state.data.name}
-                  />
-                )}
-                <p>ID de Reserva: {bookingResponse?.id}</p>
+              <div className="w-full content-center justify-center">
+                <p className="text-3xl text-center m-4 font-bold">
+                  Gracias {state.user.name} ¡Tu reserva fue confirmada con éxito!
+                </p>
+                <div className="m-7">
+                <p className="my-1 text-2xl text-center">Producto: {state.data.name}</p>
+                  <p className="my-2 text-2xl text-center">
+                    Desde: {formatDateForDisplay(state.booking.startDate)}
+                  </p>
+                  <p className="my-2 text-2xl text-center">
+                    Hasta: {formatDateForDisplay(state.booking.endDate)}
+                  </p>
+                  <p className="mt-2 text-center text-2xl">Reserva #{bookingResponse?.id}</p>                  
+                  {state.data.images && state.data.images.length > 0 && (
+                    <img
+                      src={state.data.images[0].imageUrl}
+                      alt={state.data.name}
+                      className="scale-80"
+                    />
+                  )}
+                </div>
               </div>
               <div className="ml-auto">
                 <button
-                  className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded"
+                  className="bg-orange-400 hover:bg-orange-500 text-2xl text-white font-bold py-2 px-4 rounded"
                   type="button"
-                  onClick={() => setShowConfirmationModal(false)}
+                  onClick={redirectToHome}
                 >
-                  Cerrar
+                  Volver al inicio
                 </button>
               </div>
             </div>

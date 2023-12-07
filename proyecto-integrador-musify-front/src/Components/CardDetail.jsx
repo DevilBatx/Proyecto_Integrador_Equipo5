@@ -105,7 +105,7 @@ const CardDetail = () => {
           </button>
           <Link to={`/reservas/${params.id}`}>
             <button className="bg-white hover:bg-gray-100 text-orange-500 font-bold py-1 px-2 md:py-2 md:px-4 border border-gray-400 rounded-full shadow text-sm md:text-base ml-2">
-              Reservas disponibles
+              Reservar
             </button>
           </Link>
         </div>
